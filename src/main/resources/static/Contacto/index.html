@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <link href="css/estilos.css" rel="stylesheet">
+</head>
+<body>
+    <header class="Menu">
+        <div class="ContenidoMenu">
+            <div class="LogoTienda">
+                <img src="../Ropa/Logo.png" alt="Logo" class="Logo">
+                <p class="NombreTienda">FalaFeria</p>
+            </div>
+            <button class="MenuHamburguesa" id="MenuHamburguesa">☰</button>
+            <nav class="MenuNavegacion">
+                <a class="Links" href="../index.html">Inicio</a>
+                <a class="Links" href="Contacto/index.html">Contacto</a>
+                <a class="Links" href="">Sobre nosotros</a>
+                <a class="Links" href="">Ropa</a>
+                <a class="Links" href="">Inicio Sesion</a>
+                <a class="Links" href="">Registrarse</a>
+            </nav>
+        </div>
+    </header>
+    <hr>
+    <!-- Contenido principal -->
+    <div class="Contenido1">
+        <h1>Contáctanos</h1>
+        
+        <div class="form-container">
+            <form>
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" required>
+
+                <label for="contenido">Mensaje</label>
+                <textarea id="contenido" name="contenido" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                <br> <br>
+                <input type="submit" value="Enviar Mensaje" class="btn">
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
