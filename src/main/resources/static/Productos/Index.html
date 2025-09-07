@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FalaFeria - Tu ropa Favorita en Descuento</title>
+    <link rel="stylesheet" href="Estilos.css">
+</head>
+<body>
+    <header class="Menu">
+        <div class="ContenidoMenu">
+            <div class="LogoTienda">
+                <img src="../Ropa/Logo.png" alt="Logo" class="Logo">
+                <p class="NombreTienda">FalaFeria</p>
+            </div>
+            <div class="Carrito">
+                <button id="Carrito">🛒<span id="CantidadCarrito">0</span></button>
+            </div>
+            <button class="MenuHamburguesa" id="MenuHamburguesa">☰</button>
+            <nav class="MenuNavegacion" id="MenuNavegacion">
+                <a class="Links" href="../index.html">Inicio</a>
+                <a class="Links" href="../Contacto/index.html">Contacto</a>
+                <a class="Links" href="#nosotros">Sobre nosotros</a>
+                <a class="Links" href="Index.html">Ropa</a>
+                <a class="Links" href="#sesion">Inicio Sesion</a>
+                <a class="Links" href="#registro">Registrarse</a>
+            </nav>
+        </div>
+        <hr>
+    </header>
+
+    <main class="ContenedorPrincipal">
+        <section class="SeccionHero">
+            <div class="ContenidoHero">
+                <div class="LadoIzquierdo">
+                    <div class="EtiquetaRopa">ROPA HOMBRE</div>
+                    <div class="ImagenHombre"></div>
+                    <div class="BotonSeccion">
+                        <button class="BotonCompraGenero" id="BotonHombre">Comprar Ropa Hombre</button>
+                    </div>
+                </div>
+
+
+
+                <div class="LadoDerecho">
+                    <div class="EtiquetaRopa">ROPA MUJER</div>
+                    <div class="ImagenMujer"></div>
+                    <div class="BotonSeccion">
+                        <button class="BotonCompraGenero" id="BotonMujer">Comprar Ropa Mujer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

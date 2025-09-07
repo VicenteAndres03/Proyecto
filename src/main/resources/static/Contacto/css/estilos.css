@@ -59,6 +59,18 @@ body{
     border-bottom: 1px solid;
 }
 
+.Carrito button{
+    background-color: rgb(245,245,245);
+    font-size: 1.5em;
+    border: none;
+    display: flex;
+    align-items:flex-end;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 10px;
+}
 
 /*div*/
 .Contenido1{

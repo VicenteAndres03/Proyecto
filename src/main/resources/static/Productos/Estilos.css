@@ -1,0 +1,322 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    margin: auto;
+    padding: 0;
+    background-color: rgb(245,245,245);
+    font-family: Arial, sans-serif;
+}
+
+/*Menu - Corrigiendo visibilidad de hamburguesa*/
+.Menu{
+    background-color: rgb(245,245,245);
+    position: relative; /* Agregado para contexto de z-index */
+    z-index: 1001; /* Alto z-index para que esté encima */
+}
+
+.MenuHamburguesa{
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 10px;
+    color: black;
+    align-self: center;
+    z-index: 1002; /* Más alto que el menú */
+    position: relative; /* Para que funcione el z-index */
+}
+
+.ContenidoMenu{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    position: relative; /* Agregado */
+}
+
+.LogoTienda{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Menu .Logo{
+    margin: 0;
+    max-width: 80px;
+    height: auto;
+    display: flex;
+}
+
+.NombreTienda{
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.Links{
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.Links:hover{
+    border-bottom: 1px solid;
+}
+
+.Carrito{
+    position: relative; /* Agregado */
+    z-index: 1001; /* Agregado */
+}
+
+.Carrito button{
+    background-color: rgb(245,245,245);
+    font-size: 1.5em;
+    border: none;
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+/* Contenido principal de la landing */
+.ContenedorPrincipal {
+    height: calc(100vh - 120px);
+    overflow: hidden;
+    position: relative; /* Agregado */
+    z-index: 1; /* Más bajo que el menú */
+}
+
+.SeccionHero {
+    height: 100%;
+    position: relative;
+}
+
+.ContenidoHero {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+/* Lado izquierdo - Hombre */
+.LadoIzquierdo {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3)), 
+                url('../Ropa/Izquierda.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ImagenHombre {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2)), 
+                url('../Ropa/Izquierda.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Lado derecho - Mujer */
+.LadoDerecho {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(139,69,19,0.2), rgba(160,82,45,0.3)), 
+                url('../Ropa/Derecha.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ImagenMujer {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(218,165,32,0.1), rgba(184,134,11,0.2)), 
+                url('../Ropa/Derecha.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Botones de sección (laterales) */
+.BotonSeccion {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+}
+
+.BotonCompraGenero {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a5a);
+    color: white;
+    border: none;
+    padding: 15px 35px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+}
+
+.BotonCompraGenero:hover {
+    background: linear-gradient(45deg, #ff5252, #e53e3e);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255,107,107,0.6);
+}
+
+/* Colores específicos para cada botón */
+.LadoIzquierdo .BotonCompraGenero {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+    box-shadow: 0 4px 15px rgba(33,150,243,0.4);
+}
+
+.LadoIzquierdo .BotonCompraGenero:hover {
+    background: linear-gradient(45deg, #1976D2, #1565C0);
+    box-shadow: 0 6px 20px rgba(33,150,243,0.6);
+}
+
+.LadoDerecho .BotonCompraGenero {
+    background: linear-gradient(45deg, #E91E63, #C2185B);
+    box-shadow: 0 4px 15px rgba(233,30,99,0.4);
+}
+
+.LadoDerecho .BotonCompraGenero:hover {
+    background: linear-gradient(45deg, #C2185B, #AD1457);
+    box-shadow: 0 6px 20px rgba(233,30,99,0.6);
+}
+
+/* Etiquetas de ropa */
+.EtiquetaRopa {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    color: black;
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 5;
+    letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive */
+@media (max-width: 877px){
+    .MenuNavegacion{
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        position: absolute;
+        top: 80px;
+        left: 58%;
+        background-color: rgb(245,245,245);
+        height: 0;
+        overflow: hidden;
+        justify-content: flex-start;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: height 0.5s ease-in-out;
+        z-index: 1003; /* Más alto para que aparezca sobre todo */
+    }
+
+    .MenuNavegacion.show{
+        height: 250px;
+    }
+
+    .MenuNavegacion .Links{
+        padding: 10px;
+        text-align: right;
+        width: 100%;
+        border-bottom: 1px solid rgb(215, 215, 215);
+    }
+
+    .MenuNavegacion .Links:last-child{
+        border-bottom: none;
+    }
+
+    .MenuHamburguesa{
+        display: block; /* Ahora se mostrará */
+        font-size: 1.5em;
+        border: none;
+        background: none;
+        cursor: pointer;
+        z-index: 1004; /* El más alto de todos */
+    }
+
+    .Links {
+        border-bottom: 1px solid transparent;
+        padding: 20px;
+        width: 80%;
+        text-align: center;
+    }
+    
+    .Links:hover{
+        background-color: rgb(235,235,235);
+    }
+
+    .ContenidoMenu{
+        justify-content: space-between;
+    }
+
+    /* Responsive para móviles - MANTENER HORIZONTAL */
+    .ContenidoHero {
+        flex-direction: row; /* Mantener horizontal incluso en móvil */
+    }
+
+    .EtiquetaRopa {
+        top: 15px;
+        left: 15px;
+        font-size: 0.8em;
+        padding: 8px 16px;
+    }
+
+    .BotonSeccion {
+        bottom: 20px;
+    }
+
+    .BotonCompraGenero {
+        padding: 12px 25px;
+        font-size: 0.9em;
+    }
+}
+
+/* Para pantallas muy pequeñas, cambiar a vertical */
+@media (max-width: 600px){
+    .ContenidoHero {
+        flex-direction: column;
+    }
+    
+    .BotonCompraGenero {
+        padding: 10px 20px;
+        font-size: 0.8em;
+    }
+    
+    .EtiquetaRopa {
+        font-size: 0.7em;
+        padding: 6px 12px;
+    }
+}
