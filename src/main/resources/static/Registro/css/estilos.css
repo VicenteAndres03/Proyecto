@@ -1,0 +1,282 @@
+/* Estilos base */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: auto;
+    background-color: rgb(245,245,245);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* === MENÚ (tu estilo original) === */
+.Menu {
+    background-color: rgb(245,245,245);
+}
+
+.MenuHamburguesa {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 10px;
+    color: black;
+    align-self: center;
+}
+
+.ContenidoMenu {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.LogoTienda {
+    display: flex;
+}
+
+.Menu .Logo {
+    margin: 0;
+    max-width: 80px;
+    height: auto;
+    display: flex;
+}
+
+.NombreTienda {
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.Links {
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.Links:hover {
+    border-bottom: 1px solid;
+}
+
+/* Carrito */
+.Carrito button {
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.Carrito button:hover {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+/* === CONTENEDOR DEL FORMULARIO === */
+.contenedor-registro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    min-height: 80vh;
+}
+
+.formulario-registro {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    max-width: 500px;
+}
+
+.titulo-registro {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: black;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+/* === ESTILOS DEL FORMULARIO === */
+.formulario-registro label {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    color: black;
+}
+
+.formulario-registro input[type="text"],
+.formulario-registro input[type="email"],
+.formulario-registro input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: rgb(245,245,245);
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.formulario-registro input[type="text"]:focus,
+.formulario-registro input[type="email"]:focus,
+.formulario-registro input[type="password"]:focus {
+    outline: none;
+    border: 1px solid black;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* === BOTÓN DE REGISTRO === */
+.btn {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgb(245,245,245);
+    color: black;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: black;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* === ENLACES ADICIONALES === */
+.enlaces-registro {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.enlaces-registro a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.enlaces-registro a:hover {
+    border-bottom: 1px solid black;
+}
+
+/* === MENSAJE DE VALIDACIÓN === */
+.mensaje-error {
+    color: #d32f2f;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+}
+
+.input-error {
+    border-color: #d32f2f !important;
+    background-color: #ffebee !important;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 877px) {
+    /* Menú responsive */
+    .MenuNavegacion {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        position: absolute;
+        top: 80px;
+        left: 58%;
+        background-color: rgb(245,245,245);
+        height: 0;
+        overflow: hidden;
+        justify-content: flex-start;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: height 0.5s ease-in-out;
+    }
+
+    .MenuNavegacion.show {
+        height: 250px;
+    }
+
+    .MenuNavegacion .Links {
+        padding: 10px;
+        text-align: right;
+        width: 100%;
+        border-bottom: 1px solid rgb(215, 215, 215);
+    }
+
+    .MenuNavegacion .Links:last-child {
+        border-bottom: none;
+    }
+
+    .MenuHamburguesa {
+        display: block;
+        font-size: 1.5em;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .Links {
+        border-bottom: 1px solid transparent;
+        padding: 20px;
+        width: 80%;
+        text-align: center;
+    }
+
+    .Links:hover {
+        background-color: rgb(235,235,235);
+    }
+
+    .ContenidoMenu {
+        justify-content: space-between;
+    }
+
+    /* Formulario responsive */
+    .formulario-registro {
+        margin: 0 20px;
+        padding: 30px 20px;
+    }
+
+    .titulo-registro {
+        font-size: 2em;
+    }
+
+    .contenedor-registro {
+        padding: 20px 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .formulario-registro {
+        margin: 0 10px;
+        padding: 25px 15px;
+    }
+
+    .titulo-registro {
+        font-size: 1.8em;
+    }
+
+    .btn {
+        font-size: 1.1em;
+        padding: 12px 20px;
+    }
+}
