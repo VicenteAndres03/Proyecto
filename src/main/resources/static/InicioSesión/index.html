@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto - FalaFeria</title>
+    <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -16,42 +16,44 @@
             <button class="MenuHamburguesa" id="MenuHamburguesa">☰</button>
             <nav class="MenuNavegacion" id="MenuNavegacion">
                 <a class="Links" href="../index.html">Inicio</a>
-                <a class="Links" href="index.html">Contacto</a>
+                <a class="Links" href="../Contacto/index.html">Contacto</a>
                 <a class="Links" href="../Nosotros/index.html">Sobre nosotros</a>
                 <a class="Links" href="../Productos/Index.html">Ropa</a>
-                <a class="Links" href="../InicioSesión/index.html">Inicio Sesión</a>
+                <a class="Links" href="index.html">Inicio Sesión</a>
                 <a class="Links" href="../Registro/index.html">Registrarse</a>
             </nav>
         </div>
     </header>
 
-    <div class="contenedor-contacto">
-        <form class="formulario-contacto" id="formulario-contacto">
-            <h1 class="titulo-contacto">Contáctanos</h1>
+    <div class="contenedor-login">
+        <form class="formulario-login" id="formulario-login">
+            <h1 class="titulo-login">Iniciar Sesión</h1>
             
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" name="nombre" required placeholder="Ingresa tu nombre completo">
-            <div class="mensaje-error" id="error-nombre">Por favor ingresa tu nombre completo</div>
-
             <label for="correo">Correo Electrónico</label>
             <input type="email" id="correo" name="correo" required placeholder="ejemplo@correo.com">
             <div class="mensaje-error" id="error-correo">Por favor ingresa un correo válido</div>
 
-            <label for="mensaje">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" required placeholder="Escribe tu mensaje aquí..." rows="6"></textarea>
-            <div class="mensaje-error" id="error-mensaje">Por favor escribe tu mensaje</div>
+            <label for="contraseña">Contraseña</label>
+            <input type="password" id="contraseña" name="contraseña" required placeholder="Ingresa tu contraseña">
+            <div class="mensaje-error" id="error-contraseña">Por favor ingresa tu contraseña</div>
 
-            <button type="submit" class="btn">Enviar Mensaje</button>
-
-            <div class="mensaje-exito" id="mensaje-exito">
-                ¡Mensaje enviado correctamente! Te responderemos pronto.
+            <div class="recordar-contraseña">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="recordar" name="recordar">
+                    <span class="checkmark"></span>
+                    Recordar sesión
+                </label>
+                <a href="#" class="enlace-olvide">¿Olvidaste tu contraseña?</a>
             </div>
 
-            <div class="info-contacto">
-                <h3>Otras formas de contactarnos:</h3>
-                <p><strong>📧 Email:</strong> info@falaferia.com</p>
-                <p><strong>📱 Teléfono:</strong> +56 9 1234 5678</p>
-                <p><strong>📍 Dirección:</strong> Santiago, Chile</p>
+            <button type="submit" class="btn">Iniciar Sesión</button>
+
+            <div class="mensaje-exito" id="mensaje-exito">
+                ¡Inicio de sesión exitoso! Redirigiendo...
+            </div>
+
+            <div class="enlaces-login">
+                <p>¿No tienes una cuenta? <a href="../Registro/index.html">Registrarse</a></p>
             </div>
         </form>
     </div>

@@ -4,13 +4,13 @@
 body{
     margin: auto;
     background-color: rgb(245,245,245);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
 }
 
-
-
-
-/*Menu*/
-.Menu{
+/* === MENÚ (copiado de tu CSS) === */
+.Menu {
     background-color: rgb(245,245,245);
 }
 
