@@ -6,36 +6,8 @@ hamburguesa.addEventListener('click', () => {
     Menu.classList.toggle('show');
 });
 
-// Funcionalidad de los botones de compra por género
-const botonHombre = document.getElementById('BotonHombre');
-const botonMujer = document.getElementById('BotonMujer');
-const botonGeneral = document.getElementById('BotonCompraGeneral');
-
-// Botón para ropa de hombre
-botonHombre.addEventListener('click', () => {
-    // Aquí puedes redirigir a una página específica para ropa de hombre
-    // O puedes usar parámetros para filtrar
-    window.location.href = 'Index.html?categoria=hombre';
-    
-    // Alternativa: mostrar mensaje específico mientras desarrollas
-    // alert('¡Redirigiendo a la sección de ropa para hombre!');
-});
-
-// Botón para ropa de mujer
-botonMujer.addEventListener('click', () => {
-    // Aquí puedes redirigir a una página específica para ropa de mujer
-    // O puedes usar parámetros para filtrar
-    window.location.href = 'Index.html?categoria=mujer';
-    
-    // Alternativa: mostrar mensaje específico mientras desarrollas
-    // alert('¡Redirigiendo a la sección de ropa para mujer!');
-});
-
-// Botón general "Ver Todo"
-botonGeneral.addEventListener('click', () => {
-    // Redirigir a la página principal de productos
-    window.location.href = 'Index.html';
-});
+// ELIMINÉ toda la funcionalidad conflictiva de los botones de compra por género
+// Ya que ahora son enlaces directos <a> en lugar de botones con JavaScript
 
 // Efecto de parallax sutil en scroll
 window.addEventListener('scroll', () => {
@@ -51,7 +23,6 @@ window.addEventListener('scroll', () => {
 
 // Animación de entrada para el contenido central
 document.addEventListener('DOMContentLoaded', () => {
-    const contenidoCentral = document.querySelector('.ContenidoCentral');
     const botonesSeccion = document.querySelectorAll('.BotonSeccion');
     
     // Animación de los botones laterales
@@ -100,22 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const ladoDerecho = document.querySelector('.LadoDerecho');
     
     // Efecto hover para el lado de hombre
-    ladoIzquierdo.addEventListener('mouseenter', () => {
-        ladoIzquierdo.style.transform = 'scale(1.02)';
-        ladoIzquierdo.style.transition = 'transform 0.3s ease';
-    });
-    
-    ladoIzquierdo.addEventListener('mouseleave', () => {
-        ladoIzquierdo.style.transform = 'scale(1)';
-    });
+    if (ladoIzquierdo) {
+        ladoIzquierdo.addEventListener('mouseenter', () => {
+            ladoIzquierdo.style.transform = 'scale(1.02)';
+            ladoIzquierdo.style.transition = 'transform 0.3s ease';
+        });
+        
+        ladoIzquierdo.addEventListener('mouseleave', () => {
+            ladoIzquierdo.style.transform = 'scale(1)';
+        });
+    }
     
     // Efecto hover para el lado de mujer
-    ladoDerecho.addEventListener('mouseenter', () => {
-        ladoDerecho.style.transform = 'scale(1.02)';
-        ladoDerecho.style.transition = 'transform 0.3s ease';
-    });
-    
-    ladoDerecho.addEventListener('mouseleave', () => {
-        ladoDerecho.style.transform = 'scale(1)';
-    });
+    if (ladoDerecho) {
+        ladoDerecho.addEventListener('mouseenter', () => {
+            ladoDerecho.style.transform = 'scale(1.02)';
+            ladoDerecho.style.transition = 'transform 0.3s ease';
+        });
+        
+        ladoDerecho.addEventListener('mouseleave', () => {
+            ladoDerecho.style.transform = 'scale(1)';
+        });
+    }
 });

@@ -1,11 +1,13 @@
-*{
-    box-sizing: border-box;
-}
 
+*{
+    box-sizing: border-box;   /*controla el tamaño total de la pagina*/
+}
 body{
     margin: auto;
     background-color: rgb(245,245,245);
 }
+
+
 
 
 /*Menu*/
@@ -71,7 +73,6 @@ body{
     right: 20px;
     border-radius: 10px;
 }
-
 /*div*/
 .Contenido1{
     display:flex;

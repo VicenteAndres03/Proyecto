@@ -1,53 +1,51 @@
 *{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box;   /*controla el tamaño total de la pagina*/
 }
-
 body{
-    margin: auto;
-    padding: 0;
+    margin: 0; /* Cambiado de auto a 0 */
+    padding: 0; /* Agregado para eliminar padding por defecto */
     background-color: rgb(245,245,245);
-    font-family: Arial, sans-serif;
 }
 
-/*Menu - Corrigiendo visibilidad de hamburguesa*/
+/*Menu*/
 .Menu{
     background-color: rgb(245,245,245);
-    position: relative; /* Agregado para contexto de z-index */
-    z-index: 1001; /* Alto z-index para que esté encima */
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
+    position: relative; /* Agregado */
+    z-index: 10; /* Agregado para que esté por encima del contenido */
+}
+
+.Menu hr {
+    margin: 0; /* Elimina el margen del hr */
+    border: none; /* Opcional: elimina completamente la línea */
 }
 
 .MenuHamburguesa{
-    display: none;
+    display: none; /* Se oculta por defecto en pantallas grandes */
     background: none;
     border: none;
-    font-size: 1.5em;
+    font-size: 1.5em; /* Un buen tamaño para el ícono */
     cursor: pointer;
-    padding: 10px;
-    color: black;
-    align-self: center;
-    z-index: 1002; /* Más alto que el menú */
-    position: relative; /* Para que funcione el z-index */
+    padding: 10px; /* Añade espacio alrededor del ícono */
+    color: black; /* Color del ícono */
+    align-self: center; /* Centra el botón verticalmente en el header */
 }
 
 .ContenidoMenu{
-    display: flex;
+    display: flex; /*hace que el contenedor sea flexible*/
     flex-direction: row; 
     justify-content: space-around;
     align-items: center;
     padding: 10px;
-    position: relative; /* Agregado */
+    margin: 0; /* Agregado */
 }
-
+/*Logo menu*/
 .LogoTienda{
     display: flex;
-    flex-direction: row;
-    align-items: center;
 }
-
 .Menu .Logo{
-    margin: 0;
+    margin:0;
     max-width: 80px;
     height: auto;
     display: flex;
@@ -59,19 +57,15 @@ body{
     margin-left: 10px;
 }
 
+/*Links*/
 .Links{
     padding: 15px;
     text-decoration: none;
-    color: black;
+    color: black
 }
 
 .Links:hover{
     border-bottom: 1px solid;
-}
-
-.Carrito{
-    position: relative; /* Agregado */
-    z-index: 1001; /* Agregado */
 }
 
 .Carrito button{
@@ -79,26 +73,29 @@ body{
     font-size: 1.5em;
     border: none;
     display: flex;
-    align-items: flex-end;
+    align-items:flex-end;
     cursor: pointer;
     position: fixed;
     bottom: 20px;
     right: 20px;
     border-radius: 10px;
-    z-index: 1000;
 }
 
 /* Contenido principal de la landing */
 .ContenedorPrincipal {
-    height: calc(100vh - 120px);
+    height: 100vh; /* Cambiado para ocupar toda la altura */
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
     overflow: hidden;
-    position: relative; /* Agregado */
-    z-index: 1; /* Más bajo que el menú */
+    position: relative;
+    z-index: 1; /* CAMBIADO: era -1, ahora es 1 */
 }
 
 .SeccionHero {
     height: 100%;
     position: relative;
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
 }
 
 .ContenidoHero {
@@ -107,6 +104,8 @@ body{
     height: 100%;
     width: 100%;
     position: relative;
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
 }
 
 /* Lado izquierdo - Hombre */
@@ -121,6 +120,8 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
 }
 
 .ImagenHombre {
@@ -130,6 +131,13 @@ body{
                 url('../Ropa/Izquierda.png');
     background-size: cover;
     background-position: center;
+    margin: 0;
+    padding: 0;
+    position: absolute; /* CAMBIADO */
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none; /* AGREGADO - permite clicks a través */
 }
 
 /* Lado derecho - Mujer */
@@ -144,6 +152,8 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 0; /* Agregado */
+    padding: 0; /* Agregado */
 }
 
 .ImagenMujer {
@@ -153,6 +163,13 @@ body{
                 url('../Ropa/Derecha.png');
     background-size: cover;
     background-position: center;
+    margin: 0;
+    padding: 0;
+    position: absolute; /* CAMBIADO */
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none; /* AGREGADO - permite clicks a través */
 }
 
 /* Botones de sección (laterales) */
@@ -161,10 +178,12 @@ body{
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 15;
+    z-index: 100; /* AUMENTADO */
 }
 
+/* ACTUALIZADO: Ahora aplica a enlaces <a> en lugar de botones */
 .BotonCompraGenero {
+    display: inline-block; /* AGREGADO para enlaces */
     background: linear-gradient(45deg, #ff6b6b, #ee5a5a);
     color: white;
     border: none;
@@ -177,13 +196,20 @@ body{
     text-transform: uppercase;
     letter-spacing: 1px;
     box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+    pointer-events: auto; /* AGREGADO para asegurar la interacción */
+    position: relative; /* AGREGADO */
+    z-index: 101; /* AGREGADO - muy alto */
+    text-decoration: none; /* AGREGADO para enlaces */
 }
 
 .BotonCompraGenero:hover {
     background: linear-gradient(45deg, #ff5252, #e53e3e);
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(255,107,107,0.6);
+    color: white; /* AGREGADO para mantener color en hover */
 }
+
+/* REMOVIDO: Ya no necesitamos estilos para .BotonSeccion a porque ahora el <a> es el .BotonCompraGenero */
 
 /* Colores específicos para cada botón */
 .LadoIzquierdo .BotonCompraGenero {
@@ -194,6 +220,7 @@ body{
 .LadoIzquierdo .BotonCompraGenero:hover {
     background: linear-gradient(45deg, #1976D2, #1565C0);
     box-shadow: 0 6px 20px rgba(33,150,243,0.6);
+    color: white; /* AGREGADO */
 }
 
 .LadoDerecho .BotonCompraGenero {
@@ -204,6 +231,7 @@ body{
 .LadoDerecho .BotonCompraGenero:hover {
     background: linear-gradient(45deg, #C2185B, #AD1457);
     box-shadow: 0 6px 20px rgba(233,30,99,0.6);
+    color: white; /* AGREGADO */
 }
 
 /* Etiquetas de ropa */
@@ -218,7 +246,7 @@ body{
     font-size: 1.1em;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 5;
+    z-index: 50; /* AUMENTADO */
     letter-spacing: 1px;
     backdrop-filter: blur(10px);
 }
@@ -226,11 +254,11 @@ body{
 /* Responsive */
 @media (max-width: 877px){
     .MenuNavegacion{
-        display: flex;
+        display:flex;
         flex-direction: column;
         width: 40%;
         position: absolute;
-        top: 80px;
+        top:80px;
         left: 58%;
         background-color: rgb(245,245,245);
         height: 0;
@@ -239,8 +267,7 @@ body{
         align-items: center;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        transition: height 0.5s ease-in-out;
-        z-index: 1003; /* Más alto para que aparezca sobre todo */
+        transition: height 0.5s ease-in-out;   /*Animacion*/
     }
 
     .MenuNavegacion.show{
@@ -259,12 +286,11 @@ body{
     }
 
     .MenuHamburguesa{
-        display: block; /* Ahora se mostrará */
+        display:block;
         font-size: 1.5em;
         border: none;
         background: none;
         cursor: pointer;
-        z-index: 1004; /* El más alto de todos */
     }
 
     .Links {
@@ -273,11 +299,11 @@ body{
         width: 80%;
         text-align: center;
     }
-    
     .Links:hover{
         background-color: rgb(235,235,235);
     }
 
+    /*Separa el contenido para que ocupe todo el espacio y se vea mas ordenado*/
     .ContenidoMenu{
         justify-content: space-between;
     }
