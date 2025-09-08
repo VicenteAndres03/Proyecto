@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - FalaFeria</title>
+    <link rel="stylesheet" href="../estilos.css">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!-- HEADER DEL DASHBOARD -->
+    <header>
+        <div>
+            <h1>Panel de Administración - FalaFeria</h1>
+            <div>
+                <p>Bienvenido, Administrador</p>
+                <button onclick="cerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGACIÓN LATERAL -->
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard Principal</a></li>
+            <li><a href="../Gestion de Productos/index.html">Gestionar Productos</a></li>
+            <li><a href="index.html" class="activo">Ver Pedidos</a></li>
+            <li><a href="inventario.html">Inventario</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="configuracion.html">Configuración</a></li>
+        </ul>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <section>
+            <h2>Gestión de Pedidos</h2>
+            
+            <!-- ESTADÍSTICAS DE PEDIDOS -->
+            <div class="estadisticas-pedidos">
+                <div class="stat-card pendiente">
+                    <h3>Pedidos Pendientes</h3>
+                    <p id="pedidosPendientes">12</p>
+                    <small>Requieren atención</small>
+                </div>
+                <div class="stat-card procesando">
+                    <h3>En Proceso</h3>
+                    <p id="pedidosProcesando">8</p>
+                    <small>Preparándose</small>
+                </div>
+                <div class="stat-card enviado">
+                    <h3>Enviados</h3>
+                    <p id="pedidosEnviados">15</p>
+                    <small>En camino</small>
+                </div>
+                <div class="stat-card completado">
+                    <h3>Completados Hoy</h3>
+                    <p id="pedidosCompletados">25</p>
+                    <small>Entregados</small>
+                </div>
+                <div class="stat-card ingresos">
+                    <h3>Ingresos Hoy</h3>
+                    <p id="ingresosDia">$342,500</p>
+                    <small>Total vendido</small>
+                </div>
+            </div>
+
+            <!-- ACCIONES RÁPIDAS -->
+            <div class="acciones-rapidas">
+                <button class="btn-accion-rapida pendientes" id="btnVerPendientes">
+                    🕐 Ver Pendientes (12)
+                </button>
+                <button class="btn-accion-rapida urgentes" id="btnVerUrgentes">
+                    🚨 Urgentes (3)
+                </button>
+                <button class="btn-accion-rapida hoy" id="btnVerHoy">
+                    📅 Pedidos de Hoy (18)
+                </button>
+                <button class="btn-accion-rapida exportar" id="btnExportarPedidos">
+                    📊 Exportar Reporte
+                </button>
+            </div>
+
+            <!-- FILTROS Y BÚSQUEDA -->
+            <div class="seccion-filtros">
+                <h3>🔍 Filtros y Búsqueda</h3>
+                <div class="controles-filtros">
+                    <input type="text" id="buscarPedido" placeholder="Buscar por ID, cliente o producto...">
+                    
+                    <select id="filtroEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="procesando">Procesando</option>
+                        <option value="enviado">Enviado</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    
+                    <input type="date" id="filtroFechaDesde" title="Fecha desde">
+                    <input type="date" id="filtroFechaHasta" title="Fecha hasta">
+                    
+                    <select id="filtroMonto">
+                        <option value="">Todos los montos</option>
+                        <option value="bajo">Menos de $10.000</option>
+                        <option value="medio">$10.000 - $50.000</option>
+                        <option value="alto">Más de $50.000</option>
+                    </select>
+                    
+                    <button class="btn-filtro" id="btnLimpiarFiltros">Limpiar</button>
+                </div>
+            </div>
+
+            <!-- RESUMEN RÁPIDO -->
+            <div class="resumen-rapido">
+                <div class="resumen-card">
+                    <h4>⏰ Pedidos por Atender</h4>
+                    <div class="lista-rapida">
+                        <div class="item-rapido urgente">
+                            <span class="id-pedido">#001</span>
+                            <span class="cliente">María González</span>
+                            <span class="tiempo">Hace 2 horas</span>
+                            <button class="btn-mini" onclick="verDetallePedido(1)">Ver</button>
+                        </div>
+                        <div class="item-rapido urgente">
+                            <span class="id-pedido">#003</span>
+                            <span class="cliente">Carlos López</span>
+                            <span class="tiempo">Hace 3 horas</span>
+                            <button class="btn-mini" onclick="verDetallePedido(3)">Ver</button>
+                        </div>
+                        <div class="item-rapido">
+                            <span class="id-pedido">#005</span>
+                            <span class="cliente">Ana Silva</span>
+                            <span class="tiempo">Hace 1 hora</span>
+                            <button class="btn-mini" onclick="verDetallePedido(5)">Ver</button>
+                        </div>
+                    </div>
+                    <button class="btn-ver-todos" id="btnVerTodosPendientes">Ver todos los pendientes →</button>
+                </div>
+
+                <div class="resumen-card">
+                    <h4>📦 Listos para Envío</h4>
+                    <div class="lista-rapida">
+                        <div class="item-rapido listo">
+                            <span class="id-pedido">#002</span>
+                            <span class="cliente">Juan Pérez</span>
+                            <span class="productos">2 productos</span>
+                            <button class="btn-mini" onclick="marcarEnviado(2)">Enviar</button>
+                        </div>
+                        <div class="item-rapido listo">
+                            <span class="id-pedido">#004</span>
+                            <span class="cliente">Luis Martín</span>
+                            <span class="productos">1 producto</span>
+                            <button class="btn-mini" onclick="marcarEnviado(4)">Enviar</button>
+                        </div>
+                    </div>
+                    <button class="btn-ver-todos" id="btnVerListosEnvio">Ver todos listos →</button>
+                </div>
+            </div>
+
+            <!-- TABLA DE PEDIDOS -->
+            <div class="seccion-tabla">
+                <h3>📋 Lista Completa de Pedidos</h3>
+                
+                <!-- Selector de vista -->
+                <div class="selector-vista">
+                    <button class="btn-vista activo" data-vista="tabla" id="vistaTabla">📋 Vista Tabla</button>
+                    <button class="btn-vista" data-vista="tarjetas" id="vistaTarjetas">🗃️ Vista Tarjetas</button>
+                </div>
+
+                <!-- Vista Tabla -->
+                <div class="vista-tabla-container" id="containerTabla">
+                    <div class="contenedor-tabla">
+                        <table id="tablaPedidos">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="seleccionarTodos">
+                                    </th>
+                                    <th>ID Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Productos</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Método Pago</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpoTablaPedidos">
+                                <!-- Los pedidos se cargarán aquí via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Vista Tarjetas -->
+                <div class="vista-tarjetas-container" id="containerTarjetas" style="display: none;">
+                    <div class="grid-tarjetas" id="gridTarjetasPedidos">
+                        <!-- Las tarjetas se cargarán aquí via JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- PAGINACIÓN -->
+                <div class="paginacion">
+                    <button class="btn-pag" id="btnAnterior" disabled>← Anterior</button>
+                    <span class="info-paginacion">
+                        Página <span id="paginaActual">1</span> de <span id="totalPaginas">3</span>
+                        (Mostrando <span id="pedidosVisibles">15</span> de <span id="totalPedidosTabla">45</span>)
+                    </span>
+                    <button class="btn-pag" id="btnSiguiente">Siguiente →</button>
+                </div>
+
+                <!-- ACCIONES EN LOTE -->
+                <div class="acciones-lote" id="accionesLote" style="display: none;">
+                    <p><span id="pedidosSeleccionados">0</span> pedidos seleccionados</p>
+                    <button class="btn-lote confirmar" id="btnConfirmarSeleccionados">Confirmar Seleccionados</button>
+                    <button class="btn-lote enviar" id="btnEnviarSeleccionados">Marcar como Enviados</button>
+                    <button class="btn-lote cancelar" id="btnCancelarSeleccionados">Cancelar Seleccionados</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL DETALLE DEL PEDIDO -->
+    <div class="modal" id="modalDetallePedido">
+        <div class="modal-contenido grande">
+            <div class="modal-header">
+                <h3 id="tituloDetallePedido">Detalle del Pedido #001</h3>
+                <button class="btn-cerrar" id="btnCerrarModalDetalle">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="detalle-grid">
+                    <!-- Información del Cliente -->
+                    <div class="seccion-detalle">
+                        <h4>👤 Información del Cliente</h4>
+                        <div class="info-cliente">
+                            <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                            <p><strong>Email:</strong> <span id="emailCliente"></span></p>
+                            <p><strong>Teléfono:</strong> <span id="telefonoCliente"></span></p>
+                            <p><strong>RUT:</strong> <span id="rutCliente"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Información del Pedido -->
+                    <div class="seccion-detalle">
+                        <h4>📦 Información del Pedido</h4>
+                        <div class="info-pedido">
+                            <p><strong>ID:</strong> <span id="idPedidoDetalle"></span></p>
+                            <p><strong>Fecha:</strong> <span id="fechaPedidoDetalle"></span></p>
+                            <p><strong>Estado:</strong> <span id="estadoPedidoDetalle"></span></p>
+                            <p><strong>Método de Pago:</strong> <span id="metodoPagoDetalle"></span></p>
+                            <p><strong>Total:</strong> <span id="totalPedidoDetalle"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Dirección de Entrega -->
+                    <div class="seccion-detalle full-width">
+                        <h4>📍 Dirección de Entrega</h4>
+                        <div class="info-direccion">
+                            <p id="direccionCompleta"></p>
+                        </div>
+                    </div>
+
+                    <!-- Productos del Pedido -->
+                    <div class="seccion-detalle full-width">
+                        <h4>🛍️ Productos del Pedido</h4>
+                        <div class="tabla-productos-detalle">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Talla</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unit.</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productosDetallePedido">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="resumen-totales">
+                            <div class="linea-total">
+                                <span>Subtotal:</span>
+                                <span id="subtotalDetalle">$0</span>
+                            </div>
+                            <div class="linea-total">
+                                <span>Envío:</span>
+                                <span id="envioDetalle">$0</span>
+                            </div>
+                            <div class="linea-total total-final">
+                                <span>Total:</span>
+                                <span id="totalFinalDetalle">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline del Pedido -->
+                    <div class="seccion-detalle full-width">
+                        <h4>📈 Timeline del Pedido</h4>
+                        <div class="timeline" id="timelinePedido">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Notas y Comentarios -->
+                    <div class="seccion-detalle full-width">
+                        <h4>📝 Notas y Comentarios</h4>
+                        <textarea id="notasPedido" rows="3" placeholder="Agregar nota sobre este pedido..."></textarea>
+                        <button class="btn-guardar-nota" id="btnGuardarNota">Guardar Nota</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="acciones-pedido">
+                    <button class="btn-accion confirmar" id="btnConfirmarPedido">Confirmar Pedido</button>
+                    <button class="btn-accion procesar" id="btnProcesarPedido">Procesar</button>
+                    <button class="btn-accion enviar" id="btnEnviarPedido">Marcar como Enviado</button>
+                    <button class="btn-accion completar" id="btnCompletarPedido">Completar</button>
+                    <button class="btn-accion cancelar" id="btnCancelarPedido">Cancelar</button>
+                </div>
+                <button class="btn-secundario" onclick="cerrarModal('modalDetallePedido')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CAMBIAR ESTADO -->
+    <div class="modal" id="modalCambiarEstado">
+        <div class="modal-contenido pequeño">
+            <div class="modal-header">
+                <h3>Cambiar Estado del Pedido</h3>
+                <button class="btn-cerrar" onclick="cerrarModal('modalCambiarEstado')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Pedido: <strong id="pedidoCambiarEstado"></strong></p>
+                <div class="grupo-campo">
+                    <label for="nuevoEstado">Nuevo Estado:</label>
+                    <select id="nuevoEstado">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="confirmado">Confirmado</option>
+                        <option value="procesando">Procesando</option>
+                        <option value="enviado">Enviado</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="grupo-campo">
+                    <label for="motivoCambio">Motivo (opcional):</label>
+                    <textarea id="motivoCambio" rows="2" placeholder="Razón del cambio de estado..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancelar" onclick="cerrarModal('modalCambiarEstado')">Cancelar</button>
+                <button class="btn-confirmar" id="btnConfirmarCambioEstado">Confirmar Cambio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN CANCELAR -->
+    <div class="modal" id="modalConfirmarCancelar">
+        <div class="modal-contenido pequeño">
+            <div class="modal-header">
+                <h3>Confirmar Cancelación</h3>
+                <button class="btn-cerrar" onclick="cerrarModal('modalConfirmarCancelar')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas cancelar este pedido?</p>
+                <p><strong id="pedidoCancelar"></strong></p>
+                <div class="grupo-campo">
+                    <label for="motivoCancelacion">Motivo de cancelación:</label>
+                    <select id="motivoCancelacion">
+                        <option value="">Seleccionar motivo</option>
+                        <option value="sin-stock">Sin stock disponible</option>
+                        <option value="cliente-solicita">Cliente solicita cancelación</option>
+                        <option value="pago-rechazado">Pago rechazado</option>
+                        <option value="direccion-invalida">Dirección inválida</option>
+                        <option value="otro">Otro motivo</option>
+                    </select>
+                </div>
+                <textarea id="detallesCancelacion" rows="2" placeholder="Detalles adicionales..."></textarea>
+                <p class="advertencia">⚠️ Esta acción no se puede deshacer</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancelar" onclick="cerrarModal('modalConfirmarCancelar')">No Cancelar</button>
+                <button class="btn-eliminar" id="btnConfirmarCancelacion">Sí, Cancelar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 FalaFeria - Panel de Administración</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="pedidos.js"></script>
+</body>
+</html>

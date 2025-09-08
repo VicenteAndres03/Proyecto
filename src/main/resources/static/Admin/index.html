@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - FalaFeria</title>
+    <link href="estilos.css" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Panel de Administración - FalaFeria</h1>
+            <div>
+                <p>Bienvenido, Administrador</p>
+                <button>Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard Principal</a></li>
+            <li><a href="Gestion de Productos/index.html">Gestionar Productos</a></li>
+            <li><a href="Gestion de Pedidos/index.html">Ver Pedidos</a></li>
+            <li><a href="inventario.html">Inventario</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="configuracion.html">Configuración</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Resumen General</h2>
+            
+            <div>
+                <div>
+                    <h3>Ventas Hoy</h3>
+                    <p>$125,000</p>
+                    <small>+12% vs ayer</small>
+                </div>
+                <div>
+                    <h3>Productos Total</h3>
+                    <p>48</p>
+                    <small>4 categorías</small>
+                </div>
+                <div>
+                    <h3>Pedidos Pendientes</h3>
+                    <p>12</p>
+                    <small>3 urgentes</small>
+                </div>
+                <div>
+                    <h3>Stock Bajo</h3>
+                    <p>5</p>
+                    <small>Requiere atención</small>
+                </div>
+            </div>
+
+            <div>
+                <h3>⚠️ Alertas Importantes</h3>
+                <div>
+                    <p>🔴 <strong>Stock crítico:</strong> Poleron Mujer L (solo 3 unidades)</p>
+                    <p>🟡 <strong>Pedidos pendientes:</strong> 3 pedidos esperan confirmación</p>
+                    <p>🟢 <strong>Nueva venta:</strong> Pedido #003 - $11,400</p>
+                </div>
+            </div>
+
+            <div>
+                <h3>📊 Top 5 Productos - Esta Semana</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Ventas</th>
+                            <th>Ingresos</th>
+                            <th>Stock Actual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Poleron Hombre XL</td>
+                            <td>25</td>
+                            <td>$142,500</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>Polera Mujer M</td>
+                            <td>20</td>
+                            <td>$76,000</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>Poleron Mujer L</td>
+                            <td>18</td>
+                            <td>$95,400</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>Polera Hombre XL</td>
+                            <td>15</td>
+                            <td>$57,000</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>Poleron Mujer M</td>
+                            <td>12</td>
+                            <td>$63,600</td>
+                            <td>7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h3>💰 Últimas Ventas</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>14:30</td>
+                            <td>Ana Silva</td>
+                            <td>Poleron Mujer M</td>
+                            <td>$5,300</td>
+                            <td>Confirmado</td>
+                        </tr>
+                        <tr>
+                            <td>13:15</td>
+                            <td>Carlos López</td>
+                            <td>Polera Hombre L</td>
+                            <td>$3,800</td>
+                            <td>Pendiente</td>
+                        </tr>
+                        <tr>
+                            <td>11:45</td>
+                            <td>María González</td>
+                            <td>Poleron Hombre XL x2</td>
+                            <td>$11,400</td>
+                            <td>Confirmado</td>
+                        </tr>
+                        <tr>
+                            <td>10:20</td>
+                            <td>José Martínez</td>
+                            <td>Polera Mujer S</td>
+                            <td>$3,800</td>
+                            <td>Enviado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h3>🚀 Accesos Rápidos</h3>
+                <div>
+                    <button><a href="productos.html">Agregar Producto</a></button>
+                    <button><a href="pedidos.html">Ver Pedidos Pendientes</a></button>
+                    <button><a href="inventario.html">Actualizar Stock</a></button>
+                    <button><a href="clientes.html">Ver Clientes</a></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FalaFeria - Panel de Administración</p>
+    </footer>
+</body>
+</html>

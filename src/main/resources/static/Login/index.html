@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrador - FalaFeria</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="contenedor-login">
+        <div class="lado-informacion">
+            <div class="contenido-info">
+                <div class="logo-empresa">
+                    <h1>FalaFeria</h1>
+                    <p class="slogan">Panel de Administración</p>
+                </div>
+                
+                <div class="descripcion">
+                    <h2>Gestiona tu tienda de ropa</h2>
+                    <p>Accede al panel de control para administrar productos, pedidos, inventario y más.</p>
+                    
+                    <div class="caracteristicas">
+                        <div class="caracteristica">
+                            <p>Control total de ventas</p>
+                        </div>
+                        <div class="caracteristica">
+                            <p>Gestión de productos</p>
+                        </div>
+                        <div class="caracteristica">
+                            <p>Seguimiento de pedidos</p>
+                        </div>
+                        <div class="caracteristica">
+                            <p>Base de datos de clientes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lado-formulario">
+            <div class="contenedor-formulario">
+                <div class="encabezado-form">
+                    <h2>Iniciar Sesión</h2>
+                    <p>Ingresa tus credenciales de administrador</p>
+                </div>
+
+                <form class="formulario-login" id="formularioLogin">
+                    <div class="grupo-campo">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" name="nombre" required 
+                               placeholder="Ingresa tu nombre completo">
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="correo">Correo Electrónico</label>
+                        <input type="email" id="correo" name="correo" required 
+                               placeholder="admin@falaferia.cl">
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="rut">RUT</label>
+                        <input type="text" id="rut" name="rut" required 
+                               placeholder="12.345.678-9" maxlength="12">
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Ingresa tu contraseña">
+                        <button type="button" class="mostrar-password" id="mostrarPassword"></button>
+                    </div>
+
+                    <div class="mensaje-error" id="mensajeError" style="display: none;">
+                        <p>Credenciales incorrectas. Verifica tus datos.</p>
+                    </div>
+
+                    <div class="opciones-login">
+                        <label class="checkbox-personalizado">
+                            <input type="checkbox" id="recordar" name="recordar">
+                            <span class="checkmark"></span>
+                            Recordar sesión
+                        </label>
+                        
+                        <a href="#" class="enlace-olvidaste">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <button type="submit" class="boton-login">
+                        <span class="texto-boton">Iniciar Sesión</span>
+                    </button>
+                </form>
+
+                <div class="info-adicional">
+                    <p class="aviso-seguridad">
+                        Conexión segura - Tus datos están protegidos
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-login">
+        <p>&copy; 2025 FalaFeria. Todos los derechos reservados.</p>
+        <p class="version">Panel Admin v2.0</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
