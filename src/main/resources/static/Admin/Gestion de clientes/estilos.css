@@ -1,0 +1,755 @@
+/* RESET Y CONFIGURACIÓN BÁSICA */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+header div div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+header button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+header button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* NAVEGACIÓN LATERAL */
+nav {
+    background: #ffffff;
+    width: 250px;
+    min-height: calc(100vh - 80px);
+    position: fixed;
+    left: 0;
+    top: 80px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+nav ul {
+    list-style: none;
+    padding: 1rem 0;
+}
+
+nav li {
+    margin: 0.5rem 0;
+}
+
+nav a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: #5a6c7d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+nav a:hover {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border-left-color: #3498db;
+}
+
+nav a[href="clientes.html"] {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-left-color: #1976d2;
+}
+
+/* CONTENIDO PRINCIPAL */
+main {
+    margin-left: 250px;
+    padding: 2rem;
+    max-width: calc(100% - 250px);
+}
+
+section h2 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* ESTILOS ESPECÍFICOS PARA CLIENTES */
+
+/* Estadísticas de clientes */
+.estadisticas-clientes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.tarjeta-cliente {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    border-left: 4px solid #3498db;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tarjeta-cliente:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+}
+
+.tarjeta-cliente h3 {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-cliente p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta-cliente small {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Colores específicos para cada tarjeta */
+.tarjeta-cliente.total {
+    border-left-color: #3498db;
+}
+
+.tarjeta-cliente.activos {
+    border-left-color: #27ae60;
+}
+
+.tarjeta-cliente.activos p {
+    color: #27ae60;
+}
+
+.tarjeta-cliente.nuevos {
+    border-left-color: #f39c12;
+}
+
+.tarjeta-cliente.nuevos p {
+    color: #f39c12;
+}
+
+.tarjeta-cliente.vip {
+    border-left-color: #9b59b6;
+}
+
+.tarjeta-cliente.vip p {
+    color: #9b59b6;
+}
+
+/* Controles de clientes */
+.controles-clientes {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.controles-clientes h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filtros {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto auto;
+    gap: 1rem;
+    align-items: end;
+    margin-top: 1rem;
+}
+
+.filtros input,
+.filtros select {
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+.filtros input:focus,
+.filtros select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.filtros button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#btnFiltrar {
+    background: #3498db;
+    color: white;
+}
+
+#btnFiltrar:hover {
+    background: #2980b9;
+}
+
+#btnLimpiarFiltros {
+    background: #95a5a6;
+    color: white;
+}
+
+#btnLimpiarFiltros:hover {
+    background: #7f8c8d;
+}
+
+/* Tabla de clientes */
+.tabla-clientes {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.tabla-clientes h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.acciones-tabla {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-tertiary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #229954;
+}
+
+.btn-secondary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+}
+
+.btn-tertiary {
+    background: #9b59b6;
+    color: white;
+}
+
+.btn-tertiary:hover {
+    background: #8e44ad;
+}
+
+/* Tabla específica */
+#tablaClientes {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#tablaClientes th {
+    background: #f8f9fa;
+    color: #5a6c7d;
+    font-weight: 600;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 0.9rem;
+}
+
+#tablaClientes td {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    color: #2c3e50;
+}
+
+#tablaClientes tr:hover {
+    background: #f8f9fa;
+}
+
+/* Estados del cliente */
+.estado-cliente {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cliente-activo {
+    background: #d4edda;
+    color: #155724;
+}
+
+.cliente-inactivo {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.cliente-vip {
+    background: #e2d5f1;
+    color: #5a2a8a;
+}
+
+.cliente-nuevo {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Botones de acción */
+.acciones-cliente {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-accion {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s;
+}
+
+.btn-ver {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-ver:hover {
+    background: #138496;
+}
+
+.btn-editar {
+    background: #3498db;
+    color: white;
+}
+
+.btn-editar:hover {
+    background: #2980b9;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+}
+
+/* Paginación */
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-paginacion {
+    padding: 0.5rem 1rem;
+    border: 1px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-paginacion:hover {
+    background: #3498db;
+    color: white;
+}
+
+.btn-paginacion:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-contenido {
+    background-color: white;
+    margin: 2% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-historial {
+    max-width: 800px;
+}
+
+.cerrar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cerrar:hover {
+    color: #000;
+}
+
+/* Formulario de cliente */
+.campos-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.campo {
+    margin-bottom: 1.5rem;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.botones-modal {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Historial de compras */
+.historial-item {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    border-left: 3px solid #3498db;
+}
+
+.historial-fecha {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.historial-productos {
+    font-size: 0.9rem;
+    color: #5a6c7d;
+    margin-bottom: 0.5rem;
+}
+
+.historial-total {
+    font-weight: 600;
+    color: #27ae60;
+}
+
+/* FOOTER */
+.MenuFooter{
+    background-color: #2c2c2c;
+    color: white;
+    padding: 40px 20px 20px 20px;
+    margin-top: 50px;
+    margin-left: 250px;
+}
+
+.FooterContainer{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.FooterSeccion{
+    flex: 1;
+    min-width: 250px;
+}
+
+.FooterSeccion h3{
+    color: #f0f0f0;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #4a4a4a;
+    padding-bottom: 8px;
+}
+
+.FooterSeccion p, .FooterSeccion a{
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.FooterSeccion a:hover{
+    color: white;
+    text-decoration: underline;
+}
+
+.RedesSociales{
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.RedesSociales a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #4a4a4a;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2em;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.RedesSociales a:hover{
+    background-color: #666;
+    text-decoration: none;
+}
+
+.FooterBottom{
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #4a4a4a;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+    }
+    
+    main, .MenuFooter {
+        margin-left: 0;
+        max-width: 100%;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    header div {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .estadisticas-clientes {
+        grid-template-columns: 1fr;
+    }
+    
+    .filtros {
+        grid-template-columns: 1fr;
+    }
+    
+    .acciones-tabla {
+        flex-direction: column;
+    }
+    
+    #tablaClientes {
+        font-size: 0.8rem;
+    }
+    
+    #tablaClientes th,
+    #tablaClientes td {
+        padding: 0.5rem;
+    }
+    
+    .acciones-cliente {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .campos-fila {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-contenido {
+        margin: 5% auto;
+        width: 95%;
+    }
+    
+    .botones-modal {
+        flex-direction: column;
+    }
+    
+    .paginacion {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .FooterContainer{
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .FooterSeccion{
+        min-width: 100%;
+    }
+    
+    .RedesSociales{
+        justify-content: center;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Checkbox personalizado */
+input[type="checkbox"] {
+    accent-color: #3498db;
+}
+
+/* Tooltip para botones */
+.btn-accion:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: #2c3e50;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-top: 2rem;
+}

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Panel Administrador - FalaFeria</title>
+    <link href="estilos.css" rel="stylesheet"/>
+    <link rel="icon" href="../Ropa/Logo.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Panel de Administración - FalaFeria</h1>
+            <div>
+                <p>Bienvenido, Administrador</p>
+                <button>Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard Principal</a></li>
+            <li><a href="../Gestion de Productos/index.html">Gestionar Productos</a></li>
+            <li><a href="../Gestion de Pedidos/index.html">Ver Pedidos</a></li>
+            <li><a href="index.html">Inventario</a></li>
+            <li><a href="../Gestion de clientes/index.html">Clientes</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>📦 Gestión de Inventario</h2>
+            
+            <!-- Resumen de inventario -->
+            <div class="inventario-resumen">
+                <div class="tarjeta-resumen stock-total">
+                    <h3>Stock Total</h3>
+                    <p id="stockTotal">0</p>
+                    <small>productos en almacén</small>
+                </div>
+                <div class="tarjeta-resumen stock-bajo">
+                    <h3>Stock Bajo</h3>
+                    <p id="stockBajo">0</p>
+                    <small>requiere reposición</small>
+                </div>
+                <div class="tarjeta-resumen sin-stock">
+                    <h3>Sin Stock</h3>
+                    <p id="sinStock">0</p>
+                    <small>productos agotados</small>
+                </div>
+                <div class="tarjeta-resumen valor-inventario">
+                    <h3>Valor Total</h3>
+                    <p id="valorTotal">$0</p>
+                    <small>del inventario</small>
+                </div>
+            </div>
+
+            <!-- Filtros y búsqueda -->
+            <div class="filtros-inventario">
+                <h3>🔍 Filtros y Búsqueda</h3>
+                <div class="filtros-contenido">
+                    <input type="text" id="buscarProducto" placeholder="Buscar por nombre o código...">
+                    <select id="filtroCategoria">
+                        <option value="todos">Todas las categorías</option>
+                        <option value="poleron-hombre">Poleron Hombre</option>
+                        <option value="poleron-mujer">Poleron Mujer</option>
+                        <option value="polera-hombre">Polera Hombre</option>
+                        <option value="polera-mujer">Polera Mujer</option>
+                        <option value="polera-mujer">Pantalon Hombre</option>
+                        <option value="polera-mujer">Pantalon Mujer</option>
+                    </select>
+                    <select id="filtroStock">
+                        <option value="todos">Todos los stocks</option>
+                        <option value="disponible">Stock disponible</option>
+                        <option value="bajo">Stock bajo (≤5)</option>
+                        <option value="agotado">Sin stock</option>
+                    </select>
+                    <button id="btnLimpiarFiltros">Limpiar Filtros</button>
+                </div>
+            </div>
+
+            <!-- Tabla de inventario -->
+            <div class="tabla-inventario">
+                <h3>📋 Listado de Productos</h3>
+                <div class="tabla-controles">
+                    <button id="btnAgregarProducto" class="btn-agregar">+ Agregar Producto</button>
+                    <button id="btnExportarInventario" class="btn-exportar">📊 Exportar Inventario</button>
+                </div>
+                
+                <table id="tablaInventario">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Talla</th>
+                            <th>Stock Actual</th>
+                            <th>Precio</th>
+                            <th>Valor Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventarioTbody">
+                        <!-- Los datos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal para agregar/editar producto -->
+            <div id="modalProducto" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar" id="cerrarModal">&times;</span>
+                    <h3 id="modalTitulo">Agregar Producto</h3>
+                    <form id="formProducto">
+                        <div class="form-grupo">
+                            <label for="codigoProducto">Código del Producto:</label>
+                            <input type="text" id="codigoProducto" required>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="nombreProducto">Nombre del Producto:</label>
+                            <input type="text" id="nombreProducto" required>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="categoriaProducto">Categoría:</label>
+                            <select id="categoriaProducto" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="poleron-hombre">Poleron Hombre</option>
+                                <option value="poleron-mujer">Poleron Mujer</option>
+                                <option value="polera-hombre">Polera Hombre</option>
+                                <option value="polera-mujer">Polera Mujer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="tallaProducto">Talla:</label>
+                            <select id="tallaProducto" required>
+                                <option value="">Seleccionar talla</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="stockProducto">Stock Inicial:</label>
+                            <input type="number" id="stockProducto" min="0" required>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="precioProducto">Precio:</label>
+                            <input type="number" id="precioProducto" min="0" step="100" required>
+                        </div>
+                        
+                        <div class="form-botones">
+                            <button type="button" id="btnCancelar" class="btn-cancelar">Cancelar</button>
+                            <button type="submit" id="btnGuardar" class="btn-guardar">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para actualizar stock -->
+            <div id="modalStock" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar" id="cerrarModalStock">&times;</span>
+                    <h3>Actualizar Stock</h3>
+                    <form id="formStock">
+                        <div class="form-grupo">
+                            <label id="productoStockLabel">Producto:</label>
+                            <p id="productoStockInfo"></p>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="stockActual">Stock Actual:</label>
+                            <input type="number" id="stockActual" readonly>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="nuevoStock">Nuevo Stock:</label>
+                            <input type="number" id="nuevoStock" min="0" required>
+                        </div>
+                        
+                        <div class="form-grupo">
+                            <label for="motivoStock">Motivo del cambio:</label>
+                            <select id="motivoStock">
+                                <option value="reposicion">Reposición de inventario</option>
+                                <option value="venta">Venta</option>
+                                <option value="devolucion">Devolución</option>
+                                <option value="daño">Producto dañado</option>
+                                <option value="ajuste">Ajuste de inventario</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-botones">
+                            <button type="button" id="btnCancelarStock" class="btn-cancelar">Cancelar</button>
+                            <button type="submit" id="btnGuardarStock" class="btn-guardar">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="MenuFooter">
+        <div class="FooterContainer">
+            <div class="FooterSeccion">
+                <h3>Contacto</h3>
+                <p>📍 Antonio Varas</p>
+                <p>📞 +56 9 1234 5678</p>
+                <p>✉️ info@falaferia.cl</p>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Horarios de Atención</h3>
+                <p>Lunes a Viernes: 9:00 - 18:00</p>
+                <p>Sábados: 10:00 - 16:00</p>
+                <p>Domingos: Cerrado</p>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Enlaces Rápidos</h3>
+                <a href="../Productos/Index.html">Productos</a>
+                <a href="../Nosotros/index.html">Sobre Nosotros</a>
+                <a href="../Contacto/index.html">Contacto</a>
+                <a href="#">Política de Privacidad</a>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Síguenos</h3>
+                <div class="RedesSociales">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="WhatsApp">💬</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="FooterBottom">
+            <p>&copy; 2025 FalaFeria. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

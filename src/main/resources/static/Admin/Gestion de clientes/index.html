@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes - FalaFeria</title>
+    <link href="estilos.css" rel="stylesheet"/>
+    <link rel="icon" href="../Ropa/Logo.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Gestión de Clientes - FalaFeria</h1>
+            <div>
+                <p>Administración de Base de Clientes</p>
+                <button onclick="window.location.href='index.html'">Volver al Dashboard</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../index.html">Dashboard Principal</a></li>
+            <li><a href="../Gestion de Productos/index.html">Gestionar Productos</a></li>
+            <li><a href="../Gestion de Pedidos/index.html">Ver Pedidos</a></li>
+            <li><a href="../Gestion de inventario/index.html">Inventario</a></li>
+            <li><a href="index.html">Clientes</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Base de Datos de Clientes</h2>
+            
+            <!-- Estadísticas de clientes -->
+            <div class="estadisticas-clientes">
+                <div class="tarjeta-cliente total">
+                    <h3>Total Clientes</h3>
+                    <p id="totalClientes">127</p>
+                    <small>Registrados</small>
+                </div>
+                <div class="tarjeta-cliente activos">
+                    <h3>Clientes Activos</h3>
+                    <p id="clientesActivos">98</p>
+                    <small>Últimos 30 días</small>
+                </div>
+                <div class="tarjeta-cliente nuevos">
+                    <h3>Nuevos Este Mes</h3>
+                    <p id="clientesNuevos">15</p>
+                    <small>+18% vs mes anterior</small>
+                </div>
+                <div class="tarjeta-cliente vip">
+                    <h3>Clientes VIP</h3>
+                    <p id="clientesVip">23</p>
+                    <small>>$50,000 en compras</small>
+                </div>
+            </div>
+
+            <!-- Filtros y búsqueda -->
+            <div class="controles-clientes">
+                <h3>🔍 Filtros y Búsqueda</h3>
+                <div class="filtros">
+                    <input type="text" id="buscarCliente" placeholder="Buscar por nombre, email o teléfono...">
+                    <select id="filtroEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="inactivo">Inactivos</option>
+                        <option value="vip">VIP</option>
+                        <option value="nuevo">Nuevos</option>
+                    </select>
+                    <select id="filtroUbicacion">
+                        <option value="">Todas las ubicaciones</option>
+                        <option value="santiago">Santiago</option>
+                        <option value="valparaiso">Valparaíso</option>
+                        <option value="concepcion">Concepción</option>
+                        <option value="otra">Otras ciudades</option>
+                    </select>
+                    <input type="date" id="fechaRegistro" placeholder="Fecha registro">
+                    <button id="btnFiltrar">Aplicar Filtros</button>
+                    <button id="btnLimpiarFiltros">Limpiar</button>
+                </div>
+            </div>
+
+            <!-- Tabla de clientes -->
+            <div class="tabla-clientes">
+                <h3>👥 Lista de Clientes</h3>
+                <div class="acciones-tabla">
+                    <button id="btnAgregarCliente" class="btn-primary">+ Nuevo Cliente</button>
+                    <button id="btnExportarClientes" class="btn-secondary">📊 Exportar Excel</button>
+                    <button id="btnEnviarEmail" class="btn-tertiary">📧 Email Masivo</button>
+                </div>
+                
+                <table id="tablaClientes">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="seleccionarTodos">
+                            </th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Registro</th>
+                            <th>Última Compra</th>
+                            <th>Total Compras</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los clientes se cargarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="paginacion">
+                    <button id="btnAnterior" class="btn-paginacion">« Anterior</button>
+                    <span id="infoPagina">Página 1 de 5</span>
+                    <button id="btnSiguiente" class="btn-paginacion">Siguiente »</button>
+                </div>
+            </div>
+
+            <!-- Modal para agregar/editar cliente -->
+            <div id="modalCliente" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar">&times;</span>
+                    <h3 id="tituloModal">Agregar Nuevo Cliente</h3>
+                    <form id="formCliente">
+                        <input type="hidden" id="clienteId">
+                        <div class="campos-fila">
+                            <div class="campo">
+                                <label for="nombreCliente">Nombre Completo *</label>
+                                <input type="text" id="nombreCliente" required>
+                            </div>
+                            <div class="campo">
+                                <label for="emailCliente">Email *</label>
+                                <input type="email" id="emailCliente" required>
+                            </div>
+                        </div>
+                        <div class="campos-fila">
+                            <div class="campo">
+                                <label for="telefonoCliente">Teléfono</label>
+                                <input type="tel" id="telefonoCliente">
+                            </div>
+                            <div class="campo">
+                                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                                <input type="date" id="fechaNacimiento">
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label for="direccion">Dirección</label>
+                            <textarea id="direccion" rows="2"></textarea>
+                        </div>
+                        <div class="campos-fila">
+                            <div class="campo">
+                                <label for="ciudad">Ciudad</label>
+                                <select id="ciudad">
+                                    <option value="santiago">Santiago</option>
+                                    <option value="valparaiso">Valparaíso</option>
+                                    <option value="concepcion">Concepción</option>
+                                    <option value="otra">Otra ciudad</option>
+                                </select>
+                            </div>
+                            <div class="campo">
+                                <label for="estadoCliente">Estado</label>
+                                <select id="estadoCliente">
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                    <option value="vip">VIP</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label for="notas">Notas Adicionales</label>
+                            <textarea id="notas" rows="3" placeholder="Información adicional sobre el cliente..."></textarea>
+                        </div>
+                        <div class="botones-modal">
+                            <button type="submit" class="btn-primary">Guardar Cliente</button>
+                            <button type="button" class="btn-secondary" id="cancelarEdicion">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para historial de compras -->
+            <div id="modalHistorial" class="modal">
+                <div class="modal-contenido modal-historial">
+                    <span class="cerrar cerrar-historial">&times;</span>
+                    <h3>Historial de Compras - <span id="nombreClienteHistorial"></span></h3>
+                    <div id="contenidoHistorial">
+                        <!-- Se carga dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para email masivo -->
+            <div id="modalEmail" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar cerrar-email">&times;</span>
+                    <h3>Enviar Email Masivo</h3>
+                    <form id="formEmail">
+                        <div class="campo">
+                            <label for="asuntoEmail">Asunto *</label>
+                            <input type="text" id="asuntoEmail" required placeholder="Ej: Ofertas especiales de FalaFeria">
+                        </div>
+                        <div class="campo">
+                            <label for="mensajeEmail">Mensaje *</label>
+                            <textarea id="mensajeEmail" rows="6" required placeholder="Escriba su mensaje aquí..."></textarea>
+                        </div>
+                        <div class="campo">
+                            <p><strong>Destinatarios:</strong> <span id="cantidadDestinatarios">0</span> clientes seleccionados</p>
+                        </div>
+                        <div class="botones-modal">
+                            <button type="submit" class="btn-primary">📧 Enviar Emails</button>
+                            <button type="button" class="btn-secondary" id="cancelarEmail">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="MenuFooter">
+        <div class="FooterContainer">
+            <div class="FooterSeccion">
+                <h3>Contacto</h3>
+                <p>📍 Antonio Varas</p>
+                <p>📞 +56 9 1234 5678</p>
+                <p>✉️ info@falaferia.cl</p>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Horarios de Atención</h3>
+                <p>Lunes a Viernes: 9:00 - 18:00</p>
+                <p>Sábados: 10:00 - 16:00</p>
+                <p>Domingos: Cerrado</p>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Enlaces Rápidos</h3>
+                <a href="../Productos/Index.html">Productos</a>
+                <a href="../Nosotros/index.html">Sobre Nosotros</a>
+                <a href="../Contacto/index.html">Contacto</a>
+                <a href="#">Política de Privacidad</a>
+            </div>
+            
+            <div class="FooterSeccion">
+                <h3>Síguenos</h3>
+                <div class="RedesSociales">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="WhatsApp">💬</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="FooterBottom">
+            <p>&copy; 2025 FalaFeria. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

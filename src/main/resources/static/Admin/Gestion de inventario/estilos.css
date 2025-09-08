@@ -96,7 +96,7 @@ nav a:hover {
     border-left-color: #3498db;
 }
 
-nav a[href="index.html"] {
+nav a[href="inventario.html"] {
     background: #e3f2fd;
     color: #1976d2;
     border-left-color: #1976d2;
@@ -116,15 +116,17 @@ section h2 {
     font-weight: 600;
 }
 
-/* TARJETAS DE ESTADÍSTICAS */
-section > div:first-of-type {
+/* ESTILOS ESPECÍFICOS PARA INVENTARIO */
+
+/* Estadísticas del inventario */
+.estadisticas-inventario {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
     margin-bottom: 3rem;
 }
 
-section > div:first-of-type > div {
+.tarjeta-inventario {
     background: white;
     padding: 2rem;
     border-radius: 10px;
@@ -133,12 +135,12 @@ section > div:first-of-type > div {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-section > div:first-of-type > div:hover {
+.tarjeta-inventario:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 25px rgba(0,0,0,0.15);
 }
 
-section > div:first-of-type h3 {
+.tarjeta-inventario h3 {
     color: #7f8c8d;
     font-size: 0.9rem;
     font-weight: 600;
@@ -147,29 +149,58 @@ section > div:first-of-type h3 {
     margin-bottom: 0.5rem;
 }
 
-section > div:first-of-type p {
+.tarjeta-inventario p {
     font-size: 2.5rem;
     font-weight: 700;
     color: #2c3e50;
     margin-bottom: 0.5rem;
 }
 
-section > div:first-of-type small {
-    color: #27ae60;
+.tarjeta-inventario small {
+    color: #7f8c8d;
     font-size: 0.8rem;
     font-weight: 500;
 }
 
-/* SECCIONES GENERALES */
-section > div {
+/* Colores específicos para cada tarjeta */
+.tarjeta-inventario.total {
+    border-left-color: #3498db;
+}
+
+.tarjeta-inventario.stock-bajo {
+    border-left-color: #f39c12;
+}
+
+.tarjeta-inventario.stock-bajo p {
+    color: #f39c12;
+}
+
+.tarjeta-inventario.sin-stock {
+    border-left-color: #e74c3c;
+}
+
+.tarjeta-inventario.sin-stock p {
+    color: #e74c3c;
+}
+
+.tarjeta-inventario.valor-total {
+    border-left-color: #27ae60;
+}
+
+.tarjeta-inventario.valor-total p {
+    color: #27ae60;
+}
+
+/* Controles de inventario */
+.controles-inventario {
     background: white;
-    margin-bottom: 2rem;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
 }
 
-section > div h3 {
+.controles-inventario h3 {
     color: #2c3e50;
     margin-bottom: 1.5rem;
     font-size: 1.3rem;
@@ -179,27 +210,121 @@ section > div h3 {
     gap: 0.5rem;
 }
 
-/* ALERTAS */
-section > div:nth-of-type(2) div {
-    background: #fff3cd;
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #ffc107;
+.filtros {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap: 1rem;
+    align-items: end;
+    margin-top: 1rem;
 }
 
-section > div:nth-of-type(2) p {
-    margin: 0.5rem 0;
-    font-size: 0.95rem;
+.filtros input,
+.filtros select {
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
 }
 
-/* TABLAS */
-table {
+.filtros input:focus,
+.filtros select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.filtros button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#btnFiltrar {
+    background: #3498db;
+    color: white;
+}
+
+#btnFiltrar:hover {
+    background: #2980b9;
+}
+
+#btnLimpiarFiltros {
+    background: #95a5a6;
+    color: white;
+}
+
+#btnLimpiarFiltros:hover {
+    background: #7f8c8d;
+}
+
+/* Tabla de inventario */
+.tabla-inventario {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.tabla-inventario h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.acciones-tabla {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #229954;
+}
+
+.btn-secondary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+}
+
+/* Estilos específicos de la tabla */
+#tablaInventario {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
 }
 
-th {
+#tablaInventario th {
     background: #f8f9fa;
     color: #5a6c7d;
     font-weight: 600;
@@ -211,45 +336,143 @@ th {
     letter-spacing: 0.5px;
 }
 
-td {
+#tablaInventario td {
     padding: 1rem;
     border-bottom: 1px solid #e9ecef;
     color: #2c3e50;
 }
 
-tr:hover {
+#tablaInventario tr:hover {
     background: #f8f9fa;
 }
 
-/* ACCESOS RÁPIDOS */
-section > div:last-of-type > div {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-}
-
-section > div:last-of-type button {
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-    color: white;
-    border: none;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
+/* Estados del stock */
+.estado-stock {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
     font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
 }
 
-section > div:last-of-type button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+.stock-alto {
+    background: #d4edda;
+    color: #155724;
 }
 
-section > div:last-of-type a {
+.stock-normal {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.stock-bajo {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.sin-stock {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Botones de acción en la tabla */
+.acciones-producto {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-accion {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s;
+}
+
+.btn-editar {
+    background: #3498db;
     color: white;
-    text-decoration: none;
+}
+
+.btn-editar:hover {
+    background: #2980b9;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-contenido {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.cerrar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cerrar:hover {
+    color: #000;
+}
+
+.campo {
+    margin-bottom: 1.5rem;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.campo input:focus,
+.campo select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.botones-modal {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
 }
 
 /* FOOTER */
@@ -258,6 +481,7 @@ section > div:last-of-type a {
     color: white;
     padding: 40px 20px 20px 20px;
     margin-top: 50px;
+    margin-left: 250px;
 }
 
 .FooterContainer{
@@ -336,7 +560,7 @@ section > div:last-of-type a {
         transition: transform 0.3s;
     }
     
-    main, footer {
+    main, .MenuFooter {
         margin-left: 0;
         max-width: 100%;
     }
@@ -351,20 +575,39 @@ section > div:last-of-type a {
         text-align: center;
     }
     
-    section > div:first-of-type {
+    .estadisticas-inventario {
         grid-template-columns: 1fr;
     }
     
-    section > div:last-of-type > div {
+    .filtros {
         grid-template-columns: 1fr;
     }
     
-    table {
+    .acciones-tabla {
+        flex-direction: column;
+    }
+    
+    #tablaInventario {
         font-size: 0.8rem;
     }
     
-    th, td {
+    #tablaInventario th,
+    #tablaInventario td {
         padding: 0.5rem;
+    }
+    
+    .acciones-producto {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .modal-contenido {
+        margin: 10% auto;
+        width: 95%;
+    }
+    
+    .botones-modal {
+        flex-direction: column;
     }
 
     .FooterContainer{
@@ -395,21 +638,4 @@ section > div:last-of-type a {
 .estado-enviado {
     color: #3498db;
     font-weight: 600;
-}
-
-/* EFECTOS ADICIONALES */
-.tarjeta-ventas {
-    border-left-color: #27ae60 !important;
-}
-
-.tarjeta-productos {
-    border-left-color: #9b59b6 !important;
-}
-
-.tarjeta-pedidos {
-    border-left-color: #f39c12 !important;
-}
-
-.tarjeta-stock {
-    border-left-color: #e74c3c !important;
 }
