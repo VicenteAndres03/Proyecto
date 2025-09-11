@@ -80,11 +80,6 @@ function procesarRegistro(nombre, correo, contraseña) {
     // Limpiar el formulario
     document.getElementById('formulario-registro').reset();
     
-    // Opcional: redirigir a otra página
-    // window.location.href = '../index.html';
-    
-    // Opcional: redirigir a página de inicio de sesión
-    // window.location.href = '../Login/index.html';
 }
 
 // Validación en tiempo real mientras el usuario escribe
