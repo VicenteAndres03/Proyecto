@@ -1,0 +1,99 @@
+/* --- Estilos para src/components/layout/Footer.css --- */
+
+.MenuFooter {
+  background-color: #2c2c2c;
+  color: white;
+  padding: 40px 20px 20px 20px;
+  margin-top: 50px; /* O ajusta según necesites */
+}
+
+.FooterContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.FooterSeccion {
+  flex: 1; /* Ocupa espacio disponible */
+  min-width: 220px; /* Ancho mínimo antes de envolver */
+}
+
+.FooterSeccion h3 {
+  color: #f0f0f0;
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #4a4a4a;
+  padding-bottom: 8px;
+}
+
+/* Estilo para <p> y <Link>/<a> dentro de .FooterSeccion */
+.FooterSeccion p,
+.FooterSeccion a {
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  text-decoration: none;
+  display: block; /* Asegura que los Link ocupen su línea */
+  transition: color 0.2s ease; /* Transición suave para hover */
+}
+
+.FooterSeccion a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.RedesSociales {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Estilo específico para <a> dentro de .RedesSociales */
+.RedesSociales a {
+  display: flex; /* Centra el ícono */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #4a4a4a;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.2em;
+  text-decoration: none; /* Asegura no subrayado */
+  transition: background-color 0.3s ease;
+}
+
+.RedesSociales a:hover {
+  background-color: #666;
+  text-decoration: none; /* Mantiene no subrayado en hover */
+}
+
+.FooterBottom {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #4a4a4a;
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+/* --- Media Queries (Ajustes responsivos para el Footer) --- */
+@media (max-width: 768px) {
+  .FooterContainer {
+    flex-direction: column; /* Apila las secciones */
+    text-align: center; /* Centra el texto */
+    align-items: center; /* Centra las secciones */
+  }
+
+  .FooterSeccion {
+    min-width: 100%; /* Ocupa todo el ancho */
+    max-width: 400px; /* Limita el ancho máximo en móvil */
+  }
+
+  .RedesSociales {
+    justify-content: center; /* Centra los íconos de redes */
+  }
+}
