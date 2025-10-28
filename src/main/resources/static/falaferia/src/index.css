@@ -12,6 +12,10 @@ body {
   padding: 0;
 }
 
+body {
+  padding-top: 80px; /* Ajusta este valor según la altura de tu header */
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

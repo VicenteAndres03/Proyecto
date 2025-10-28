@@ -4,7 +4,7 @@
   background-color: #2c2c2c;
   color: white;
   padding: 40px 20px 20px 20px;
-  margin-top: 50px; /* O ajusta según necesites */
+  margin-top: 0; /* Eliminado margen superior para que quede pegado al contenido */
 }
 
 .FooterContainer {

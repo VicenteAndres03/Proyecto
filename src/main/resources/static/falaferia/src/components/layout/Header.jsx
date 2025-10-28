@@ -79,7 +79,7 @@ function Header() {
           {/* Asegúrate que esta es la ruta correcta */}
           <Link
             className="Links"
-            to="/registro"
+            to="/register"
             onClick={() => setMenuVisible(false)}
           >
             Registrarse

@@ -3,18 +3,25 @@
 
 .Menu {
   background-color: rgb(245, 245, 245);
-  position: relative; /* Asegura contexto para el menú desplegable */
-  z-index: 1000; /* Asegura que esté por encima de otro contenido */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
 }
 
 .ContenidoMenu {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 40px;
   width: 100%;
-  margin: 0;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .LogoTienda {
@@ -41,12 +48,19 @@
   color: #333; /* Color explícito */
 }
 
+.NavLinks {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
 .Links {
   padding: 15px;
   text-decoration: none;
   color: black;
-  display: inline-block; /* Asegura padding correcto */
-  transition: border-bottom 0.2s ease; /* Transición suave */
+  display: inline-block;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .Links:hover {
