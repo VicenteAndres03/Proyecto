@@ -9,6 +9,8 @@ import AboutPage from "./pages/AboutPage";
 import ProductsPage from "./pages/ProductsPage"; // <-- Importa la página
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import MenProductsPage from "./pages/MenProductsPage";
+import WomenProductsPage from "./pages/WomenProductsPage"; // <-- Importa la página de mujer
 import "./index.css";
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
           <Route path="/contacto" element={<ContactPage />} />
           <Route path="/nosotros" element={<AboutPage />} />
           <Route path="/productos" element={<ProductsPage />} />
+          <Route path="/hombre" element={<MenProductsPage />} />
+          <Route path="/mujer" element={<WomenProductsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* Alias en español: soportar /registro además de /register */}
