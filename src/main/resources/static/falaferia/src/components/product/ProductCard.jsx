@@ -3,7 +3,7 @@ import "./ProductCard.css"; // Estilos específicos para la tarjeta
 
 // El componente recibe 'product' como prop (propiedad),
 // que es un objeto con toda la información del producto.
-function ProductCard({ product }) {
+function ProductCard({ product, onAddToCart }) {
   // Estado para guardar el índice de la imagen actual del carrusel.
   // Empieza en 0 (la primera imagen).
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -34,9 +34,7 @@ function ProductCard({ product }) {
   // --- Función para añadir al carrito (simulada por ahora) ---
   const handleAddToCart = (e) => {
     e.stopPropagation(); // Evita que el click active la navegación si la tarjeta fuera un link
-    console.log(`Añadiendo ${product.name} al carrito`);
-    alert(`"${product.name}" añadido al carrito (simulación)`);
-    // Aquí conectarías con tu lógica de estado global o contexto del carrito
+    onAddToCart(product);
   };
 
   // Si no recibimos un producto válido, no mostramos nada.
@@ -129,7 +127,7 @@ function ProductCard({ product }) {
         )}
         {/* Precio */}
         <div className="precio-item">
-          <span className="precio-actual-item">{`$${product.price.toLocaleString(
+          <span className="precio-actual-item">{`${product.price.toLocaleString(
             "es-CL"
           )}`}</span>{" "}
           {/* Formato chileno */}

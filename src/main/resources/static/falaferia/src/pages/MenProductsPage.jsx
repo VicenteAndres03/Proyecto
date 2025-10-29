@@ -53,7 +53,7 @@ const menProducts = [
 ];
 // --- FIN DATOS DE EJEMPLO ---
 
-function MenProductsPage() {
+function MenProductsPage({ onAddToCart }) {
   return (
     <section className="productos-destacados-menpage">
       <h2>Ropa Hombre</h2>
@@ -62,7 +62,11 @@ function MenProductsPage() {
         {menProducts && menProducts.length > 0 ? (
           menProducts.map((product) => (
             // Renderiza ProductCard para cada producto
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={onAddToCart}
+            />
           ))
         ) : (
           // Mensaje si no hay productos (o si están cargando)

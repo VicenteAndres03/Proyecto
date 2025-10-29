@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"; // Para los enlaces de navegación
 import "./Header.css"; // Importaremos los estilos CSS
 import logoImg from "../../assets/Ropa/Logo.png"; // Importa la imagen del logo
 
-function Header() {
+function Header({ cartCount }) {
   // Estado para controlar la visibilidad del menú hamburguesa en móviles
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -25,9 +25,11 @@ function Header() {
 
         {/* Botón Carrito (la lógica del contador vendrá después) */}
         <div className="Carrito">
-          <button id="Carrito">
-            🛒<span id="CantidadCarrito">0</span>
-          </button>
+          <Link to="/carrito" className="cart-link">
+            <button id="Carrito">
+              🛒<span id="CantidadCarrito">{cartCount}</span>
+            </button>
+          </Link>
         </div>
 
         {/* Botón Hamburguesa (solo visible en móvil gracias a CSS) */}

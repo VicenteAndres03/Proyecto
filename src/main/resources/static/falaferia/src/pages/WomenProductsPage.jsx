@@ -57,7 +57,7 @@ const womenProducts = [
 ];
 // --- FIN DATOS DE EJEMPLO ---
 
-function WomenProductsPage() {
+function WomenProductsPage({ onAddToCart }) {
   return (
     // Usamos clases específicas para esta página
     <section className="productos-destacados-womenpage">
@@ -68,7 +68,11 @@ function WomenProductsPage() {
         {womenProducts && womenProducts.length > 0 ? (
           womenProducts.map((product) => (
             // Para cada producto, renderizamos el componente ProductCard
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={onAddToCart}
+            />
           ))
         ) : (
           <p>No hay productos disponibles en este momento.</p> // Mensaje si no hay productos
