@@ -59,7 +59,7 @@ function App() {
   return (
     <Router>
       <Header cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)} />
-      <main>
+      <main className="main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/contacto" element={<ContactPage />} />

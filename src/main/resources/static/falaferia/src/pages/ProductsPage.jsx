@@ -1,62 +1,57 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./ProductsPage.css"; // Importaremos los estilos
-
-// Importa las imágenes de fondo si decides manejarlas desde JS
-// import imgIzquierda from '../assets/Ropa/Izquierda.png';
-// import imgDerecha from '../assets/Ropa/Derecha.png';
+import imgIzquierda from '../assets/Ropa/Izquierda.png';
+import imgDerecha from '../assets/Ropa/Derecha.png';
 
 function ProductsPage() {
-  // Nota: La lógica de JS original para parallax y animación de botones
-  // necesitaría reimplementarse usando hooks de React (useEffect, useState)
-  // si deseas mantenerla. Por ahora, nos enfocamos en la estructura y estilos.
+  const sectionStyle = {
+    height: "calc(100vh - 56px)", // Adjust based on header height
+    overflow: "hidden",
+  };
+
+  const createSideStyle = (image) => ({
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${image})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    transition: "transform 0.3s ease",
+  });
 
   return (
-    // Quitamos ContenedorPrincipal porque el main ya existe en App.jsx
-    <section className="SeccionHeroProducts">
-      {" "}
-      {/* Renombramos clase */}
-      <div className="ContenidoHeroProducts">
-        {" "}
-        {/* Renombramos clase */}
-        {/* Lado Izquierdo - Hombre */}
-        <div className="LadoIzquierdoProducts">
-          {" "}
-          {/* Renombramos clase */}
-          <div className="EtiquetaRopaProducts">ROPA HOMBRE</div>
-          {/* La imagen de fondo se manejará principalmente con CSS */}
-          {/* <div className="ImagenHombreProducts"></div> */}
-          <div className="BotonSeccionProducts">
-            {/* Usamos Link en lugar de <a> */}
-            <Link
-              to="/hombre"
-              className="BotonCompraGeneroProducts hombre"
-              id="BotonHombre"
-            >
-              Comprar Ropa Hombre
-            </Link>
-          </div>
+    <div className="row g-0" style={sectionStyle}>
+      {/* Men's Section */}
+      <div
+        className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
+        style={createSideStyle(imgIzquierda)}
+        onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+        onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+      >
+        <div className="position-absolute top-0 start-0 p-3">
+          <h2 className="badge bg-light text-dark fs-5">ROPA HOMBRE</h2>
         </div>
-        {/* Lado Derecho - Mujer */}
-        <div className="LadoDerechoProducts">
-          {" "}
-          {/* Renombramos clase */}
-          <div className="EtiquetaRopaProducts">ROPA MUJER</div>
-          {/* La imagen de fondo se manejará principalmente con CSS */}
-          {/* <div className="ImagenMujerProducts"></div> */}
-          <div className="BotonSeccionProducts">
-            {/* Usamos Link en lugar de <a> */}
-            <Link
-              to="/mujer"
-              className="BotonCompraGeneroProducts mujer"
-              id="BotonMujer"
-            >
-              Comprar Ropa Mujer
-            </Link>
-          </div>
+        <div className="text-center">
+          <Link to="/hombre" className="btn btn-primary btn-lg">
+            Comprar Ropa Hombre
+          </Link>
         </div>
       </div>
-    </section>
+
+      {/* Women's Section */}
+      <div
+        className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
+        style={createSideStyle(imgDerecha)}
+        onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+        onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+      >
+        <div className="position-absolute top-0 start-0 p-3">
+          <h2 className="badge bg-light text-dark fs-5">ROPA MUJER</h2>
+        </div>
+        <div className="text-center">
+          <Link to="/mujer" className="btn btn-danger btn-lg">
+            Comprar Ropa Mujer
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -1,8 +1,6 @@
 // src/pages/MenProductsPage.jsx
 import React from "react";
-// ¡ASEGÚRATE DE IMPORTAR ProductCard!
 import ProductCard from "../components/product/ProductCard";
-import "./MenProductsPage.css";
 
 // --- DATOS DE EJEMPLO PARA HOMBRE (los mismos de antes) ---
 const menProducts = [
@@ -55,13 +53,11 @@ const menProducts = [
 
 function MenProductsPage({ onAddToCart }) {
   return (
-    <section className="productos-destacados-menpage">
-      <h2>Ropa Hombre</h2>
-      <div className="productos-grid-menpage">
-        {/* Verifica si hay productos antes de mapear */}
+    <div className="container my-5">
+      <h2 className="text-center mb-4">Ropa Hombre</h2>
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {menProducts && menProducts.length > 0 ? (
           menProducts.map((product) => (
-            // Renderiza ProductCard para cada producto
             <ProductCard
               key={product.id}
               product={product}
@@ -69,11 +65,12 @@ function MenProductsPage({ onAddToCart }) {
             />
           ))
         ) : (
-          // Mensaje si no hay productos (o si están cargando)
-          <p>No hay productos disponibles en este momento.</p>
+          <div className="col">
+            <p className="text-center">No hay productos disponibles en este momento.</p>
+          </div>
         )}
       </div>
-    </section>
+    </div>
   );
 }
 

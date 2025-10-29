@@ -1,21 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Importa Link y useNavigate
-import "./LoginPage.css"; // Importaremos los estilos
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  // Estados para los campos del formulario
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [recordar, setRecordar] = useState(false);
-
-  // Estados para validación y mensajes
   const [errores, setErrores] = useState({});
-  const [exito, setExito] = useState(false);
-  const [errorLogin, setErrorLogin] = useState(""); // Para error general de login
+  const [errorLogin, setErrorLogin] = useState("");
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Para redirigir
-
-  // Función de validación simple
   const validarFormulario = () => {
     const nuevosErrores = {};
     const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,125 +22,77 @@ function LoginPage() {
     return Object.keys(nuevosErrores).length === 0;
   };
 
-  // Manejar envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    setExito(false);
     setErrorLogin("");
 
     if (validarFormulario()) {
-      // --- Simulación de Login (Reemplazar con llamada a API) ---
-      console.log("Intentando login:", { correo, contraseña, recordar });
-      // Ejemplo simple:
       if (correo === "cliente@ejemplo.com" && contraseña === "password123") {
-        setExito(true);
-        // Simula redirección después de 1 segundo
+        alert("¡Inicio de sesión exitoso! Redirigiendo...");
         setTimeout(() => {
-          navigate("/"); // Redirige a la página de inicio
+          navigate("/");
         }, 1000);
       } else {
         setErrorLogin("Correo o contraseña incorrectos.");
       }
-      // --- Fin Simulación ---
     }
   };
 
   return (
-    <div className="contenedor-login-customer">
-      {" "}
-      {/* Clase específica */}
-      <form
-        className="formulario-login-customer"
-        id="formulario-login"
-        onSubmit={handleSubmit}
-        noValidate
-      >
-        <h1 className="titulo-login-customer">Iniciar Sesión</h1>
-
-        {/* Campo Correo */}
-        <label htmlFor="correo">Correo Electrónico</label>
-        <input
-          type="email"
-          id="correo"
-          name="correo"
-          placeholder="ejemplo@correo.com"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          className={errores.correo ? "input-error-customer" : ""}
-          required
-        />
-        {errores.correo && (
-          <div className="mensaje-error-customer" style={{ display: "block" }}>
-            {errores.correo}
+    <div className="container my-5">
+      <div className="row justify-content-center">
+        <div className="col-lg-6">
+          <div className="card shadow-sm">
+            <div className="card-body p-5">
+              <h1 className="card-title text-center mb-4">Iniciar Sesión</h1>
+              {errorLogin && <div className="alert alert-danger">{errorLogin}</div>}
+              <form onSubmit={handleSubmit} noValidate>
+                <div className="mb-3">
+                  <label htmlFor="correo" className="form-label">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    id="correo"
+                    className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    required
+                  />
+                  {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="contraseña" className="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    id="contraseña"
+                    className={`form-control ${errores.contraseña ? 'is-invalid' : ''}`}
+                    value={contraseña}
+                    onChange={(e) => setContraseña(e.target.value)}
+                    required
+                  />
+                  {errores.contraseña && <div className="invalid-feedback">{errores.contraseña}</div>}
+                </div>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      id="recordar"
+                      className="form-check-input"
+                      checked={recordar}
+                      onChange={(e) => setRecordar(e.target.checked)}
+                    />
+                    <label htmlFor="recordar" className="form-check-label">Recordar sesión</label>
+                  </div>
+                  <Link to="/olvide-contrasena">¿Olvidaste tu contraseña?</Link>
+                </div>
+                <button type="submit" className="btn btn-primary w-100">Iniciar Sesión</button>
+              </form>
+              <div className="text-center mt-4 pt-4 border-top">
+                <p>¿No tienes una cuenta? <Link to="/registro">Registrarse</Link></p>
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Campo Contraseña */}
-        <label htmlFor="contraseña">Contraseña</label>
-        <input
-          type="password"
-          id="contraseña"
-          name="contraseña"
-          placeholder="Ingresa tu contraseña"
-          value={contraseña}
-          onChange={(e) => setContraseña(e.target.value)}
-          className={errores.contraseña ? "input-error-customer" : ""}
-          required
-        />
-        {errores.contraseña && (
-          <div className="mensaje-error-customer" style={{ display: "block" }}>
-            {errores.contraseña}
-          </div>
-        )}
-
-        {/* Opciones Recordar / Olvidaste Contraseña */}
-        <div className="recordar-contraseña-customer">
-          <label className="checkbox-container-customer">
-            <input
-              type="checkbox"
-              id="recordar"
-              name="recordar"
-              checked={recordar}
-              onChange={(e) => setRecordar(e.target.checked)}
-            />
-            {/* <span className="checkmark"></span> -- Si tienes estilo específico */}
-            Recordar sesión
-          </label>
-          <Link to="/olvide-contrasena" className="enlace-olvide-customer">
-            ¿Olvidaste tu contraseña?
-          </Link>{" "}
-          {/* Ruta ejemplo */}
         </div>
-
-        {/* Botón de Envío */}
-        <button type="submit" className="btn-customer">
-          Iniciar Sesión
-        </button>
-
-        {/* Mensaje de Error General */}
-        {errorLogin && (
-          <div
-            className="mensaje-error-customer general"
-            style={{ display: "block", marginTop: "15px", textAlign: "center" }}
-          >
-            {errorLogin}
-          </div>
-        )}
-
-        {/* Mensaje de Éxito */}
-        {exito && (
-          <div className="mensaje-exito-customer" style={{ display: "block" }}>
-            ¡Inicio de sesión exitoso! Redirigiendo...
-          </div>
-        )}
-
-        {/* Enlace a Registro */}
-        <div className="enlaces-login-customer">
-          <p>
-            ¿No tienes una cuenta? <Link to="/registro">Registrarse</Link>
-          </p>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }

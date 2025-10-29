@@ -1,19 +1,12 @@
 import React, { useState } from "react";
-import "./ContactPage.css"; // Importaremos los estilos
 
 function ContactPage() {
-  // Estados para guardar los valores de los inputs
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [mensaje, setMensaje] = useState("");
-
-  // Estados para manejar errores de validación
   const [errores, setErrores] = useState({});
-
-  // Estado para mostrar el mensaje de éxito
   const [enviado, setEnviado] = useState(false);
 
-  // Función para validar el formulario
   const validarFormulario = () => {
     const nuevosErrores = {};
     if (!nombre.trim()) {
@@ -27,122 +20,85 @@ function ContactPage() {
       nuevosErrores.mensaje = "Por favor escribe tu mensaje";
     }
     setErrores(nuevosErrores);
-    // Devuelve true si no hay errores (objeto vacío), false si hay errores
     return Object.keys(nuevosErrores).length === 0;
   };
 
-  // Función que se ejecuta al enviar el formulario
   const handleSubmit = (event) => {
-    event.preventDefault(); // Previene el envío tradicional del formulario
-    setEnviado(false); // Oculta mensaje de éxito anterior si lo hubiera
+    event.preventDefault();
+    setEnviado(false);
 
     if (validarFormulario()) {
-      // --- Simulación de envío ---
-      // En una app real, aquí llamarías a tu backend (API)
       console.log("Enviando datos:", { nombre, correo, mensaje });
-      alert("Simulando envío... Revisa la consola (F12)");
-
-      // Limpiar formulario y mostrar mensaje de éxito después de un tiempo simulado
       setTimeout(() => {
         setNombre("");
         setCorreo("");
         setMensaje("");
-        setEnviado(true); // Muestra el mensaje de éxito
-      }, 1000); // Simula 1 segundo de espera
-      // --- Fin simulación ---
-    } else {
-      console.log("Formulario inválido");
+        setEnviado(true);
+      }, 1000);
     }
   };
 
   return (
-    <div className="contenedor-contacto">
-      {/* Usamos onSubmit en el form y llamamos a handleSubmit */}
-      <form
-        className="formulario-contacto"
-        id="formulario-contacto"
-        onSubmit={handleSubmit}
-        noValidate
-      >
-        <h1 className="titulo-contacto">Contáctanos</h1>
-        {/* Campo Nombre */}
-        <label htmlFor="nombre">Nombre Completo</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          placeholder="Ingresa tu nombre completo"
-          value={nombre} // Conecta el input al estado 'nombre'
-          onChange={(e) => setNombre(e.target.value)} // Actualiza el estado al escribir
-          className={errores.nombre ? "input-error" : ""} // Añade clase si hay error
-          required // Mantenemos required por semántica HTML
-        />
-        {/* Muestra mensaje de error si existe */}
-        {errores.nombre && (
-          <div className="mensaje-error" style={{ display: "block" }}>
-            {errores.nombre}
+    <div className="container my-5">
+      <div className="row justify-content-center">
+        <div className="col-lg-8">
+          <div className="card shadow-sm">
+            <div className="card-body p-5">
+              <h1 className="card-title text-center mb-4">Contáctanos</h1>
+              {enviado && (
+                <div className="alert alert-success" role="alert">
+                  ¡Mensaje enviado correctamente! Te responderemos pronto.
+                </div>
+              )}
+              <form onSubmit={handleSubmit} noValidate>
+                <div className="mb-3">
+                  <label htmlFor="nombre" className="form-label">Nombre Completo</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    className={`form-control ${errores.nombre ? 'is-invalid' : ''}`}
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                  />
+                  {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="correo" className="form-label">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    id="correo"
+                    className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    required
+                  />
+                  {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="mensaje" className="form-label">Mensaje</label>
+                  <textarea
+                    id="mensaje"
+                    className={`form-control ${errores.mensaje ? 'is-invalid' : ''}`}
+                    rows="5"
+                    value={mensaje}
+                    onChange={(e) => setMensaje(e.target.value)}
+                    required
+                  ></textarea>
+                  {errores.mensaje && <div className="invalid-feedback">{errores.mensaje}</div>}
+                </div>
+                <button type="submit" className="btn btn-primary w-100">Enviar Mensaje</button>
+              </form>
+              <div className="text-center mt-4 pt-4 border-top">
+                <h5>Otras formas de contactarnos</h5>
+                <p className="mb-1"><strong>📧 Email:</strong> info@falaferia.com</p>
+                <p className="mb-1"><strong>📱 Teléfono:</strong> +56 9 1234 5678</p>
+                <p><strong>📍 Dirección:</strong> Santiago, Chile</p>
+              </div>
+            </div>
           </div>
-        )}
-        {/* Campo Correo */}
-        <label htmlFor="correo">Correo Electrónico</label>
-        <input
-          type="email"
-          id="correo"
-          name="correo"
-          placeholder="ejemplo@correo.com"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          className={errores.correo ? "input-error" : ""}
-          required
-        />
-        {errores.correo && (
-          <div className="mensaje-error" style={{ display: "block" }}>
-            {errores.correo}
-          </div>
-        )}
-        {/* Campo Mensaje */}
-        <label htmlFor="mensaje">Mensaje</label>
-        <textarea
-          id="mensaje"
-          name="mensaje"
-          placeholder="Escribe tu mensaje aquí..."
-          rows="6"
-          value={mensaje}
-          onChange={(e) => setMensaje(e.target.value)}
-          className={errores.mensaje ? "input-error" : ""}
-          required
-        ></textarea>{" "}
-        {/* Textarea no se auto-cierra en React */}
-        {errores.mensaje && (
-          <div className="mensaje-error" style={{ display: "block" }}>
-            {errores.mensaje}
-          </div>
-        )}
-        {/* Botón de envío */}
-        <button type="submit" className="btn">
-          Enviar Mensaje
-        </button>
-        {/* Mensaje de éxito (se muestra condicionalmente) */}
-        {enviado && (
-          <div className="mensaje-exito" style={{ display: "block" }}>
-            ¡Mensaje enviado correctamente! Te responderemos pronto.
-          </div>
-        )}
-        {/* Información adicional */}
-        <div className="info-contacto">
-          <h3>Otras formas de contactarnos:</h3>
-          <p>
-            <strong>📧 Email:</strong> info@falaferia.com
-          </p>
-          <p>
-            <strong>📱 Teléfono:</strong> +56 9 1234 5678
-          </p>
-          <p>
-            <strong>📍 Dirección:</strong> Santiago, Chile
-          </p>{" "}
-          {/* Corregido texto original */}
         </div>
-      </form>
+      </div>
     </div>
   );
 }

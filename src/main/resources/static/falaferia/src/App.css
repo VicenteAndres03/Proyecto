@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030; /* Bootstrap's standard for sticky headers */
+  padding: 2rem 4rem;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.nav-link {
+  font-size: 1.5rem;
+}
+
+.main-content {
+  padding-top: 160px;
+}

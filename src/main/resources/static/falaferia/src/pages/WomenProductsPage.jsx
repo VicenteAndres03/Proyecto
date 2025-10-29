@@ -1,7 +1,6 @@
 // src/pages/WomenProductsPage.jsx
 import React from "react";
 import ProductCard from "../components/product/ProductCard"; // Importa el componente reutilizable
-import "./WomenProductsPage.css"; // Estilos para la disposición de esta página
 
 // --- DATOS DE EJEMPLO PARA MUJER ---
 // En una aplicación real, estos datos vendrían de tu API (backend)
@@ -59,15 +58,11 @@ const womenProducts = [
 
 function WomenProductsPage({ onAddToCart }) {
   return (
-    // Usamos clases específicas para esta página
-    <section className="productos-destacados-womenpage">
-      <h2>Ropa Mujer</h2>
-      {/* Grid para mostrar las tarjetas */}
-      <div className="productos-grid-womenpage">
-        {/* Mapeamos (recorremos) la lista de productos de mujer */}
+    <div className="container my-5">
+      <h2 className="text-center mb-4">Ropa Mujer</h2>
+      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {womenProducts && womenProducts.length > 0 ? (
           womenProducts.map((product) => (
-            // Para cada producto, renderizamos el componente ProductCard
             <ProductCard
               key={product.id}
               product={product}
@@ -75,10 +70,12 @@ function WomenProductsPage({ onAddToCart }) {
             />
           ))
         ) : (
-          <p>No hay productos disponibles en este momento.</p> // Mensaje si no hay productos
+          <div className="col">
+            <p className="text-center">No hay productos disponibles en este momento.</p>
+          </div>
         )}
       </div>
-    </section>
+    </div>
   );
 }
 
