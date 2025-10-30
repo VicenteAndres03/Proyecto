@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function AdminLoginPage() {
   const [correo, setCorreo] = useState("");
@@ -74,6 +74,9 @@ function AdminLoginPage() {
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Iniciar Sesión</button>
               </form>
+              <p className="text-center mt-3">
+                <Link to="/login">Iniciar sesión como cliente</Link>
+              </p>
             </div>
           </div>
         </div>
