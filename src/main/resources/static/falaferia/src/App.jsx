@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import MenProductsPage from "./pages/MenProductsPage";
 import WomenProductsPage from "./pages/WomenProductsPage"; // <-- Importa la página de mujer
 import CartPage from "./pages/CartPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 import "./index.css";
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           {/* Alias en español: soportar /registro además de /register */}
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/admin-login" element={<AdminLoginPage />} />
         </Routes>
       </main>
       <Footer />
