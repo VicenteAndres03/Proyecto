@@ -92,7 +92,6 @@ function LoginPage() {
                     className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
-                    required
                   />
                   {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
                 </div>
