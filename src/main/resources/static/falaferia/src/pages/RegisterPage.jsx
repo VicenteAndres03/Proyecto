@@ -88,7 +88,6 @@ function RegisterPage() {
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
                     disabled={loading}
-                    required
                   />
                   {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
                 </div>
@@ -101,7 +100,6 @@ function RegisterPage() {
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
                     disabled={loading}
-                    required
                   />
                   {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
                 </div>
@@ -114,7 +112,6 @@ function RegisterPage() {
                     value={contraseña}
                     onChange={(e) => setContraseña(e.target.value)}
                     disabled={loading}
-                    required
                   />
                   {errores.contraseña && <div className="invalid-feedback">{errores.contraseña}</div>}
                 </div>
@@ -127,11 +124,10 @@ function RegisterPage() {
                     value={confirmarContraseña}
                     onChange={(e) => setConfirmarContraseña(e.target.value)}
                     disabled={loading}
-                    required
                   />
                   {errores.confirmar && <div className="invalid-feedback">{errores.confirmar}</div>}
                 </div>
-                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                <button type="button" className="btn btn-primary w-100" disabled={loading}>
                   {loading ? "Registrando..." : "Registrarse"}
                 </button>
               </form>
