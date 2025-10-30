@@ -32,6 +32,11 @@ function LoginPage() {
 
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
+    if (usuarios.length === 0) {
+      setErrorLogin("No hay usuarios registrados en el sistema");
+      return;
+    }
+
     const usuarioEncontrado = usuarios.find(u => u.correo === correo);
 
     if (!usuarioEncontrado) {
