@@ -103,7 +103,6 @@ function LoginPage() {
                     className={`form-control ${errores.contraseña ? 'is-invalid' : ''}`}
                     value={contraseña}
                     onChange={(e) => setContraseña(e.target.value)}
-                    required
                   />
                   {errores.contraseña && <div className="invalid-feedback">{errores.contraseña}</div>}
                 </div>
