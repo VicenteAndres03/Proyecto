@@ -87,7 +87,7 @@ function LoginPage() {
                 <div className="mb-3">
                   <label htmlFor="correo" className="form-label">Correo Electrónico</label>
                   <input
-                    type="email"
+                    type="text"
                     id="correo"
                     className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
                     value={correo}
