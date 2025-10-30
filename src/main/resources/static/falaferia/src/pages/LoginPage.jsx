@@ -121,7 +121,7 @@ function LoginPage() {
                   </div>
                   <Link to="/olvide-contrasena">¿Olvidaste tu contraseña?</Link>
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Iniciar Sesión</button>
+                <button type="button" onClick={handleSubmit} className="btn btn-primary w-100">Iniciar Sesión</button>
               </form>
               <div className="text-center mt-3">
                 <Link to="/admin-login">Ingresar como administrador</Link>
