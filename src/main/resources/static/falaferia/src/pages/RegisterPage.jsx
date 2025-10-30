@@ -8,6 +8,7 @@ function RegisterPage() {
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
   const [errores, setErrores] = useState({});
   const [loading, setLoading] = useState(false);
+  const [exito, setExito] = useState(false);
   const navigate = useNavigate();
 
   const validarFormulario = () => {
@@ -32,15 +33,36 @@ function RegisterPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-
+    
     if (validarFormulario()) {
+
+      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+      if (usuarios.find(u => u.correo === correo)) {
+      setErrores({ correo: "Este correo ya está registrado" });
+      setLoading(false);
+      return;
+      }
+
+      usuarios.push({ nombre, correo, contraseña });
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
       console.log("Datos del registro:", { nombre, correo, contraseña });
       alert(`¡Registro exitoso! Bienvenido a FalaFeria, ${nombre}!`);
+      setExito(true);
+      
+      //Esto es para limpiar el formulario
+      setNombre("");
+      setCorreo("");
+      setContraseña("");
+      setConfirmarContraseña("");
+
       setLoading(false);
       navigate("/login");
     } else {
       setLoading(false);
     }
+
   };
 
   return (
@@ -50,6 +72,12 @@ function RegisterPage() {
           <div className="card shadow-sm">
             <div className="card-body p-5">
               <h1 className="card-title text-center mb-4">Crear Cuenta</h1>
+
+              {exito && (
+                <div className="alert alert-success">
+                  ¡Registro exitoso!
+                </div>
+                        )}
               <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
                   <label htmlFor="nombre" className="form-label">Nombre Completo</label>
