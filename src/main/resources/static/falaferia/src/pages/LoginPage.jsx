@@ -83,12 +83,13 @@ function LoginPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} noValidate>
+              <form onSubmit={handleSubmit} noValidate autoComplete= "off">
                 <div className="mb-3">
                   <label htmlFor="correo" className="form-label">Correo Electrónico</label>
                   <input
                     type="text"
                     id="correo"
+                    autoComplete="off"
                     className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
@@ -100,6 +101,7 @@ function LoginPage() {
                   <input
                     type="password"
                     id="contraseña"
+                    autoComplete="off"
                     className={`form-control ${errores.contraseña ? 'is-invalid' : ''}`}
                     value={contraseña}
                     onChange={(e) => setContraseña(e.target.value)}
