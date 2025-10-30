@@ -7,6 +7,7 @@ function LoginPage() {
   const [recordar, setRecordar] = useState(false);
   const [errores, setErrores] = useState({});
   const [errorLogin, setErrorLogin] = useState("");
+  const [exito, setExito] = useState(false);
   const navigate = useNavigate();
 
   const validarFormulario = () => {
@@ -23,20 +24,39 @@ function LoginPage() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrorLogin("");
+  e.preventDefault();
+  setErrorLogin("");
+  setExito(false);
 
-    if (validarFormulario()) {
-      if (correo === "cliente@ejemplo.com" && contraseña === "password123") {
-        alert("¡Inicio de sesión exitoso! Redirigiendo...");
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      } else {
-        setErrorLogin("Correo o contraseña incorrectos.");
-      }
+  if (validarFormulario()) {
+
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    const usuarioEncontrado = usuarios.find(u => u.correo === correo);
+
+    if (!usuarioEncontrado) {
+      setErrorLogin("No existe una cuenta registrada con este correo");
+      return;
     }
-  };
+
+    if (usuarioEncontrado.contraseña !== contraseña) {
+      setErrorLogin("Contraseña incorrecta");
+      return;
+    }
+
+    setExito(true);
+    alert(`¡Bienvenido a FalaFeria, ${usuarioEncontrado.nombre}!`);
+
+    if (recordar) {
+      localStorage.setItem("usuarioActivo", JSON.stringify(usuarioEncontrado));
+    }
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  }
+};
+
 
   return (
     <div className="container my-5">
@@ -45,7 +65,19 @@ function LoginPage() {
           <div className="card shadow-sm">
             <div className="card-body p-5">
               <h1 className="card-title text-center mb-4">Iniciar Sesión</h1>
-              {errorLogin && <div className="alert alert-danger">{errorLogin}</div>}
+
+              {errorLogin && (
+                <div className="alert alert-danger">
+                  {errorLogin}
+                </div>
+              )}
+
+              {exito && (
+                <div className="alert alert-success">
+                  Inicio de sesión exitoso
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
                   <label htmlFor="correo" className="form-label">Correo Electrónico</label>
