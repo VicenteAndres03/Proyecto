@@ -1,72 +1,39 @@
-// src/pages/MenProductsPage.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/product/ProductCard";
 
-// --- DATOS DE EJEMPLO PARA HOMBRE (los mismos de antes) ---
-const menProducts = [
-  {
-    id: "H-POLERON-01",
-    name: "Poleron Hombre talla XL",
-    brand: "FALAFERIA",
-    price: 5700,
-    discount: "-30%",
-    images: [
-      "/src/assets/Ropa/Poleron Hombre/Poleron1h.webp",
-      "/src/assets/Ropa/Poleron Hombre/Poleron2h.webp",
-      "/src/assets/Ropa/Poleron Hombre/Poleron3h.webp",
-      "/src/assets/Ropa/Poleron Hombre/Poleron4h.webp",
-      "/src/assets/Ropa/Poleron Hombre/Poleron5h.webp",
-    ],
-    freeShipping: true,
-    seller: "FalaFeria",
-  },
-  {
-    id: "H-POLERA-01",
-    name: "Polera Hombre talla XL",
-    brand: "FalaFeria",
-    price: 3800,
-    images: [
-      "/src/assets/Ropa/Polera Hombre/Polera1H.webp",
-      "/src/assets/Ropa/Polera Hombre/Polera2H.webp",
-      "/src/assets/Ropa/Polera Hombre/Polera3H.webp",
-      "/src/assets/Ropa/Polera Hombre/Polera4H.webp",
-    ],
-    freeShipping: true,
-    seller: "FalaFeria",
-  },
-  {
-    id: "H-PANTALON-01",
-    name: "Pantalon Hombre talla M",
-    brand: "FalaFeria",
-    price: 4300,
-    images: [
-      "/src/assets/Ropa/Pantalon Hombre/Pantalon1H.webp",
-      "/src/assets/Ropa/Pantalon Hombre/Pantalon2H.webp",
-      "/src/assets/Ropa/Pantalon Hombre/Pantalon3H.webp",
-      "/src/assets/Ropa/Pantalon Hombre/Pantalon4H.webp",
-    ],
-    freeShipping: true,
-    seller: "FalaFeria",
-  },
-];
-// --- FIN DATOS DE EJEMPLO ---
-
 function MenProductsPage({ onAddToCart }) {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Petición al backend para traer solo ropa de hombre
+    fetch("http://localhost:8080/api/productos/filtro/hombre")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Error:", err));
+  }, []);
+
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">Ropa Hombre</h2>
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {menProducts && menProducts.length > 0 ? (
-          menProducts.map((product) => (
+        {products.length > 0 ? (
+          products.map((product) => (
             <ProductCard
               key={product.id}
-              product={product}
+              product={{
+                id: product.id,
+                name: product.nombre,
+                price: product.precio,
+                images: [product.imagenUrl],
+                // AQUÍ ESTÁ LA CORRECCIÓN SEGURA:
+                brand: product.marca ? product.marca.nombre : "FalaFeria"
+              }}
               onAddToCart={onAddToCart}
             />
           ))
         ) : (
-          <div className="col">
-            <p className="text-center">No hay productos disponibles en este momento.</p>
+          <div className="col w-100">
+            <p className="text-center alert alert-info">Cargando ropa de hombre...</p>
           </div>
         )}
       </div>

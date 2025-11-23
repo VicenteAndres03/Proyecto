@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import imgIzquierda from '../assets/Ropa/Izquierda.png';
-import imgDerecha from '../assets/Ropa/Derecha.png';
 
 function ProductsPage() {
   const sectionStyle = {
@@ -21,7 +19,7 @@ function ProductsPage() {
       {/* Men's Section */}
       <div
         className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
-        style={createSideStyle(imgIzquierda)}
+        style={createSideStyle("/Ropa/Izquierda.png")}
         onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
         onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
       >
@@ -38,7 +36,7 @@ function ProductsPage() {
       {/* Women's Section */}
       <div
         className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
-        style={createSideStyle(imgDerecha)}
+        style={createSideStyle("/Ropa/Derecha.png")}
         onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
         onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
       >

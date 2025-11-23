@@ -1,21 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import poleronHombreImg from "../assets/Ropa/Poleron Hombre/Poleron1h.webp";
-import poleronMujerImg from "../assets/Ropa/Poleron Mujer/Poleron1M.webp";
-import poleraHombreImg from "../assets/Ropa/Polera Hombre/Polera1H.webp";
-import poleraMujerImg from "../assets/Ropa/Polera Mujer/Polera1M.webp";
-import fondoImg from "../assets/Ropa/Fondo.png";
+
 
 function HomePage() {
+
+  const [productos, setProductos] = useState([]);
+
+
+  useEffect(() => {
+    console.log("Intentando conectar con el Backend...");
+    
+    fetch("http://localhost:8080/api/productos")
+      .then(response => response.json())
+      .then(data => {
+        console.log("CONEXIÓN EXITOSA! Aquí están los datos reales:");
+        console.log(data); 
+        setProductos(data);
+      })
+      .catch(error => console.error("Error de conexión:", error));
+  }, []);
+
   const heroStyle = {
-    backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${fondoImg})`,
+    backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Ropa/Fondo.png")`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
 
   return (
     <>
-      {/* --- Hero Section --- */}
+      {/* --- Hero Section (Banner Principal) --- */}
       <section
         className="d-flex align-items-center justify-content-center text-white text-center"
         style={{ ...heroStyle, minHeight: "80vh" }}
@@ -29,63 +42,47 @@ function HomePage() {
         </div>
       </section>
 
-      {/* --- Featured Products Section --- */}
       <section className="py-5 bg-light">
         <div className="container">
           <h2 className="text-center mb-5">Productos Destacados</h2>
           <div className="row g-4">
-            {/* Product 1 */}
-            <div className="col-lg-3 col-md-6">
-              <div className="card h-100 text-center">
-                <img src={poleronHombreImg} className="card-img-top" alt="Poleron Hombre" style={{ height: "300px", objectFit: "contain" }} />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">Poleron Hombre</h5>
-                  <p className="card-text flex-grow-1">Talla XL<br />$5.700</p>
-                  <Link to="/hombre" className="btn btn-dark mt-auto">
-                    Comprar
-                  </Link>
+            
+            {productos.map((producto) => (
+              <div className="col-lg-3 col-md-6" key={producto.id}>
+                <div className="card h-100 text-center">
+                  
+
+                  <img 
+                    src={producto.imagenUrl} 
+                    className="card-img-top" 
+                    alt={producto.nombre} 
+                    style={{ height: "300px", objectFit: "contain" }} 
+
+                    onError={(e) => { e.target.src = "https://placehold.co/300x300?text=Foto+Pendiente"; }}
+                  />
+                  
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title">{producto.nombre}</h5>
+                    <p className="card-text flex-grow-1">
+                      {producto.descripcion}
+                      <br />
+                      <strong className="fs-5">${producto.precio}</strong>
+                    </p>
+                    
+                    <Link to={`/${producto.categoria.nombre}`} className="btn btn-dark mt-auto">
+                      Comprar
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* Product 2 */}
-            <div className="col-lg-3 col-md-6">
-              <div className="card h-100 text-center">
-                <img src={poleronMujerImg} className="card-img-top" alt="Poleron Mujer" style={{ height: "300px", objectFit: "contain" }} />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">Poleron Mujer</h5>
-                  <p className="card-text flex-grow-1">Talla M<br />$5.300</p>
-                  <Link to="/mujer" className="btn btn-dark mt-auto">
-                    Comprar
-                  </Link>
-                </div>
+            ))}
+
+            {productos.length === 0 && (
+              <div className="col-12 text-center">
+                <p className="alert alert-info">Cargando productos desde el servidor...</p>
               </div>
-            </div>
-            {/* Product 3 */}
-            <div className="col-lg-3 col-md-6">
-              <div className="card h-100 text-center">
-                <img src={poleraHombreImg} className="card-img-top" alt="Polera Hombre" style={{ height: "300px", objectFit: "contain" }} />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">Polera Hombre</h5>
-                  <p className="card-text flex-grow-1">Talla XL<br />$3.800</p>
-                  <Link to="/hombre" className="btn btn-dark mt-auto">
-                    Comprar
-                  </Link>
-                </div>
-              </div>
-            </div>
-            {/* Product 4 */}
-            <div className="col-lg-3 col-md-6">
-              <div className="card h-100 text-center">
-                <img src={poleraMujerImg} className="card-img-top" alt="Polera Mujer" style={{ height: "300px", objectFit: "contain" }} />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">Polera Mujer</h5>
-                  <p className="card-text flex-grow-1">Talla M<br />$3.800</p>
-                  <Link to="/mujer" className="btn btn-dark mt-auto">
-                    Comprar
-                  </Link>
-                </div>
-              </div>
-            </div>
+            )}
+
           </div>
         </div>
       </section>

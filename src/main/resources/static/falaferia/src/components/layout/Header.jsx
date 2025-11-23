@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoImg from "../../assets/Ropa/Logo.png";
 
 function Header({ cartCount }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <img src={logoImg} alt="Logo FalaFeria" width="80" height="80" className="d-inline-block align-text-top me-2" />
+          <img src="/Ropa/Logo.png" alt="Logo FalaFeria" width="80" height="80" className="d-inline-block align-text-top me-2" />
           FalaFeria
         </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

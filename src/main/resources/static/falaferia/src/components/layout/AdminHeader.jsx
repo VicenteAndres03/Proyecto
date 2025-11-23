@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logoImg from "../../assets/Ropa/Logo.png";
 
 function AdminHeader() {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ function AdminHeader() {
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/admin">
           <img
-            src={logoImg}
+            src={"/Ropa/Logo.png"}
             alt="Logo FalaFeria"
             width="80"
             height="80"
