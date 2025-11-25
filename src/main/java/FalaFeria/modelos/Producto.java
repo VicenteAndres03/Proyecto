@@ -1,12 +1,8 @@
 package FalaFeria.modelos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import java.time.LocalDate;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "productos")
@@ -20,26 +16,42 @@ public class Producto {
     private String descripcion;
     private Integer precio;
     private String imagenUrl;
+    private LocalDate fechaIngreso;
+    private boolean envioGratis;
+    private String condicion;
 
+    @PrePersist
+    public void antesDeGuardar() {
+        if (this.fechaIngreso == null) {
+            this.fechaIngreso = LocalDate.now();
+        }
+    }
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id") // Crea la columna de enlace (FK)
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    // --- RELACIÓN CON MARCA (ManyToOne) ---
+  
     @ManyToOne
-    @JoinColumn(name = "marca_id") // Crea la columna de enlace (FK)
+    @JoinColumn(name = "marca_id") 
     private Marca marca;
 
     public Producto(){
 
     }
 
-    public Producto(String nombre, String descripcion, Integer precio, String imagenUrl, Categoria categoria, Marca marca){
+    public Producto(String nombre, String descripcion, Integer precio, String imagenUrl, Categoria categoria, Marca marca,
+                    boolean envioGratis, String condicion) {
+
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.imagenUrl = imagenUrl;
+        this.categoria = categoria;
+        this.marca = marca;
+        this.envioGratis = envioGratis;
+        this.condicion = condicion;
+        this.fechaIngreso = LocalDate.now();
     }
 
     public Long getId() {
@@ -93,5 +105,22 @@ public class Producto {
 
     public void setMarca(Marca marca){
         this.marca = marca; }
+    
+    public LocalDate getFechaIngreso(){
+        return fechaIngreso; }
 
+    public void setFechaIngreso(LocalDate fechaIngreso){
+        this.fechaIngreso = fechaIngreso; }
+    
+    public boolean isEnvioGratis(){
+        return envioGratis; }
+
+    public void setEnvioGratis(boolean envioGratis){
+        this.envioGratis = envioGratis; }
+
+    public String getCondicion(){
+        return condicion; }
+
+    public void setCondicion(String condicion){
+        this.condicion = condicion; }
 }

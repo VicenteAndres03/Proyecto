@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Carousel } from 'bootstrap';
 
 function ProductCard({ product, onAddToCart }) {
+  // Si no hay producto, no renderizamos nada para evitar errores
   if (!product) {
     return null;
   }
@@ -12,8 +13,10 @@ function ProductCard({ product, onAddToCart }) {
 
   useEffect(() => {
     if (carouselRef.current) {
+      // Inicializamos el carrusel de Bootstrap manualmente
+      // eslint-disable-next-line no-unused-vars
       const carousel = new Carousel(carouselRef.current, {
-        interval: 3000, // Optional: set interval
+        interval: 3000,
         ride: 'carousel'
       });
     }
@@ -30,12 +33,15 @@ function ProductCard({ product, onAddToCart }) {
         {images && images.length > 0 ? (
           <div id={carouselId} ref={carouselRef} className="carousel slide">
             <div className="carousel-inner">
+              
+              {/* --- AQUÍ ESTÁ LA CORRECCIÓN (key={index}) --- */}
               {images.map((imgSrc, index) => (
                 <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                   <img src={imgSrc} className="d-block w-100" alt={`${name} ${index + 1}`} />
                   {freeShipping && <div className="badge bg-success position-absolute top-0 end-0 m-2">Envío gratis</div>}
                 </div>
               ))}
+              
             </div>
             {images.length > 1 && (
               <>
@@ -60,7 +66,8 @@ function ProductCard({ product, onAddToCart }) {
           <p className="card-text">{brand || "FalaFeria"}</p>
           {seller && <p className="card-text"><small className="text-muted">Vendido por {seller}</small></p>}
           <div className="d-flex justify-content-between align-items-center">
-            <p className="card-text fs-5 fw-bold mb-0">{`${price.toLocaleString("es-CL")}`}</p>
+            {/* Protección contra precios nulos */}
+            <p className="card-text fs-5 fw-bold mb-0">{`${(price || 0).toLocaleString("es-CL")}`}</p>
             {discount && <span className="badge bg-danger">{discount}</span>}
           </div>
         </div>

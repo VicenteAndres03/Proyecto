@@ -69,7 +69,8 @@ function HomePage() {
                       <strong className="fs-5">${producto.precio}</strong>
                     </p>
                     
-                    <Link to={`/${producto.categoria.nombre}`} className="btn btn-dark mt-auto">
+                    <Link to={`/${producto.categoria ? producto.categoria.nombre : 'productos'}`} 
+                      className="btn btn-dark mt-auto">
                       Comprar
                     </Link>
                   </div>

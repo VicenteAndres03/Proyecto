@@ -2,140 +2,91 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
-  const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [contraseña, setContraseña] = useState("");
-  const [confirmarContraseña, setConfirmarContraseña] = useState("");
-  const [errores, setErrores] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [exito, setExito] = useState(false);
+  const [formData, setFormData] = useState({
+    nombre: "",
+    email: "",
+    password: "",
+    confirmPassword: "" // Solo para validación visual
+  });
+
   const navigate = useNavigate();
 
-  const validarFormulario = () => {
-    const nuevosErrores = {};
-    if (nombre.trim().length < 2) {
-      nuevosErrores.nombre = "Por favor ingresa tu nombre completo";
-    }
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!correo || !regexCorreo.test(correo)) {
-      nuevosErrores.correo = "Por favor ingresa un correo válido";
-    }
-    if (contraseña.length < 6) {
-      nuevosErrores.contraseña = "La contraseña debe tener al menos 6 caracteres";
-    }
-    if (contraseña !== confirmarContraseña) {
-      nuevosErrores.confirmar = "Las contraseñas no coinciden";
-    }
-    setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    
-    if (validarFormulario()) {
 
-      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-      if (usuarios.find(u => u.correo === correo)) {
-      setErrores({ correo: "Este correo ya está registrado" });
-      setLoading(false);
+    // 1. Validaciones básicas
+    if (formData.password !== formData.confirmPassword) {
+      alert("❌ Las contraseñas no coinciden.");
       return;
-      }
-
-      usuarios.push({ nombre, correo, contraseña });
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-      console.log("Datos del registro:", { nombre, correo, contraseña });
-      alert(`¡Registro exitoso! Bienvenido a FalaFeria, ${nombre}!`);
-      setExito(true);
-      
-      //Esto es para limpiar el formulario
-      setNombre("");
-      setCorreo("");
-      setContraseña("");
-      setConfirmarContraseña("");
-
-      setLoading(false);
-      navigate("/login");
-    } else {
-      setLoading(false);
     }
 
+    // 2. Preparamos el objeto para Java (quitamos confirmPassword porque Java no lo espera)
+    const usuarioParaEnviar = {
+      nombre: formData.nombre,
+      email: formData.email,
+      password: formData.password,
+      rol: "USER" // Rol por defecto
+    };
+
+    // 3. Enviar al Backend
+    fetch("http://localhost:8080/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioParaEnviar),
+    })
+      .then(async (res) => {
+        const textoRespuesta = await res.text(); // Leemos la respuesta (sea error o éxito)
+        if (!res.ok) throw new Error(textoRespuesta); // Si falló, lanzamos error
+        return textoRespuesta;
+      })
+      .then((mensaje) => {
+        alert("✅ " + mensaje);
+        navigate("/login"); // Redirigir al login para que entre
+      })
+      .catch((err) => {
+        alert("❌ Error al registrar: " + err.message);
+      });
   };
 
   return (
-    <div className="container my-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-6">
-          <div className="card shadow-sm">
-            <div className="card-body p-5">
-              <h1 className="card-title text-center mb-4">Crear Cuenta</h1>
-
-              {exito && (
-                <div className="alert alert-success">
-                  ¡Registro exitoso!
-                </div>
-                        )}
-              <form onSubmit={handleSubmit} noValidate>
-                <div className="mb-3">
-                  <label htmlFor="nombre" className="form-label">Nombre Completo</label>
-                  <input
-                    type="text"
-                    id="nombre"
-                    className={`form-control ${errores.nombre ? 'is-invalid' : ''}`}
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                    disabled={loading}
-                  />
-                  {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="correo" className="form-label">Correo Electrónico</label>
-                  <input
-                    type="email"
-                    id="correo"
-                    className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
-                    value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
-                    disabled={loading}
-                  />
-                  {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="contraseña" className="form-label">Contraseña</label>
-                  <input
-                    type="password"
-                    id="contraseña"
-                    className={`form-control ${errores.contraseña ? 'is-invalid' : ''}`}
-                    value={contraseña}
-                    onChange={(e) => setContraseña(e.target.value)}
-                    disabled={loading}
-                  />
-                  {errores.contraseña && <div className="invalid-feedback">{errores.contraseña}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmar-contraseña" className="form-label">Confirmar Contraseña</label>
-                  <input
-                    type="password"
-                    id="confirmar-contraseña"
-                    className={`form-control ${errores.confirmar ? 'is-invalid' : ''}`}
-                    value={confirmarContraseña}
-                    onChange={(e) => setConfirmarContraseña(e.target.value)}
-                    disabled={loading}
-                  />
-                  {errores.confirmar && <div className="invalid-feedback">{errores.confirmar}</div>}
-                </div>
-                <button type="button" className="btn btn-primary w-100" disabled={loading}>
-                  {loading ? "Registrando..." : "Registrarse"}
-                </button>
-              </form>
-              <div className="text-center mt-4 pt-4 border-top">
-                <p>¿Ya tienes una cuenta? <Link to="/login">Iniciar Sesión</Link></p>
-              </div>
-            </div>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card p-4 shadow" style={{ width: "400px" }}>
+        <h2 className="text-center mb-4">Crear Cuenta</h2>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Nombre Completo</label>
+            <input type="text" className="form-control" name="nombre"
+              value={formData.nombre} onChange={handleChange} required placeholder="Juan Pérez" />
           </div>
+
+          <div className="mb-3">
+            <label className="form-label">Correo Electrónico</label>
+            <input type="email" className="form-control" name="email"
+              value={formData.email} onChange={handleChange} required placeholder="juan@correo.com" />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input type="password" className="form-control" name="password"
+              value={formData.password} onChange={handleChange} required placeholder="******" />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Confirmar Contraseña</label>
+            <input type="password" className="form-control" name="confirmPassword"
+              value={formData.confirmPassword} onChange={handleChange} required placeholder="******" />
+          </div>
+
+          <button type="submit" className="btn btn-success w-100">Registrarse</button>
+        </form>
+
+        <div className="text-center mt-3">
+          <p>¿Ya tienes cuenta? <Link to="/login">Inicia Sesión aquí</Link></p>
         </div>
       </div>
     </div>
