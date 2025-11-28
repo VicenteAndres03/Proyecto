@@ -2,7 +2,7 @@ package FalaFeria.modelos;
 
 import jakarta.persistence.*;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore; // <--- ¡ESTE IMPORT ES VITAL!
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "categorias")
@@ -14,8 +14,7 @@ public class Categoria {
 
     private String nombre;
 
-    // --- AQUÍ ESTÁ EL CORTE DEL BUCLE ---
-    @JsonIgnore // <--- ¡Sin esto, tu página se queda cargando para siempre!
+    @JsonIgnore 
     @OneToMany(mappedBy = "categoria")
     private List<Producto> productos;
 
