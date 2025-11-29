@@ -24,7 +24,7 @@ public class AuthControlador {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SolicitudLogin request) {
-        System.out.println("👀 LOGIN: " + request.getEmail());
+        System.out.println("LOGIN: " + request.getEmail());
         
         Optional<Usuario> usuarioOpt = usuarioRepo.findByEmail(request.getEmail());
         if (usuarioOpt.isPresent()) {
