@@ -3,54 +3,60 @@ package FalaFeria.seguridad;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 
 @Service
 public class ServicioJwt {
-    
-    private static final String SECRET_KEY = "ClaveSuperSecretaParaFirmaDeTokensFalaFeria2024DuocUC"; 
-    
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+
+    @Value("${jwt.secret}")
+    private String claveSecreta; // También traduje el nombre de la variable para que combine
+
+    @Value("${jwt.expiration}")
+    private long expiracionJwt;
+
+    // Antes: getSigningKey
+    private Key obtenerClaveFirma() {
+        return Keys.hmacShaKeyFor(claveSecreta.getBytes());
     }
 
-    // MÉTODO PARA GENERAR EL TOKEN
-    public String generateToken(String email, String rol) {
+    // Antes: generateToken
+    public String generarToken(String email, String rol) {
         return Jwts.builder()
-                .setSubject(email) // El "dueño" del token
-                .claim("rol", rol) // Guardamos el rol dentro del token
-                .setIssuedAt(new Date(System.currentTimeMillis())) // Fecha de creación
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Expira en 10 horas
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Firma digital
+                .setSubject(email)
+                .claim("rol", rol)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiracionJwt)) 
+                .signWith(obtenerClaveFirma(), SignatureAlgorithm.HS256) // Llamada actualizada
                 .compact();
     }
 
-    // MÉTODO PARA LEER EL USUARIO DEL TOKEN
-    public String extractUsername(String token) {
+    // Antes: extractUsername
+    public String extraerUsuario(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(obtenerClaveFirma()) // Llamada actualizada
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
     
-    // VALIDAR SI EL TOKEN ES CORRECTO
-    public boolean validateToken(String token, String email) {
-        final String username = extractUsername(token);
-        return (username.equals(email) && !isTokenExpired(token));
+    // Antes: validateToken
+    public boolean validarToken(String token, String email) {
+        final String usuario = extraerUsuario(token); // Llamada actualizada
+        return (usuario.equals(email) && !esTokenExpirado(token)); // Llamada actualizada
     }
 
-    private boolean isTokenExpired(String token) {
+    // Antes: isTokenExpired
+    private boolean esTokenExpirado(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(obtenerClaveFirma()) // Llamada actualizada
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration()
                 .before(new Date());
     }
-
 }

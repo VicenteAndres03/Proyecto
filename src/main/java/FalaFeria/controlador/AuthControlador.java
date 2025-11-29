@@ -31,7 +31,7 @@ public class AuthControlador {
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             if (usuario.getPassword().equals(request.getPassword())) {
-                String token = jwtService.generateToken(usuario.getEmail(), usuario.getRol());
+                String token = jwtService.generarToken(usuario.getEmail(), usuario.getRol());
                 return ResponseEntity.ok(new PeticionLogin(token, usuario.getRol(), usuario.getId()));
             }
         }
