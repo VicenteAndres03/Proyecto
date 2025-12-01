@@ -45,17 +45,41 @@
   position: sticky;
   top: 0;
   z-index: 1030; /* Bootstrap's standard for sticky headers */
-  padding: 2rem 4rem;
+  padding: 0.5rem 1rem;
 }
 
 .navbar-brand {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .nav-link {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .main-content {
   padding-top: 160px;
+}
+
+/* Estilos para el Home (Hero Section) */
+.hero-section {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Ropa/Fondo.png");
+  background-size: cover;
+  background-position: center;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+/* Estilos para textos pequeños (Footer y Header) */
+.text-small {
+  font-size: 10px;
+}
+
+/* Ajuste para imagen de cartas (para quitar el style inline en HomePage) */
+.card-img-custom {
+  height: 300px;
+  object-fit: contain;
 }

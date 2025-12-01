@@ -19,7 +19,6 @@ function Footer() {
       <div className="container p-4">
         <div className="row">
           
- 
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase fw-bold">Contacto</h5>
             <ul className="list-unstyled mb-0">
@@ -29,7 +28,6 @@ function Footer() {
             </ul>
           </div>
 
-
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase fw-bold">Horarios</h5>
             <ul className="list-unstyled">
@@ -37,7 +35,6 @@ function Footer() {
               <li><p>Sábados: 10:00 - 16:00</p></li>
             </ul>
           </div>
-
 
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase fw-bold">Enlaces</h5>
@@ -47,7 +44,6 @@ function Footer() {
               <li><Link to="/contacto" className="text-dark text-decoration-none">Contacto</Link></li>
             </ul>
           </div>
-
 
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase fw-bold text-primary">Indicadores Hoy</h5>
@@ -62,7 +58,8 @@ function Footer() {
                 <p className="mb-0">
                   📈 <strong>UF:</strong> ${indicadores.uf.valor}
                 </p>
-                <small className="text-muted" style={{fontSize: '10px'}}>Fuente: mindicador.cl</small>
+                {/* --- USO DE CLASE CSS AQUÍ --- */}
+                <small className="text-muted text-small">Fuente: mindicador.cl</small>
               </div>
             ) : (
               <p className="text-muted">Cargando indicadores...</p>

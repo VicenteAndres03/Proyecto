@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 function HomePage() {
 
   const [productos, setProductos] = useState([]);
-
 
   useEffect(() => {
     console.log("Intentando conectar con el Backend...");
@@ -23,19 +21,10 @@ function HomePage() {
       .catch(error => console.error("Error de conexión:", error));
   }, []);
 
-  const heroStyle = {
-    backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Ropa/Fondo.png")`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
-
   return (
     <>
-      {/* --- Hero Section (Banner Principal) --- */}
-      <section
-        className="d-flex align-items-center justify-content-center text-white text-center"
-        style={{ ...heroStyle, minHeight: "80vh" }}
-      >
+      {/* --- Hero Section (Clase CSS en lugar de style inline) --- */}
+      <section className="hero-section">
         <div className="container">
           <h1 className="display-3 fw-bold">Lleva tu ropa Favorita en FalaFeria</h1>
           <p className="lead">Tu ropa Favorita en Descuento</p>
@@ -54,13 +43,11 @@ function HomePage() {
               <div className="col-lg-3 col-md-6" key={producto.id}>
                 <div className="card h-100 text-center">
                   
-
+                  {/* --- Imagen con clase CSS --- */}
                   <img 
                     src={producto.imagenUrl} 
-                    className="card-img-top" 
+                    className="card-img-top card-img-custom" 
                     alt={producto.nombre} 
-                    style={{ height: "300px", objectFit: "contain" }} 
-
                     onError={(e) => { e.target.src = "https://placehold.co/300x300?text=Foto+Pendiente"; }}
                   />
                   

@@ -4,28 +4,24 @@ import { Link, useNavigate } from "react-router-dom";
 function Header({ cartCount }) {
   const navigate = useNavigate();
   
-  // Estado para saber si hay usuario logueado
   const [usuario, setUsuario] = useState(null);
 
-  // Al cargar el Header, revisamos si hay datos en la memoria
   useEffect(() => {
     const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
     const nombreGuardado = localStorage.getItem("nombre");
     
-    // Si hay token, asumimos que está logueado
     if (token) {
       setUsuario({ rol: rol, nombre: nombreGuardado});
     }
   }, []);
 
-  // Función para Cerrar Sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("rol");
     setUsuario(null);
     navigate("/login");
-    window.location.reload(); // Recargamos para limpiar todo
+    window.location.reload(); 
   };
 
   return (
@@ -46,7 +42,6 @@ function Header({ cartCount }) {
             <li className="nav-item"><Link className="nav-link" to="/productos">Ropa</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/contacto">Contacto</Link></li>
             
-            {/* Mostrar enlace al Panel Admin SOLO si es ADMIN */}
             {usuario && usuario.rol === "ADMIN" && (
               <li className="nav-item">
                 <Link className="nav-link text-danger fw-bold" to="/admin/inventario">⚙️ Panel Admin</Link>
@@ -64,22 +59,21 @@ function Header({ cartCount }) {
               )}
             </Link>
 
-            {/* LÓGICA DEL USUARIO */}
             {usuario ? (
-              // SI ESTÁ LOGUEADO: Mostramos Saludo y Logout
               <div className="dropdown">
                 <button className="btn btn-light dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                  {/* Ícono según rol (Requisito) */}
                   <span>{usuario.rol === "ADMIN" ? "👮‍♂️" : "👤"}</span>
-                  <span className="fw-bold small">{usuario.nombre || "Usuario"}</span>
-                  <span style={{fontSize: '10px'}} className="text-muted">{usuario.rol === "ADMIN" ? "Administrador" : "Cliente"}</span>
+                  <div className="d-flex flex-column text-start" style={{lineHeight: '14px'}}>
+                      <span className="fw-bold small">{usuario.nombre || "Usuario"}</span>
+                      {/* --- USO DE CLASE CSS AQUÍ --- */}
+                      <span className="text-muted text-small">{usuario.rol === "ADMIN" ? "Administrador" : "Cliente"}</span>
+                  </div>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li><button className="dropdown-item text-danger" onClick={handleLogout}>Cerrar Sesión</button></li>
                 </ul>
               </div>
             ) : (
-              // SI NO ESTÁ LOGUEADO: Botones de siempre
               <>
                 <Link className="btn btn-outline-dark btn-sm" to="/login">Iniciar Sesión</Link>
                 <Link className="btn btn-dark btn-sm" to="/register">Registrarse</Link>
