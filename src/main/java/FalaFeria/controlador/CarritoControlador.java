@@ -23,8 +23,6 @@ public class CarritoControlador {
     @Autowired private UsuarioRepositorio usuarioRepo;
     @Autowired private ProductoRepositorio productoRepo;
 
-    // 1. VER EL CARRITO DE UN USUARIO
-    // URL: /api/carrito/usuario/{id}
     @GetMapping("/usuario/{id}")
     public List<CarritoItem> verCarrito(@PathVariable Long id) {
         Usuario usuario = usuarioRepo.findById(id).orElse(null);
@@ -32,13 +30,11 @@ public class CarritoControlador {
         return carritoRepo.findByUsuario(usuario);
     }
 
-    // 2. AGREGAR PRODUCTO AL CARRITO
     @PostMapping("/agregar")
     public CarritoItem agregarAlCarrito(@RequestBody SolicitudCarrito request) {
         Usuario usuario = usuarioRepo.findById(request.getUsuarioId()).orElseThrow();
         Producto producto = productoRepo.findById(request.getProductoId()).orElseThrow();
-
-        // Ver si ya lo tiene para sumar cantidad
+ 
         Optional<CarritoItem> itemExistente = carritoRepo.findByUsuarioAndProducto(usuario, producto);
 
         if (itemExistente.isPresent()) {
@@ -51,7 +47,6 @@ public class CarritoControlador {
         }
     }
 
-    // 3. RESTAR CANTIDAD O ELIMINAR
     @PostMapping("/restar")
     public void restarDelCarrito(@RequestBody SolicitudCarrito request) {
         Usuario usuario = usuarioRepo.findById(request.getUsuarioId()).orElseThrow();
@@ -70,14 +65,12 @@ public class CarritoControlador {
         }
     }
 
-    // 4. ELIMINAR PRODUCTO COMPLETO
     @DeleteMapping("/eliminar/{itemId}")
     public void eliminarItem(@PathVariable Long itemId) {
         carritoRepo.deleteById(itemId);
     }
 
-    // 5. VACIAR CARRITO (Checkout)
-    @Transactional // Importante para borrar varios a la vez
+    @Transactional 
     @DeleteMapping("/vaciar/{usuarioId}")
     public void vaciarCarrito(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioRepo.findById(usuarioId).orElseThrow();
