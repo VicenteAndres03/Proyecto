@@ -8,7 +8,7 @@ import FalaFeria.seguridad.ServicioJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +22,9 @@ public class AuthControlador {
     @Autowired
     private ServicioJwt jwtService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SolicitudLogin request) {
         System.out.println("LOGIN: " + request.getEmail());
@@ -31,7 +34,12 @@ public class AuthControlador {
             Usuario usuario = usuarioOpt.get();
             if (usuario.getPassword().equals(request.getPassword())) {
                 String token = jwtService.generarToken(usuario.getEmail(), usuario.getRol());
-                return ResponseEntity.ok(new PeticionLogin(token, usuario.getRol(), usuario.getId()));
+                return ResponseEntity.ok(new PeticionLogin(token, usuario.getRol(), usuario.getId(), usuario.getNombre()));
+            }
+            if (passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
+                
+                String token = jwtService.generarToken(usuario.getEmail(), usuario.getRol());
+                return ResponseEntity.ok(new PeticionLogin(token, usuario.getRol(), usuario.getId(), usuario.getNombre()));
             }
         }
         return ResponseEntity.status(401).body("Credenciales incorrectas");
@@ -44,6 +52,9 @@ public class AuthControlador {
             return ResponseEntity.badRequest().body("Error: El email ya está registrado.");
         }
 
+        String passEncriptada = passwordEncoder.encode(nuevoUsuario.getPassword());
+        nuevoUsuario.setPassword(passEncriptada);
+        
         if (nuevoUsuario.getRol() == null || nuevoUsuario.getRol().isEmpty()) {
             nuevoUsuario.setRol("USER"); 
         }

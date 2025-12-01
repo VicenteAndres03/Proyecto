@@ -11,10 +11,11 @@ function Header({ cartCount }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
+    const nombreGuardado = localStorage.getItem("nombre");
     
     // Si hay token, asumimos que está logueado
     if (token) {
-      setUsuario({ rol: rol });
+      setUsuario({ rol: rol, nombre: nombreGuardado});
     }
   }, []);
 
@@ -70,7 +71,8 @@ function Header({ cartCount }) {
                 <button className="btn btn-light dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
                   {/* Ícono según rol (Requisito) */}
                   <span>{usuario.rol === "ADMIN" ? "👮‍♂️" : "👤"}</span>
-                  <span className="fw-bold small">{usuario.rol === "ADMIN" ? "Administrador" : "Cliente"}</span>
+                  <span className="fw-bold small">{usuario.nombre || "Usuario"}</span>
+                  <span style={{fontSize: '10px'}} className="text-muted">{usuario.rol === "ADMIN" ? "Administrador" : "Cliente"}</span>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li><button className="dropdown-item text-danger" onClick={handleLogout}>Cerrar Sesión</button></li>

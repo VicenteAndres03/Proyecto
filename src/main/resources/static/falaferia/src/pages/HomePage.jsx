@@ -13,9 +13,12 @@ function HomePage() {
     fetch("http://localhost:8080/api/productos")
       .then(response => response.json())
       .then(data => {
-        console.log("CONEXIÓN EXITOSA! Aquí están los datos reales:");
-        console.log(data); 
-        setProductos(data);
+        if (Array.isArray(data)) {
+          setProductos(data);
+        } else {
+          console.error("Respuesta inválida del servidor:", data);
+          setProductos([]);
+        }
       })
       .catch(error => console.error("Error de conexión:", error));
   }, []);

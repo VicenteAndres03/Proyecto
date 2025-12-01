@@ -18,15 +18,17 @@ import GestionInventarioPage from "./pages/GestionInventarioPage";
 import GestionPedidosPage from "./pages/GestionPedidosPage";
 import RutaProtegida from "./components/RutaProtegida";
 import "./index.css";
-// Importación corregida de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpdateQuantity, handleCheckout }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
+  // --- PROTECCIÓN CRÍTICA ---
+  // Si cartItems llega como null o undefined por un error, usamos [] para que no explote la página
   const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
   
+  // Calculamos la cantidad total usando el array seguro
   const cartCount = safeCartItems.reduce((acc, item) => acc + item.cantidad, 0);
 
   return (
@@ -41,6 +43,7 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
           <Route path="/hombre" element={<MenProductsPage onAddToCart={handleAddToCart} />} />
           <Route path="/mujer" element={<WomenProductsPage onAddToCart={handleAddToCart} />} />
           
+          {/* Usamos safeCartItems aquí también para evitar la pantalla blanca en CartPage */}
           <Route path="/carrito" element={
             <CartPage 
               cartItems={safeCartItems} 
@@ -69,10 +72,11 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
 };
 
 function App() {
-
+  // Inicializamos SIEMPRE como array vacío
   const [cartItems, setCartItems] = useState([]);
   const usuarioId = localStorage.getItem("usuarioId");
 
+  // Función para obtener el token y armar la cabecera
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     return {
@@ -92,15 +96,18 @@ function App() {
     })
       .then(res => {
         if (!res.ok) {
+          // Si el servidor da error (500, 403, etc.), lanzamos error para ir al catch
           throw new Error(`Error servidor: ${res.status}`);
         }
         return res.json();
       })
       .then(data => {
+        // Doble verificación: si la data no es un array, ponemos []
         setCartItems(Array.isArray(data) ? data : []);
       })
       .catch(err => {
         console.error("Error cargando carrito (Probable error 500 o red):", err);
+        // En caso de error, limpiamos el carrito para que la app siga funcionando
         setCartItems([]);
       });
   };
@@ -119,7 +126,7 @@ function App() {
     
     fetch("http://localhost:8080/api/carrito/agregar", {
       method: "POST",
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(), // Enviamos Token
       body: JSON.stringify(requestBody)
     })
     .then(res => {
@@ -147,13 +154,6 @@ function App() {
   const handleUpdateQuantity = (item, newQuantity) => {
     if (!usuarioId) return;
 
-    const prodId = item.productoId || (item.producto ? item.producto.id : null);
-
-    if (!prodId) {
-        console.error("No se pudo obtener ID del producto");
-        return;
-    }
-
     if (newQuantity > item.cantidad) {
       // Sumar 1
       fetch("http://localhost:8080/api/carrito/agregar", {
@@ -161,7 +161,7 @@ function App() {
         headers: getAuthHeaders(),
         body: JSON.stringify({
           usuarioId: parseInt(usuarioId),
-          productoId: prodId,
+          productoId: item.producto.id,
           cantidad: 1
         })
       }).then(() => fetchCart());
@@ -173,7 +173,7 @@ function App() {
         headers: getAuthHeaders(),
         body: JSON.stringify({
           usuarioId: parseInt(usuarioId),
-          productoId: prodId
+          productoId: item.producto.id
         })
       }).then(() => fetchCart());
     }

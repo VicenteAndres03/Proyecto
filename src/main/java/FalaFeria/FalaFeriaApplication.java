@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class FalaFeriaApplication {
@@ -24,7 +25,8 @@ public class FalaFeriaApplication {
     public CommandLineRunner initData(ProductoRepositorio prodRepo, 
                                       CategoriaRepositorio catRepo, 
                                       MarcaRepositorio marcaRepo,
-									  UsuarioRepositorio userRepo) {
+									  UsuarioRepositorio userRepo,
+                                      PasswordEncoder passwordEncoder) {
         return (args) -> {
 
             if (catRepo.count() == 0) {
@@ -57,8 +59,12 @@ public class FalaFeriaApplication {
             }
 
 			if (userRepo.count() == 0) {
-                Usuario admin = new Usuario("Administrador", "admin@falaferia.cl", "adminFalaferia123", "ADMIN");    
-                Usuario cliente = new Usuario("ClienteFalaferia", "cliente@gmail.com", "1234", "USER");
+
+                String passAdmin = passwordEncoder.encode("adminFalaferia123");
+                String passCliente = passwordEncoder.encode("1234");
+
+                Usuario admin = new Usuario("Administrador", "11.111.111-1", "admin@falaferia.cl", passAdmin, "ADMIN");    
+                Usuario cliente = new Usuario("ClienteFalaferia", "22.222.222-2", "cliente@gmail.com", passCliente, "USER");
 
                 userRepo.save(admin);
                 userRepo.save(cliente);

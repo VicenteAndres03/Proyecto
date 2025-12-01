@@ -134,6 +134,16 @@ function GestionInventarioPage() {
                 value={formData.nombre} onChange={handleChange} required />
             </div>
             <div className="col-md-3">
+              <label className="form-label">Fecha Ingreso</label>
+              <input 
+                type="date" 
+                className="form-control" 
+                name="fechaIngreso"
+                onChange={handleChange} 
+              />
+            </div>
+
+            <div className="col-md-3">
               <label className="form-label">Precio</label>
               <input type="number" className="form-control" name="precio" 
                 value={formData.precio} onChange={handleChange} required />

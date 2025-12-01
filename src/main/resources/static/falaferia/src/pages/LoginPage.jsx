@@ -35,6 +35,7 @@ function LoginPage() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("rol", data.rol);
         localStorage.setItem("usuarioId", data.id);
+        localStorage.setItem("nombre", data.nombre);
         
         // Redirigir según el rol
         if (data.rol === "ADMIN") {

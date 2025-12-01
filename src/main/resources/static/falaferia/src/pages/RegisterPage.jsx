@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 function RegisterPage() {
   const [formData, setFormData] = useState({
     nombre: "",
+    rut: "", // <--- Nuevo campo
     email: "",
     password: "",
-    confirmPassword: "" // Solo para validación visual
+    confirmPassword: ""
   });
 
   const navigate = useNavigate();
@@ -15,37 +16,72 @@ function RegisterPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // --- FUNCIÓN DE VALIDACIÓN DE RUT (MÓDULO 11) ---
+  const validarRut = (rut) => {
+    // 1. Limpiar el RUT (quitar puntos y guión)
+    let valor = rut.replace(/\./g, "").replace(/-/g, "");
+    
+    // 2. Separar cuerpo y dígito verificador
+    let cuerpo = valor.slice(0, -1);
+    let dv = valor.slice(-1).toUpperCase();
+    
+    // 3. Validar longitud mínima
+    if (cuerpo.length < 7) return false;
+
+    // 4. Calcular dígito esperado
+    let suma = 0;
+    let multiplo = 2;
+
+    for (let i = 1; i <= cuerpo.length; i++) {
+      let index = multiplo * valor.charAt(valor.length - i - 1);
+      suma = suma + index;
+      if (multiplo < 7) { multiplo = multiplo + 1; } else { multiplo = 2; }
+    }
+
+    let dvEsperado = 11 - (suma % 11);
+    dvEsperado = (dvEsperado === 11) ? "0" : (dvEsperado === 10) ? "K" : dvEsperado.toString();
+
+    // 5. Comparar
+    return dv === dvEsperado;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 1. Validaciones básicas
+    // VALIDACIÓN 1: Contraseñas
     if (formData.password !== formData.confirmPassword) {
       alert("❌ Las contraseñas no coinciden.");
       return;
     }
 
-    // 2. Preparamos el objeto para Java (quitamos confirmPassword porque Java no lo espera)
+    // VALIDACIÓN 2: RUT
+    if (!validarRut(formData.rut)) {
+      alert("❌ El RUT ingresado no es válido (Revise el dígito verificador).");
+      return;
+    }
+
+    // Preparar objeto para el backend
     const usuarioParaEnviar = {
       nombre: formData.nombre,
+      rut: formData.rut, // <--- Enviamos el RUT
       email: formData.email,
       password: formData.password,
-      rol: "USER" // Rol por defecto
+      rol: "USER" 
     };
 
-    // 3. Enviar al Backend
     fetch("http://localhost:8080/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuarioParaEnviar),
     })
       .then(async (res) => {
-        const textoRespuesta = await res.text(); // Leemos la respuesta (sea error o éxito)
-        if (!res.ok) throw new Error(textoRespuesta); // Si falló, lanzamos error
+        const textoRespuesta = await res.text();
+        if (!res.ok) throw new Error(textoRespuesta);
         return textoRespuesta;
       })
       .then((mensaje) => {
         alert("✅ " + mensaje);
-        navigate("/login"); // Redirigir al login para que entre
+        navigate("/login");
       })
       .catch((err) => {
         alert("❌ Error al registrar: " + err.message);
@@ -63,6 +99,21 @@ function RegisterPage() {
             <input type="text" className="form-control" name="nombre"
               value={formData.nombre} onChange={handleChange} required placeholder="Juan Pérez" />
           </div>
+
+          {/* --- CAMPO RUT NUEVO --- */}
+          <div className="mb-3">
+            <label className="form-label">RUT (Sin puntos y con guión)</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              name="rut"
+              value={formData.rut} 
+              onChange={handleChange} 
+              required 
+              placeholder="12345678-9" 
+            />
+          </div>
+          {/* ----------------------- */}
 
           <div className="mb-3">
             <label className="form-label">Correo Electrónico</label>
