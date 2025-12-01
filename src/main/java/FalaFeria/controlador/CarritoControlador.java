@@ -10,6 +10,7 @@ import FalaFeria.repositorios.ProductoRepositorio;
 import FalaFeria.repositorios.UsuarioRepositorio;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +27,19 @@ public class CarritoControlador {
     @Autowired private ProductoRepositorio productoRepo;
 
     @GetMapping("/usuario/{id}")
-    public List<CarritoItemDTO> verCarrito(@PathVariable Long id) {
+    public ResponseEntity<?> verCarrito(@PathVariable Long id) {
+        // 1. Buscamos al usuario de forma segura
         Usuario usuario = usuarioRepo.findById(id).orElse(null);
-        if (usuario == null) return null;
+        
+        // 2. Si el usuario no existe (por reinicio de BD), devolvemos 404
+        if (usuario == null) {
+            return ResponseEntity.status(404).body("Usuario no encontrado. Posible sesión caducada.");
+        }
 
+        // 3. Si existe, buscamos sus items y los convertimos a DTO
         List<CarritoItem> items = carritoRepo.findByUsuario(usuario);
         
-        return items.stream().map(item -> new CarritoItemDTO(
+        List<CarritoItemDTO> itemsDTO = items.stream().map(item -> new CarritoItemDTO(
             item.getId(),
             item.getCantidad(),
             item.getProducto().getNombre(),
@@ -40,12 +47,27 @@ public class CarritoControlador {
             item.getProducto().getImagenUrl(),
             item.getProducto().getId()
         )).collect(Collectors.toList());
+
+        // 4. Devolvemos la lista con estado 200 OKs
+        return ResponseEntity.ok(itemsDTO);
     }
 
-    @PostMapping("/agregar")
-    public void agregarAlCarrito(@RequestBody SolicitudCarrito request) {
-        Usuario usuario = usuarioRepo.findById(request.getUsuarioId()).orElseThrow();
-        Producto producto = productoRepo.findById(request.getProductoId()).orElseThrow();
+@PostMapping("/agregar")
+    public ResponseEntity<?> agregarAlCarrito(@RequestBody SolicitudCarrito request) {
+        
+        Optional<Usuario> usuarioOpt = usuarioRepo.findById(request.getUsuarioId());
+        
+        if (!usuarioOpt.isPresent()) {
+            return ResponseEntity.status(404).body("❌ Error: El usuario no existe (La BD se reinició). Por favor cierra sesión e ingresa de nuevo.");
+        }
+
+        Optional<Producto> productoOpt = productoRepo.findById(request.getProductoId());
+        if (!productoOpt.isPresent()) {
+            return ResponseEntity.status(404).body("❌ Error: El producto que intentas agregar no existe.");
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        Producto producto = productoOpt.get();
 
         Optional<CarritoItem> itemExistente = carritoRepo.findByUsuarioAndProducto(usuario, producto);
 
@@ -57,6 +79,8 @@ public class CarritoControlador {
             CarritoItem nuevo = new CarritoItem(usuario, producto, 1);
             carritoRepo.save(nuevo);
         }
+        
+        return ResponseEntity.ok("✅ Producto agregado correctamente");
     }
 
     @PostMapping("/restar")
