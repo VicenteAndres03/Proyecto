@@ -18,14 +18,16 @@ import GestionInventarioPage from "./pages/GestionInventarioPage";
 import GestionPedidosPage from "./pages/GestionPedidosPage";
 import RutaProtegida from "./components/RutaProtegida";
 import "./index.css";
+// Importación corregida de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpdateQuantity, handleCheckout }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  // Calculamos cantidad total de items
-  const cartCount = cartItems.reduce((acc, item) => acc + item.cantidad, 0);
+  const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
+  
+  const cartCount = safeCartItems.reduce((acc, item) => acc + item.cantidad, 0);
 
   return (
     <>
@@ -39,10 +41,9 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
           <Route path="/hombre" element={<MenProductsPage onAddToCart={handleAddToCart} />} />
           <Route path="/mujer" element={<WomenProductsPage onAddToCart={handleAddToCart} />} />
           
-          {/* Aquí pasamos la función de actualizar cantidad */}
           <Route path="/carrito" element={
             <CartPage 
-              cartItems={cartItems} 
+              cartItems={safeCartItems} 
               onRemoveFromCart={handleRemoveFromCart} 
               onUpdateQuantity={handleUpdateQuantity} 
               onCheckout={handleCheckout} 
@@ -68,18 +69,40 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
 };
 
 function App() {
+
   const [cartItems, setCartItems] = useState([]);
   const usuarioId = localStorage.getItem("usuarioId");
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    return {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+  };
 
   useEffect(() => {
     if (usuarioId) fetchCart();
   }, [usuarioId]);
 
   const fetchCart = () => {
-    fetch(`http://localhost:8080/api/carrito/usuario/${usuarioId}`)
-      .then(res => res.json())
-      .then(data => setCartItems(data || []))
-      .catch(err => console.error("Error cargando carrito:", err));
+    fetch(`http://localhost:8080/api/carrito/usuario/${usuarioId}`, {
+      method: "GET",
+      headers: getAuthHeaders()
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Error servidor: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        setCartItems(Array.isArray(data) ? data : []);
+      })
+      .catch(err => {
+        console.error("Error cargando carrito (Probable error 500 o red):", err);
+        setCartItems([]);
+      });
   };
 
   const handleAddToCart = (product) => {
@@ -87,53 +110,70 @@ function App() {
       alert("⚠️ Debes iniciar sesión para comprar.");
       return;
     }
+    
     const requestBody = {
       usuarioId: parseInt(usuarioId),
       productoId: product.id,
       cantidad: 1
     };
+    
     fetch("http://localhost:8080/api/carrito/agregar", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify(requestBody)
     })
     .then(res => {
       if(res.ok) {
-        alert(`✅ "${product.name}" añadido.`);
+        alert(`✅ "${product.nombre || product.name}" añadido.`);
         fetchCart();
+      } else if (res.status === 403) {
+        alert("⛔ Tu sesión ha caducado o no tienes permisos.");
+      } else {
+        alert("❌ Error al agregar al carrito.");
       }
-    });
+    })
+    .catch(err => console.error("Error en add to cart:", err));
   };
 
   const handleRemoveFromCart = (itemId) => {
-    fetch(`http://localhost:8080/api/carrito/eliminar/${itemId}`, { method: "DELETE" })
-      .then(() => fetchCart());
+    fetch(`http://localhost:8080/api/carrito/eliminar/${itemId}`, { 
+      method: "DELETE",
+      headers: getAuthHeaders()
+    })
+      .then(() => fetchCart())
+      .catch(err => console.error(err));
   };
 
-  // --- AQUÍ ESTÁ LA CORRECCIÓN: LÓGICA DE SUMAR/RESTAR ---
   const handleUpdateQuantity = (item, newQuantity) => {
     if (!usuarioId) return;
 
+    const prodId = item.productoId || (item.producto ? item.producto.id : null);
+
+    if (!prodId) {
+        console.error("No se pudo obtener ID del producto");
+        return;
+    }
+
     if (newQuantity > item.cantidad) {
-      // Si la nueva cantidad es mayor, llamamos a AGREGAR (suma 1)
+      // Sumar 1
       fetch("http://localhost:8080/api/carrito/agregar", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           usuarioId: parseInt(usuarioId),
-          productoId: item.producto.id,
+          productoId: prodId,
           cantidad: 1
         })
       }).then(() => fetchCart());
 
     } else if (newQuantity < item.cantidad) {
-      // Si la nueva cantidad es menor, llamamos a RESTAR (resta 1)
+      // Restar 1
       fetch("http://localhost:8080/api/carrito/restar", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           usuarioId: parseInt(usuarioId),
-          productoId: item.producto.id
+          productoId: prodId
         })
       }).then(() => fetchCart());
     }
@@ -141,11 +181,15 @@ function App() {
 
   const handleCheckout = () => {
     if (!usuarioId) return;
-    fetch(`http://localhost:8080/api/carrito/vaciar/${usuarioId}`, { method: "DELETE" })
+    fetch(`http://localhost:8080/api/carrito/vaciar/${usuarioId}`, { 
+      method: "DELETE",
+      headers: getAuthHeaders()
+    })
       .then(() => {
         alert("¡Gracias por tu compra! Tu pedido ha sido realizado con éxito.");
         setCartItems([]);
-      });
+      })
+      .catch(err => console.error(err));
   };
 
   return (

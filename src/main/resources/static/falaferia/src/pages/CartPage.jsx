@@ -4,7 +4,8 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
   
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const precio = item.producto ? item.producto.precio : 0;
+      // CAMBIO: Ahora leemos precioProducto directamente del DTO
+      const precio = item.precioProducto || 0;
       const cantidad = item.cantidad || 0;
       return total + (precio * cantidad);
     }, 0).toLocaleString('es-CL');
@@ -22,15 +23,16 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
         <div className="row">
           <div className="col-lg-8">
             {cartItems.map(item => {
-              const producto = item.producto || {}; 
+              // CAMBIO: Ya no necesitamos acceder a item.producto
+              // Usamos los campos planos del DTO
               
               return (
                 <div key={item.id} className="card mb-3">
                   <div className="row g-0">
                     <div className="col-md-4">
                       <img 
-                        src={producto.imagenUrl} 
-                        alt={producto.nombre} 
+                        src={item.imagenUrl} 
+                        alt={item.nombreProducto} 
                         className="img-fluid rounded-start" 
                         style={{ height: "150px", objectFit: "contain", padding: "10px" }}
                         onError={(e) => e.target.src = "https://placehold.co/150?text=Sin+Foto"}
@@ -38,13 +40,12 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
-                        <h5 className="card-title">{producto.nombre}</h5>
+                        <h5 className="card-title">{item.nombreProducto}</h5>
                         <p className="card-text">
-                          Precio: ${(producto.precio || 0).toLocaleString('es-CL')}
+                          Precio: ${(item.precioProducto || 0).toLocaleString('es-CL')}
                         </p>
                         
                         <div className="d-flex align-items-center mb-2">
-                          {/* BOTÓN RESTAR (-): Habilitado */}
                           <button 
                             className="btn btn-outline-secondary btn-sm" 
                             onClick={() => onUpdateQuantity(item, item.cantidad - 1)}
@@ -54,7 +55,6 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
                           
                           <span className="mx-2 fw-bold">{item.cantidad}</span>
                           
-                          {/* BOTÓN SUMAR (+): Habilitado */}
                           <button 
                             className="btn btn-outline-secondary btn-sm" 
                             onClick={() => onUpdateQuantity(item, item.cantidad + 1)}

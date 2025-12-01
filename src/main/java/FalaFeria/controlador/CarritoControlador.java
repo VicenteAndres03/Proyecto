@@ -1,5 +1,6 @@
 package FalaFeria.controlador;
 
+import FalaFeria.dto.CarritoItemDTO;
 import FalaFeria.dto.SolicitudCarrito;
 import FalaFeria.modelos.CarritoItem;
 import FalaFeria.modelos.Producto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/carrito")
@@ -24,26 +26,36 @@ public class CarritoControlador {
     @Autowired private ProductoRepositorio productoRepo;
 
     @GetMapping("/usuario/{id}")
-    public List<CarritoItem> verCarrito(@PathVariable Long id) {
+    public List<CarritoItemDTO> verCarrito(@PathVariable Long id) {
         Usuario usuario = usuarioRepo.findById(id).orElse(null);
         if (usuario == null) return null;
-        return carritoRepo.findByUsuario(usuario);
+
+        List<CarritoItem> items = carritoRepo.findByUsuario(usuario);
+        
+        return items.stream().map(item -> new CarritoItemDTO(
+            item.getId(),
+            item.getCantidad(),
+            item.getProducto().getNombre(),
+            item.getProducto().getPrecio(),
+            item.getProducto().getImagenUrl(),
+            item.getProducto().getId()
+        )).collect(Collectors.toList());
     }
 
     @PostMapping("/agregar")
-    public CarritoItem agregarAlCarrito(@RequestBody SolicitudCarrito request) {
+    public void agregarAlCarrito(@RequestBody SolicitudCarrito request) {
         Usuario usuario = usuarioRepo.findById(request.getUsuarioId()).orElseThrow();
         Producto producto = productoRepo.findById(request.getProductoId()).orElseThrow();
- 
+
         Optional<CarritoItem> itemExistente = carritoRepo.findByUsuarioAndProducto(usuario, producto);
 
         if (itemExistente.isPresent()) {
             CarritoItem item = itemExistente.get();
             item.setCantidad(item.getCantidad() + 1);
-            return carritoRepo.save(item);
+            carritoRepo.save(item);
         } else {
             CarritoItem nuevo = new CarritoItem(usuario, producto, 1);
-            return carritoRepo.save(nuevo);
+            carritoRepo.save(nuevo);
         }
     }
 
@@ -70,7 +82,7 @@ public class CarritoControlador {
         carritoRepo.deleteById(itemId);
     }
 
-    @Transactional 
+    @Transactional
     @DeleteMapping("/vaciar/{usuarioId}")
     public void vaciarCarrito(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioRepo.findById(usuarioId).orElseThrow();
