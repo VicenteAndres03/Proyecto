@@ -80,7 +80,6 @@ function GestionInventarioPage() {
       condicion: formData.condicion
     };
 
-    // Si hay ID editando, usamos PUT. Si no, POST.
     const url = editandoId 
       ? `http://localhost:8080/api/productos/${editandoId}` 
       : "http://localhost:8080/api/productos";

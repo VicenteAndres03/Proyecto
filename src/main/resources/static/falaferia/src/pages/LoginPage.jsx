@@ -43,7 +43,7 @@ function LoginPage() {
         localStorage.setItem("usuarioId", String(idUsuario));
       } else {
         console.error(
-          "⚠️ No se pudo obtener el id de usuario desde la respuesta de login:",
+          "No se pudo obtener el id de usuario desde la respuesta de login:",
           data
         );
       }

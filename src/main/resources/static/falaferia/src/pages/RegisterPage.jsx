@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 function RegisterPage() {
   const [formData, setFormData] = useState({
     nombre: "",
-    rut: "", // <--- Nuevo campo
+    rut: "",
     email: "",
     password: "",
     confirmPassword: ""
@@ -18,17 +18,13 @@ function RegisterPage() {
 
   // --- FUNCIÓN DE VALIDACIÓN DE RUT (MÓDULO 11) ---
   const validarRut = (rut) => {
-    // 1. Limpiar el RUT (quitar puntos y guión)
     let valor = rut.replace(/\./g, "").replace(/-/g, "");
     
-    // 2. Separar cuerpo y dígito verificador
     let cuerpo = valor.slice(0, -1);
     let dv = valor.slice(-1).toUpperCase();
     
-    // 3. Validar longitud mínima
     if (cuerpo.length < 7) return false;
 
-    // 4. Calcular dígito esperado
     let suma = 0;
     let multiplo = 2;
 
@@ -41,29 +37,25 @@ function RegisterPage() {
     let dvEsperado = 11 - (suma % 11);
     dvEsperado = (dvEsperado === 11) ? "0" : (dvEsperado === 10) ? "K" : dvEsperado.toString();
 
-    // 5. Comparar
     return dv === dvEsperado;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // VALIDACIÓN 1: Contraseñas
     if (formData.password !== formData.confirmPassword) {
       alert("❌ Las contraseñas no coinciden.");
       return;
     }
 
-    // VALIDACIÓN 2: RUT
     if (!validarRut(formData.rut)) {
       alert("❌ El RUT ingresado no es válido (Revise el dígito verificador).");
       return;
     }
 
-    // Preparar objeto para el backend
     const usuarioParaEnviar = {
       nombre: formData.nombre,
-      rut: formData.rut, // <--- Enviamos el RUT
+      rut: formData.rut, 
       email: formData.email,
       password: formData.password,
       rol: "USER" 
