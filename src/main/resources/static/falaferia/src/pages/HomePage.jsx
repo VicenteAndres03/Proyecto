@@ -8,7 +8,7 @@ function HomePage() {
   useEffect(() => {
     console.log("Intentando conectar con el Backend...");
     
-    fetch("http://localhost:8080/api/productos")
+    fetch("http://localhost:8081/api/productos")
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data)) {

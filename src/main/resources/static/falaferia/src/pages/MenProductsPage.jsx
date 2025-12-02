@@ -6,7 +6,7 @@ function MenProductsPage({ onAddToCart }) {
 
   useEffect(() => {
     // Petición al backend para traer solo ropa de hombre
-    fetch("http://localhost:8080/api/productos/filtro/hombre")
+    fetch("http://localhost:8081/api/productos/filtro/hombre")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error:", err));

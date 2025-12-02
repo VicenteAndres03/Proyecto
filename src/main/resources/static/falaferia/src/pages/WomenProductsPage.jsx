@@ -6,7 +6,7 @@ function WomenProductsPage({ onAddToCart }) {
 
   useEffect(() => {
 
-    fetch("http://localhost:8080/api/productos/filtro/mujer")
+    fetch("http://localhost:8081/api/productos/filtro/mujer")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error:", err));
