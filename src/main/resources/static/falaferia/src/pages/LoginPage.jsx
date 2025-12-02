@@ -27,30 +27,45 @@ function LoginPage() {
         if (!res.ok) throw new Error("Credenciales incorrectas");
         return res.json();
       })
-      .then((data) => {
-        // 2. SI EL LOGIN ES EXITOSO:
-        alert(`✅ ¡Bienvenido ${data.rol}!`);
-        
-        // Guardamos el token real que nos dio Java
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("rol", data.rol);
-        localStorage.setItem("usuarioId", data.id);
-        localStorage.setItem("nombre", data.nombre);
-        
-        // Redirigir según el rol
-        if (data.rol === "ADMIN") {
-            navigate("/admin");
-        } else {
-            navigate("/");
-        }
-        
-        window.location.reload();
-      })
-      .catch((err) => {
-        alert("❌ Error: Email o contraseña incorrectos");
-        console.error(err);
-      });
-  };
+          .then((data) => {
+      console.log("Respuesta login:", data); // para ver qué llega del backend
+
+      alert(`✅ ¡Bienvenido ${data.rol}!`);
+
+      // === OBTENER ID DE USUARIO DE FORMA SEGURA ===
+      const idUsuario =
+        data.id ??
+        data.usuarioId ??
+        data.idUsuario ??
+        data.usuario?.idUsuario ??
+        data.usuario?.id ??
+        data.user?.idUsuario ??
+        data.user?.id;
+
+      if (idUsuario !== undefined && idUsuario !== null) {
+        localStorage.setItem("usuarioId", String(idUsuario));
+      } else {
+        console.error(
+          "⚠️ No se pudo obtener el id de usuario desde la respuesta de login:",
+          data
+        );
+      }
+
+      // Guardamos el resto igual que antes (para tu Header y tus validaciones)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("rol", data.rol);
+      localStorage.setItem("nombre", data.nombre);
+
+      // Redirigir según el rol (igual que antes)
+      if (data.rol === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
+      window.location.reload();
+    })
+  }
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
