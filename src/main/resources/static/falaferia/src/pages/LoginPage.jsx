@@ -16,23 +16,20 @@ function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 1. LLAMADA REAL AL BACKEND (JAVA)
     fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
       .then((res) => {
-        // Si la respuesta no es OK (200), lanzamos error
         if (!res.ok) throw new Error("Credenciales incorrectas");
         return res.json();
       })
           .then((data) => {
-      console.log("Respuesta login:", data); // para ver qué llega del backend
+      console.log("Respuesta login:", data); 
 
       alert(`✅ ¡Bienvenido ${data.rol}!`);
 
-      // === OBTENER ID DE USUARIO DE FORMA SEGURA ===
       const idUsuario =
         data.id ??
         data.usuarioId ??
@@ -51,12 +48,10 @@ function LoginPage() {
         );
       }
 
-      // Guardamos el resto igual que antes (para tu Header y tus validaciones)
       localStorage.setItem("token", data.token);
       localStorage.setItem("rol", data.rol);
       localStorage.setItem("nombre", data.nombre);
 
-      // Redirigir según el rol (igual que antes)
       if (data.rol === "ADMIN") {
         navigate("/admin");
       } else {
