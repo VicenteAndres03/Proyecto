@@ -22,10 +22,10 @@ import java.util.Optional;
 public class JwtFiltroSeguridad extends OncePerRequestFilter {
 
     @Autowired
-    private ServicioJwt servicioJwt; // Tu herramienta de tokens
+    private ServicioJwt servicioJwt; 
 
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio; // Tu conexión a la BD
+    private UsuarioRepositorio usuarioRepositorio; 
 
     @Override
     protected void doFilterInternal(HttpServletRequest peticion, 
@@ -33,34 +33,34 @@ public class JwtFiltroSeguridad extends OncePerRequestFilter {
                                     FilterChain cadenaFiltros)
             throws ServletException, IOException {
 
-        // 1. OBTENER CABECERA
+      
         final String encabezadoAuth = peticion.getHeader("Authorization");
         final String token;
         final String emailUsuario;
 
-        // 2. VALIDAR FORMATO
+      
         if (encabezadoAuth == null || !encabezadoAuth.startsWith("Bearer ")) {
-            cadenaFiltros.doFilter(peticion, respuesta); // Deja pasar (sin loguear)
+            cadenaFiltros.doFilter(peticion, respuesta); 
             return;
         }
 
-        // 3. EXTRAER DATOS
+      
         token = encabezadoAuth.substring(7);
         emailUsuario = servicioJwt.extraerUsuario(token);
 
-        // 4. VERIFICAR SI NO ESTÁ LOGUEADO AÚN
+
         if (emailUsuario != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             
-            // Buscar en BD
+
             Optional<Usuario> usuarioOpt = usuarioRepositorio.findByEmail(emailUsuario);
 
             if (usuarioOpt.isPresent()) {
                 Usuario usuarioEncontrado = usuarioOpt.get();
 
-                // 5. VALIDAR FIRMA
+  
                 if (servicioJwt.validarToken(token, usuarioEncontrado.getEmail())) {
                     
-                    // 6. PREPARAR CARNET DE ACCESO (Spring Security)
+          
                     SimpleGrantedAuthority permiso = new SimpleGrantedAuthority("ROLE_" + usuarioEncontrado.getRol());
 
                     UsernamePasswordAuthenticationToken autenticacion = new UsernamePasswordAuthenticationToken(
@@ -71,13 +71,11 @@ public class JwtFiltroSeguridad extends OncePerRequestFilter {
 
                     autenticacion.setDetails(new WebAuthenticationDetailsSource().buildDetails(peticion));
 
-                    // 7. AUTORIZAR FINALMENTE
                     SecurityContextHolder.getContext().setAuthentication(autenticacion);
                 }
             }
         }
-        
-        // 8. CONTINUAR
+
         cadenaFiltros.doFilter(peticion, respuesta);
     }
 }
