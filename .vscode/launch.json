@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FalaFeriaApplication<FalaFeria>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "FalaFeria.FalaFeriaApplication",
+            "projectName": "FalaFeria",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
