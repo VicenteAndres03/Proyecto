@@ -25,7 +25,7 @@ function GestionInventarioPage() {
   }, []);
 
   const cargarProductos = () => {
-    fetch("http://localhost:8080/api/productos")
+    fetch("http://localhost:8081/api/productos")
       .then((res) => res.json())
       .then((data) => setProductos(data))
       .catch((err) => console.error("Error:", err));
@@ -81,8 +81,8 @@ function GestionInventarioPage() {
     };
 
     const url = editandoId 
-      ? `http://localhost:8080/api/productos/${editandoId}` 
-      : "http://localhost:8080/api/productos";
+      ? `http://localhost:8081/api/productos/${editandoId}` 
+      : "http://localhost:8081/api/productos";
     
     const metodo = editandoId ? "PUT" : "POST";
 
@@ -101,7 +101,7 @@ function GestionInventarioPage() {
 
   const eliminarProducto = (id) => {
     if (window.confirm("¿Seguro que quieres borrar este producto?")) {
-      fetch(`http://localhost:8080/api/productos/${id}`, { method: "DELETE" })
+      fetch(`http://localhost:8081/api/productos/${id}`, { method: "DELETE" })
         .then(() => cargarProductos());
     }
   };

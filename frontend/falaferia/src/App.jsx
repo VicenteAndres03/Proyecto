@@ -168,7 +168,7 @@ function App() {
   const fetchCart = (idUsuario) => {
     if (!idUsuario) return;
 
-    fetch(`http://localhost:8080/api/carrito/usuario/${idUsuario}`, {
+    fetch(`http://localhost:8081/api/carrito/usuario/${idUsuario}`, {
       method: "GET",
       headers: getAuthHeaders()
     })
@@ -200,7 +200,7 @@ function App() {
       cantidad: 1
     };
 
-    fetch("http://localhost:8080/api/carrito/agregar", {
+    fetch("http://localhost:8081/api/carrito/agregar", {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(requestBody)
@@ -223,7 +223,7 @@ function App() {
     const id = getUsuarioIdFromStorage();
     if (!id) return;
 
-    fetch(`http://localhost:8080/api/carrito/eliminar/${itemId}`, {
+    fetch(`http://localhost:8081/api/carrito/eliminar/${itemId}`, {
       method: "DELETE",
       headers: getAuthHeaders()
     })
@@ -245,7 +245,7 @@ function App() {
 
   if (newQuantity > item.cantidad) {
     // Sumar 1
-    fetch("http://localhost:8080/api/carrito/agregar", {
+    fetch("http://localhost:8081/api/carrito/agregar", {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify({
@@ -257,7 +257,7 @@ function App() {
 
   } else if (newQuantity < item.cantidad) {
     // Restar 1
-    fetch("http://localhost:8080/api/carrito/restar", {
+    fetch("http://localhost:8081/api/carrito/restar", {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify({
@@ -273,7 +273,7 @@ function App() {
     const id = getUsuarioIdFromStorage();
     if (!id) return;
 
-    fetch(`http://localhost:8080/api/carrito/vaciar/${id}`, {
+    fetch(`http://localhost:8081/api/carrito/vaciar/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders()
     })
