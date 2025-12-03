@@ -20,6 +20,9 @@ import RutaProtegida from "./components/RutaProtegida";
 import "./index.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+// 👇 IMPORTAMOS API_URL y getAuthHeaders desde api.js
+import { API_URL, getAuthHeaders } from "./services/api";
+
 // ====== HELPER PARA OBTENER EL ID DEL USUARIO ======
 const getUsuarioIdFromStorage = () => {
   // 1) Claves directas
@@ -116,6 +119,7 @@ const AppRoutes = ({
     </>
   );
 };
+
 const getProductoIdFromCartItem = (item) => {
   if (!item) return null;
 
@@ -149,14 +153,6 @@ function App() {
     if (id) setUsuarioId(id);
   }, []);
 
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-    return {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
-    };
-  };
-
   useEffect(() => {
     if (usuarioId) {
       fetchCart(usuarioId);
@@ -168,7 +164,7 @@ function App() {
   const fetchCart = (idUsuario) => {
     if (!idUsuario) return;
 
-    fetch(`http://localhost:8081/api/carrito/usuario/${idUsuario}`, {
+    fetch(`${API_URL}/api/carrito/usuario/${idUsuario}`, {
       method: "GET",
       headers: getAuthHeaders()
     })
@@ -200,7 +196,7 @@ function App() {
       cantidad: 1
     };
 
-    fetch("http://localhost:8081/api/carrito/agregar", {
+    fetch(`${API_URL}/api/carrito/agregar`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(requestBody)
@@ -223,7 +219,7 @@ function App() {
     const id = getUsuarioIdFromStorage();
     if (!id) return;
 
-    fetch(`http://localhost:8081/api/carrito/eliminar/${itemId}`, {
+    fetch(`${API_URL}/api/carrito/eliminar/${itemId}`, {
       method: "DELETE",
       headers: getAuthHeaders()
     })
@@ -232,48 +228,47 @@ function App() {
   };
 
   const handleUpdateQuantity = (item, newQuantity) => {
-  const idUsuario = getUsuarioIdFromStorage();
-  if (!idUsuario || idUsuario === "undefined" || idUsuario === "null") return;
+    const idUsuario = getUsuarioIdFromStorage();
+    if (!idUsuario || idUsuario === "undefined" || idUsuario === "null") return;
 
-  // Usamos el helper para sacar el id del producto
-  const productoId = getProductoIdFromCartItem(item);
+    // Usamos el helper para sacar el id del producto
+    const productoId = getProductoIdFromCartItem(item);
 
-  if (!productoId) {
-    console.error("❌ No se pudo determinar el productoId a partir del item:", item);
-    return;
-  }
+    if (!productoId) {
+      console.error("❌ No se pudo determinar el productoId a partir del item:", item);
+      return;
+    }
 
-  if (newQuantity > item.cantidad) {
-    // Sumar 1
-    fetch("http://localhost:8081/api/carrito/agregar", {
-      method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({
-        usuarioId: parseInt(idUsuario),
-        productoId: productoId,
-        cantidad: 1
-      })
-    }).then(() => fetchCart(idUsuario));
+    if (newQuantity > item.cantidad) {
+      // Sumar 1
+      fetch(`${API_URL}/api/carrito/agregar`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          usuarioId: parseInt(idUsuario),
+          productoId: productoId,
+          cantidad: 1
+        })
+      }).then(() => fetchCart(idUsuario));
 
-  } else if (newQuantity < item.cantidad) {
-    // Restar 1
-    fetch("http://localhost:8081/api/carrito/restar", {
-      method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({
-        usuarioId: parseInt(idUsuario),
-        productoId: productoId
-      })
-    }).then(() => fetchCart(idUsuario));
-  }
-};
-
+    } else if (newQuantity < item.cantidad) {
+      // Restar 1
+      fetch(`${API_URL}/api/carrito/restar`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          usuarioId: parseInt(idUsuario),
+          productoId: productoId
+        })
+      }).then(() => fetchCart(idUsuario));
+    }
+  };
 
   const handleCheckout = () => {
     const id = getUsuarioIdFromStorage();
     if (!id) return;
 
-    fetch(`http://localhost:8081/api/carrito/vaciar/${id}`, {
+    fetch(`${API_URL}/api/carrito/vaciar/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders()
     })

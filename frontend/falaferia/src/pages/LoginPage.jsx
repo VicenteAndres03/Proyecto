@@ -1,35 +1,25 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/api"; // IMPORTANTE: usamos la función de api.js
 
 function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-  
+  const [email, setEmail] = useState("");        // correo
+  const [password, setPassword] = useState("");  // contraseña
+  const [error, setError] = useState("");        // mensaje de error
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    fetch("http://localhost:8081/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Credenciales incorrectas");
-        return res.json();
-      })
-          .then((data) => {
-      console.log("Respuesta login:", data); 
+    try {
+      // Llamamos a la función login de api.js
+      const data = await login({ email, password });
 
+      console.log("Respuesta login:", data);
       alert(`✅ ¡Bienvenido ${data.rol}!`);
 
+      // Extraemos el ID de usuario igual que lo hacías tú
       const idUsuario =
         data.id ??
         data.usuarioId ??
@@ -48,33 +38,45 @@ function LoginPage() {
         );
       }
 
+      // Guardamos token, rol y nombre para el resto de la app
       localStorage.setItem("token", data.token);
       localStorage.setItem("rol", data.rol);
       localStorage.setItem("nombre", data.nombre);
 
+      // Redirección según el rol
       if (data.rol === "ADMIN") {
         navigate("/admin");
       } else {
         navigate("/");
       }
 
+      // Refrescar para que Header, carrito, etc. detecten el login
       window.location.reload();
-    })
-  }
+    } catch (err) {
+      console.error(err);
+      setError("Credenciales incorrectas");
+    }
+  };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow" style={{ width: "400px" }}>
         <h2 className="text-center mb-4">Iniciar Sesión</h2>
+
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Correo Electrónico</label>
             <input
               type="email"
               className="form-control"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Correo"
             />
@@ -84,9 +86,8 @@ function LoginPage() {
             <input
               type="password"
               className="form-control"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Contraseña"
             />
@@ -96,7 +97,9 @@ function LoginPage() {
           </button>
         </form>
         <div className="text-center mt-3">
-          <p>¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link></p>
+          <p>
+            ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
+          </p>
         </div>
       </div>
     </div>

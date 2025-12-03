@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/api"; // 👈 usamos la función de api.js
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ function RegisterPage() {
     return dv === dvEsperado;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -55,29 +56,20 @@ function RegisterPage() {
 
     const usuarioParaEnviar = {
       nombre: formData.nombre,
-      rut: formData.rut, 
+      rut: formData.rut,
       email: formData.email,
       password: formData.password,
-      rol: "USER" 
+      rol: "USER"
     };
 
-    fetch("http://localhost:8081/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(usuarioParaEnviar),
-    })
-      .then(async (res) => {
-        const textoRespuesta = await res.text();
-        if (!res.ok) throw new Error(textoRespuesta);
-        return textoRespuesta;
-      })
-      .then((mensaje) => {
-        alert("✅ " + mensaje);
-        navigate("/login");
-      })
-      .catch((err) => {
-        alert("❌ Error al registrar: " + err.message);
-      });
+    try {
+      // usamos la función register de api.js
+      const mensaje = await register(usuarioParaEnviar);
+      alert("✅ " + mensaje);
+      navigate("/login");
+    } catch (err) {
+      alert("❌ Error al registrar: " + err.message);
+    }
   };
 
   return (
@@ -88,8 +80,15 @@ function RegisterPage() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Nombre Completo</label>
-            <input type="text" className="form-control" name="nombre"
-              value={formData.nombre} onChange={handleChange} required placeholder="Juan Pérez" />
+            <input
+              type="text"
+              className="form-control"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              required
+              placeholder="Juan Pérez"
+            />
           </div>
 
           {/* --- CAMPO RUT NUEVO --- */}
@@ -109,27 +108,52 @@ function RegisterPage() {
 
           <div className="mb-3">
             <label className="form-label">Correo Electrónico</label>
-            <input type="email" className="form-control" name="email"
-              value={formData.email} onChange={handleChange} required placeholder="juan@correo.com" />
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="juan@correo.com"
+            />
           </div>
 
           <div className="mb-3">
             <label className="form-label">Contraseña</label>
-            <input type="password" className="form-control" name="password"
-              value={formData.password} onChange={handleChange} required placeholder="******" />
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="******"
+            />
           </div>
 
           <div className="mb-3">
             <label className="form-label">Confirmar Contraseña</label>
-            <input type="password" className="form-control" name="confirmPassword"
-              value={formData.confirmPassword} onChange={handleChange} required placeholder="******" />
+            <input
+              type="password"
+              className="form-control"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              placeholder="******"
+            />
           </div>
 
-          <button type="submit" className="btn btn-success w-100">Registrarse</button>
+          <button type="submit" className="btn btn-success w-100">
+            Registrarse
+          </button>
         </form>
 
         <div className="text-center mt-3">
-          <p>¿Ya tienes cuenta? <Link to="/login">Inicia Sesión aquí</Link></p>
+          <p>
+            ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión aquí</Link>
+          </p>
         </div>
       </div>
     </div>
