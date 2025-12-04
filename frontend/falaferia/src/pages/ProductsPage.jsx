@@ -15,14 +15,10 @@ function ProductsPage() {
   });
 
   return (
-    <div className="row g-0" style={sectionStyle}>
-      {/* Men's Section */}
-      <div
-        className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
-        style={createSideStyle("/Ropa/Izquierda.png")}
-        onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
-        onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
-      >
+
+    <div className="row g-0 products-page-container">
+      {/* Sección Hombre */}
+      <div className="col-md-6 category-section bg-men">
         <div className="position-absolute top-0 start-0 p-3">
           <h2 className="badge bg-light text-dark fs-5">ROPA HOMBRE</h2>
         </div>
@@ -33,13 +29,8 @@ function ProductsPage() {
         </div>
       </div>
 
-      {/* Women's Section */}
-      <div
-        className="col-md-6 d-flex flex-column justify-content-center align-items-center text-white position-relative"
-        style={createSideStyle("/Ropa/Derecha.png")}
-        onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.02)"}
-        onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
-      >
+      {/* Sección Mujer */}
+      <div className="col-md-6 category-section bg-women">
         <div className="position-absolute top-0 start-0 p-3">
           <h2 className="badge bg-light text-dark fs-5">ROPA MUJER</h2>
         </div>

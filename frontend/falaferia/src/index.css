@@ -55,3 +55,45 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+/* AGREGA ESTO AL FINAL DE src/index.css */
+
+/* --- Estilos para CartPage --- */
+.cart-item-img {
+  height: 150px;
+  object-fit: contain;
+  padding: 10px;
+}
+
+/* --- Estilos para ProductsPage --- */
+.products-page-container {
+  height: calc(100vh - 56px); /* Altura pantalla menos header */
+  overflow: hidden;
+}
+
+.category-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+  height: 100%; /* Asegura que llene el contenedor */
+}
+
+/* Clases específicas para las imágenes de fondo */
+.bg-men {
+  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/Ropa/Izquierda.png");
+}
+
+.bg-women {
+  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("/Ropa/Derecha.png");
+}
+
+.category-section:hover {
+  transform: scale(1.02);
+  z-index: 1; /* Para que quede por encima al hacer hover */
+}

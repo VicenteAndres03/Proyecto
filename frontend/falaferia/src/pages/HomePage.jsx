@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getProductos } from "../services/api";
 
 function HomePage() {
 
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    console.log("Intentando conectar con el Backend...");
-    
-    fetch("http://localhost:8081/api/productos")
-      .then(response => response.json())
-      .then(data => {
+
+    getProductos()
+      .then((data) => {
         if (Array.isArray(data)) {
-          setProductos(data);
+
+          setProductos(data.slice(0, 4)); 
         } else {
-          console.error("Respuesta inválida del servidor:", data);
           setProductos([]);
         }
       })
-      .catch(error => console.error("Error de conexión:", error));
+      .catch((error) => console.error("Error de conexión:", error));
   }, []);
 
   return (

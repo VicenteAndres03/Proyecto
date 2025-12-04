@@ -158,3 +158,64 @@ export async function eliminarUsuario(id) {
   return true;
 }
 
+// ... (MANTENER EL CÓDIGO ANTERIOR DE LOGIN, REGISTER, PRODUCTOS Y USUARIOS) ...
+
+// ================== CARRITO (PARA APP.JSX) ==================
+
+export async function getCarrito(usuarioId) {
+  const response = await fetch(`${API_URL}/api/carrito/usuario/${usuarioId}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) throw new Error("Error cargando carrito");
+  return response.json();
+}
+
+export async function agregarAlCarrito(usuarioId, productoId, cantidad = 1) {
+  const response = await fetch(`${API_URL}/api/carrito/agregar`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ usuarioId, productoId, cantidad }),
+  });
+  
+  // Manejo específico para token vencido o sin permisos
+  if (response.status === 403) throw new Error("403"); 
+  if (!response.ok) throw new Error("Error al agregar al carrito");
+  
+  return response.json(); // o text, según tu controlador
+}
+
+export async function restarDelCarrito(usuarioId, productoId) {
+  const response = await fetch(`${API_URL}/api/carrito/restar`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ usuarioId, productoId }),
+  });
+  if (!response.ok) throw new Error("Error al restar del carrito");
+  return true;
+}
+
+export async function eliminarItemCarrito(itemId) {
+  const response = await fetch(`${API_URL}/api/carrito/eliminar/${itemId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) throw new Error("Error al eliminar item");
+  return true;
+}
+
+export async function vaciarCarritoApi(usuarioId) {
+  const response = await fetch(`${API_URL}/api/carrito/vaciar/${usuarioId}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) throw new Error("Error al vaciar carrito");
+  return true;
+}
+
+// ================== API EXTERNA (OPCIONAL) ==================
+export async function getIndicadores() {
+  const response = await fetch("https://mindicador.cl/api");
+  if (!response.ok) throw new Error("Error cargando indicadores");
+  return response.json();
+}

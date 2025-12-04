@@ -4,7 +4,6 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
   
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      // CAMBIO: Ahora leemos precioProducto directamente del DTO
       const precio = item.precioProducto || 0;
       const cantidad = item.cantidad || 0;
       return total + (precio * cantidad);
@@ -23,18 +22,15 @@ function CartPage({ cartItems, onRemoveFromCart, onUpdateQuantity, onCheckout })
         <div className="row">
           <div className="col-lg-8">
             {cartItems.map(item => {
-              // CAMBIO: Ya no necesitamos acceder a item.producto
-              // Usamos los campos planos del DTO
-              
               return (
                 <div key={item.id} className="card mb-3">
                   <div className="row g-0">
                     <div className="col-md-4">
+                      {/* 👇 AQUÍ USAMOS LA CLASE CSS */}
                       <img 
                         src={item.imagenUrl} 
                         alt={item.nombreProducto} 
-                        className="img-fluid rounded-start" 
-                        style={{ height: "150px", objectFit: "contain", padding: "10px" }}
+                        className="img-fluid rounded-start cart-item-img" 
                         onError={(e) => e.target.src = "https://placehold.co/150?text=Sin+Foto"}
                       />
                     </div>

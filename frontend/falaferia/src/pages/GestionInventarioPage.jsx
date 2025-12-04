@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminHeader from "../components/layout/AdminHeader";
 import Footer from "../components/layout/Footer";
-import { API_URL } from "../services/api";
-
-
-// 👇 importamos las funciones desde api.js
 import {
   getProductos,
   crearProducto,
@@ -13,7 +9,6 @@ import {
 } from "../services/api";
 
 function GestionInventarioPage() {
-  // Estado del formulario
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -36,11 +31,9 @@ function GestionInventarioPage() {
   const cargarProductos = () => {
     setError("");
     getProductos()
-      .then((data) => {
-        setProductos(data);
-      })
+      .then((data) => setProductos(data))
       .catch((err) => {
-        console.error("Error cargando productos:", err);
+        console.error(err);
         setError("No se pudieron cargar los productos.");
       });
   };
@@ -53,7 +46,6 @@ function GestionInventarioPage() {
     });
   };
 
-  // --- FUNCIÓN PARA CARGAR DATOS AL FORMULARIO (EDITAR) ---
   const cargarParaEditar = (producto) => {
     setEditandoId(producto.id);
     setFormData({
@@ -69,7 +61,6 @@ function GestionInventarioPage() {
     window.scrollTo(0, 0);
   };
 
-  // --- CANCELAR EDICIÓN ---
   const cancelarEdicion = () => {
     setEditandoId(null);
     setFormData({
@@ -84,9 +75,30 @@ function GestionInventarioPage() {
     });
   };
 
+  // --- NUEVA FUNCIÓN DE VALIDACIÓN ---
+  const validarFormulario = () => {
+    if (formData.nombre.trim().length < 3) {
+      setError("El nombre debe tener al menos 3 caracteres.");
+      return false;
+    }
+    const precioNum = parseInt(formData.precio);
+    if (isNaN(precioNum) || precioNum <= 0) {
+      setError("El precio debe ser un número positivo.");
+      return false;
+    }
+    if (formData.descripcion.trim().length < 5) {
+      setError("La descripción es muy corta.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    // 1. Validamos antes de enviar
+    if (!validarFormulario()) return;
 
     const productoParaEnviar = {
       nombre: formData.nombre,
@@ -110,53 +122,36 @@ function GestionInventarioPage() {
       cargarProductos();
       cancelarEdicion();
     } catch (err) {
-      console.error("Error al guardar producto:", err);
-      alert("Error al guardar el producto: " + err.message);
+      console.error(err);
+      setError("Error al guardar: " + err.message);
     }
   };
 
   const eliminarProducto = async (id) => {
     if (!window.confirm("¿Seguro que quieres borrar este producto?")) return;
-
     try {
       await eliminarProductoApi(id);
       cargarProductos();
     } catch (err) {
-      console.error("Error al eliminar producto:", err);
-      alert("Error al eliminar el producto: " + err.message);
+      setError("Error al eliminar: " + err.message);
     }
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <AdminHeader />
-
       <main className="container my-5" style={{ flex: 1 }}>
         <h1 className="mb-4">Gestión de Inventario</h1>
 
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            {error}
-          </div>
-        )}
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-        {/* FORMULARIO */}
-        <div
-          className={`card p-4 mb-4 shadow-sm ${
-            editandoId ? "border-primary" : "bg-light"
-          }`}
-        >
+        <div className={`card p-4 mb-4 shadow-sm ${editandoId ? "border-primary" : "bg-light"}`}>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h4 className={editandoId ? "text-primary" : ""}>
               {editandoId ? "Editando Producto" : "Añadir Nuevo Producto"}
             </h4>
             {editandoId && (
-              <button
-                className="btn btn-outline-secondary btn-sm"
-                onClick={cancelarEdicion}
-              >
+              <button className="btn btn-outline-secondary btn-sm" onClick={cancelarEdicion}>
                 Cancelar Edición
               </button>
             )}
@@ -165,133 +160,59 @@ function GestionInventarioPage() {
           <form onSubmit={handleSubmit} className="row g-3">
             <div className="col-md-6">
               <label className="form-label">Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                required
-              />
+              <input type="text" className="form-control" name="nombre" value={formData.nombre} onChange={handleChange} required />
             </div>
-            <div className="col-md-3">
-              <label className="form-label">Fecha Ingreso</label>
-              <input
-                type="date"
-                className="form-control"
-                name="fechaIngreso"
-                onChange={handleChange}
-              />
-            </div>
-
+            
             <div className="col-md-3">
               <label className="form-label">Precio</label>
-              <input
-                type="number"
-                className="form-control"
-                name="precio"
-                value={formData.precio}
-                onChange={handleChange}
-                required
-              />
+              <input type="number" className="form-control" name="precio" value={formData.precio} onChange={handleChange} required />
             </div>
 
             <div className="col-md-3">
               <label className="form-label">Categoría</label>
-              <select
-                className="form-select"
-                name="categoriaId"
-                value={formData.categoriaId}
-                onChange={handleChange}
-              >
+              <select className="form-select" name="categoriaId" value={formData.categoriaId} onChange={handleChange}>
                 <option value="1">Hombre</option>
                 <option value="2">Mujer</option>
               </select>
             </div>
 
-            {/* RADIO BUTTONS */}
             <div className="col-md-6">
               <label className="form-label d-block">Condición</label>
               <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="condicion"
-                  id="c1"
-                  value="Nuevo"
-                  checked={formData.condicion === "Nuevo"}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="c1">
-                  Nuevo
-                </label>
+                <input className="form-check-input" type="radio" name="condicion" id="c1" value="Nuevo" checked={formData.condicion === "Nuevo"} onChange={handleChange} />
+                <label className="form-check-label" htmlFor="c1">Nuevo</label>
               </div>
               <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="condicion"
-                  id="c2"
-                  value="Usado"
-                  checked={formData.condicion === "Usado"}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="c2">
-                  Usado
-                </label>
+                <input className="form-check-input" type="radio" name="condicion" id="c2" value="Usado" checked={formData.condicion === "Usado"} onChange={handleChange} />
+                <label className="form-check-label" htmlFor="c2">Usado</label>
               </div>
             </div>
 
             <div className="col-md-6 d-flex align-items-center">
               <div className="form-check form-switch fs-5">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="envioGratis"
-                  id="env"
-                  checked={formData.envioGratis}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="env">
-                  Envío Gratis
-                </label>
+                <input className="form-check-input" type="checkbox" name="envioGratis" id="env" checked={formData.envioGratis} onChange={handleChange} />
+                <label className="form-check-label" htmlFor="env">Envío Gratis</label>
               </div>
             </div>
 
             <div className="col-md-12">
               <label className="form-label">Descripción</label>
-              <textarea
-                className="form-control"
-                name="descripcion"
-                rows="2"
-                value={formData.descripcion}
-                onChange={handleChange}
-              />
+              <textarea className="form-control" name="descripcion" rows="2" value={formData.descripcion} onChange={handleChange} />
             </div>
             <div className="col-md-12">
               <label className="form-label">URL Imagen</label>
-              <input
-                type="text"
-                className="form-control"
-                name="imagenUrl"
-                value={formData.imagenUrl}
-                onChange={handleChange}
-              />
+              <input type="text" className="form-control" name="imagenUrl" value={formData.imagenUrl} onChange={handleChange} />
             </div>
 
             <div className="col-12">
-              <button
-                type="submit"
-                className={`btn w-100 fw-bold ${
-                  editandoId ? "btn-primary" : "btn-success"
-                }`}
-              >
+              <button type="submit" className={`btn w-100 fw-bold ${editandoId ? "btn-primary" : "btn-success"}`}>
                 {editandoId ? "Actualizar Cambios" : "Guardar Producto"}
               </button>
             </div>
           </form>
         </div>
 
+        {/* TABLA DE PRODUCTOS (Sin cambios) */}
         <div className="card shadow-sm">
           <div className="card-body">
             <table className="table table-striped table-hover align-middle">
@@ -310,37 +231,17 @@ function GestionInventarioPage() {
                   <tr key={p.id}>
                     <th>{p.id}</th>
                     <td>
-                      <img
-                        src={p.imagenUrl}
-                        width="40"
-                        alt="mini"
-                        onError={(e) => (e.target.style.display = "none")}
-                        className="rounded"
-                      />
+                      <img src={p.imagenUrl} width="40" alt="mini" onError={(e) => (e.target.style.display = "none")} className="rounded" />
                     </td>
                     <td>{p.nombre}</td>
                     <td className="fw-bold">${p.precio}</td>
                     <td>
-                      <small>
-                        {p.condicion} • {p.envioGratis ? "Gratis" : "Pago"}
-                        <br />
-                        {p.categoria ? p.categoria.nombre : "-"}
-                      </small>
+                      <small>{p.condicion} • {p.envioGratis ? "Gratis" : "Pago"} <br /> {p.categoria ? p.categoria.nombre : "-"}</small>
                     </td>
                     <td>
                       <div className="btn-group">
-                        <button
-                          className="btn btn-sm btn-outline-primary"
-                          onClick={() => cargarParaEditar(p)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() => eliminarProducto(p.id)}
-                        >
-                          Eliminar
-                        </button>
+                        <button className="btn btn-sm btn-outline-primary" onClick={() => cargarParaEditar(p)}>Editar</button>
+                        <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(p.id)}>Eliminar</button>
                       </div>
                     </td>
                   </tr>

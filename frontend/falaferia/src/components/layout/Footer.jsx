@@ -1,79 +1,82 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// frontend/falaferia/src/components/Footer.jsx
+import { useEffect, useState } from "react";
+import { getIndicadores } from "../services/api";
 
-function Footer() {
-
+export default function Footer() {
   const [indicadores, setIndicadores] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("https://mindicador.cl/api")
-      .then((response) => response.json())
-      .then((data) => {
-        setIndicadores(data);
-      })
-      .catch((error) => console.error("Error cargando indicadores:", error));
+    let cancelado = false;
+
+    const cargar = async () => {
+      try {
+        const data = await getIndicadores(); // mindicador.cl
+        if (!cancelado) setIndicadores(data);
+      } catch (e) {
+        if (!cancelado) setError("No se pudieron cargar los indicadores.");
+        console.error(e);
+      } finally {
+        if (!cancelado) setCargando(false);
+      }
+    };
+
+    cargar();
+    return () => {
+      cancelado = true;
+    };
   }, []);
 
+  const formatCL = (n) =>
+    typeof n === "number"
+      ? n.toLocaleString("es-CL", { minimumFractionDigits: 2 })
+      : "-";
+
+  const fecha = indicadores?.fecha ? new Date(indicadores.fecha) : null;
+
   return (
-    <footer className="bg-light text-center text-lg-start mt-auto border-top">
-      <div className="container p-4">
-        <div className="row">
-          
-          <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 className="text-uppercase fw-bold">Contacto</h5>
-            <ul className="list-unstyled mb-0">
-              <li><p>📍 Antonio Varas</p></li>
-              <li><p>📞 +56 9 1234 5678</p></li>
-              <li><p>✉️ info@falaferia.cl</p></li>
-            </ul>
-          </div>
+    <footer className="bg-dark text-white mt-5 py-4">
+      <div className="container">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+          <div>
+            <h6 className="mb-2">Indicadores Económicos</h6>
 
-          <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 className="text-uppercase fw-bold">Horarios</h5>
-            <ul className="list-unstyled">
-              <li><p>Lunes a Viernes: 9:00 - 18:00</p></li>
-              <li><p>Sábados: 10:00 - 16:00</p></li>
-            </ul>
-          </div>
+            {cargando && <small className="text-muted">Cargando…</small>}
 
-          <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 className="text-uppercase fw-bold">Enlaces</h5>
-            <ul className="list-unstyled">
-              <li><Link to="/productos" className="text-dark text-decoration-none">Productos</Link></li>
-              <li><Link to="/nosotros" className="text-dark text-decoration-none">Sobre Nosotros</Link></li>
-              <li><Link to="/contacto" className="text-dark text-decoration-none">Contacto</Link></li>
-            </ul>
-          </div>
+            {error && (
+              <small className="text-danger d-block">{error}</small>
+            )}
 
-          <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 className="text-uppercase fw-bold text-primary">Indicadores Hoy</h5>
-            {indicadores ? (
-              <div className="card bg-white shadow-sm p-2">
-                <p className="mb-1">
-                  🇺🇸 <strong>Dólar:</strong> ${indicadores.dolar.valor}
-                </p>
-                <p className="mb-1">
-                  🇪🇺 <strong>Euro:</strong> ${indicadores.euro.valor}
-                </p>
-                <p className="mb-0">
-                  📈 <strong>UF:</strong> ${indicadores.uf.valor}
-                </p>
-                {/* --- USO DE CLASE CSS AQUÍ --- */}
-                <small className="text-muted text-small">Fuente: mindicador.cl</small>
-              </div>
-            ) : (
-              <p className="text-muted">Cargando indicadores...</p>
+            {!cargando && !error && indicadores && (
+              <ul className="list-unstyled mb-0">
+                <li>
+                  <strong>UF:</strong>{" "}
+                  {formatCL(indicadores.uf?.valor)}
+                </li>
+                <li>
+                  <strong>Dólar:</strong>{" "}
+                  {formatCL(indicadores.dolar?.valor)}
+                </li>
+                {fecha && (
+                  <li className="text-muted">
+                    <small>
+                      Actualizado:&nbsp;
+                      {fecha.toLocaleDateString("es-CL")}
+                    </small>
+                  </li>
+                )}
+              </ul>
             )}
           </div>
 
+          <div className="text-md-end">
+            <h6 className="mb-2">FalaFeria</h6>
+            <small className="d-block">© {new Date().getFullYear()} FalaFeria</small>
+            <small className="d-block">Todos los derechos reservados</small>
+          </div>
         </div>
-      </div>
-
-      <div className="text-center p-3 bg-dark text-white">
-        &copy; {new Date().getFullYear()} FalaFeria. Todos los derechos reservados.
       </div>
     </footer>
   );
 }
-
-export default Footer;
