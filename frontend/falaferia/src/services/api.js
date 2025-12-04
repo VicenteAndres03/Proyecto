@@ -2,7 +2,7 @@
 
 // Aquí definimos la URL base del backend.
 // IMPORTANTE: Usamos el puerto 8081 porque en la U el 8080 está ocupado.
-export const API_URL = "http://192.168.1.86:8081";
+export const API_URL = "http://10.28.107.69:8081";
 
 // Esta función arma los headers con el token (si existe)
 export function getAuthHeaders() {
@@ -158,9 +158,11 @@ export async function eliminarUsuario(id) {
   return true;
 }
 
-// ... (MANTENER EL CÓDIGO ANTERIOR DE LOGIN, REGISTER, PRODUCTOS Y USUARIOS) ...
+// src/services/api.js
 
-// ================== CARRITO (PARA APP.JSX) ==================
+// ... (El resto de tu archivo sigue igual) ...
+
+// ================== CARRITO CORREGIDO ==================
 
 export async function getCarrito(usuarioId) {
   const response = await fetch(`${API_URL}/api/carrito/usuario/${usuarioId}`, {
@@ -168,7 +170,7 @@ export async function getCarrito(usuarioId) {
     headers: getAuthHeaders(),
   });
   if (!response.ok) throw new Error("Error cargando carrito");
-  return response.json();
+  return response.json(); // Esto SÍ devuelve JSON (la lista)
 }
 
 export async function agregarAlCarrito(usuarioId, productoId, cantidad = 1) {
@@ -178,11 +180,11 @@ export async function agregarAlCarrito(usuarioId, productoId, cantidad = 1) {
     body: JSON.stringify({ usuarioId, productoId, cantidad }),
   });
   
-  // Manejo específico para token vencido o sin permisos
   if (response.status === 403) throw new Error("403"); 
   if (!response.ok) throw new Error("Error al agregar al carrito");
   
-  return response.json(); // o text, según tu controlador
+  // CORRECCIÓN: Usamos text() en lugar de json()
+  return response.text(); 
 }
 
 export async function restarDelCarrito(usuarioId, productoId) {
@@ -191,8 +193,11 @@ export async function restarDelCarrito(usuarioId, productoId) {
     headers: getAuthHeaders(),
     body: JSON.stringify({ usuarioId, productoId }),
   });
+  
   if (!response.ok) throw new Error("Error al restar del carrito");
-  return true;
+  
+  // CORRECCIÓN: Usamos text() aquí también
+  return response.text();
 }
 
 export async function eliminarItemCarrito(itemId) {
