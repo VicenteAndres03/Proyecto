@@ -44,7 +44,7 @@ function Header({ cartCount }) {
             
             {usuario && usuario.rol === "ADMIN" && (
               <li className="nav-item">
-                <Link className="nav-link text-danger fw-bold" to="/admin/inventario">⚙️ Panel Admin</Link>
+                <Link className="nav-link text-danger fw-bold" to="/admin/inventario">Panel Administrador</Link>
               </li>
             )}
           </ul>
