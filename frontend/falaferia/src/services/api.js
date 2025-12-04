@@ -81,3 +81,80 @@ export async function getProductosByCategoria(categoria) {
 
   return response.json();
 }
+
+// ================== CRUD PRODUCTOS (ADMIN) ==================
+
+export async function crearProducto(producto) {
+  const response = await fetch(`${API_URL}/api/productos`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(producto),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Error al crear producto");
+  }
+
+  return response.json(); // devuelve el producto creado
+}
+
+export async function actualizarProducto(id, producto) {
+  const response = await fetch(`${API_URL}/api/productos/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(producto),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Error al actualizar producto");
+  }
+
+  return response.json(); // devuelve el producto actualizado
+}
+
+export async function eliminarProductoApi(id) {
+  const response = await fetch(`${API_URL}/api/productos/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Error al eliminar producto");
+  }
+
+  return true;
+}
+
+// ================== CLIENTES (ADMIN) ==================
+
+export async function getUsuarios() {
+  const response = await fetch(`${API_URL}/api/usuarios`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Error al obtener usuarios");
+  }
+
+  return response.json(); // debería devolver List<Usuario>
+}
+
+export async function eliminarUsuario(id) {
+  const response = await fetch(`${API_URL}/api/usuarios/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Error al eliminar usuario");
+  }
+
+  return true;
+}
+

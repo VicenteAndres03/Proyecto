@@ -1,5 +1,4 @@
 package FalaFeria;
-
 import FalaFeria.modelos.Categoria;
 import FalaFeria.modelos.Marca;
 import FalaFeria.modelos.Producto;

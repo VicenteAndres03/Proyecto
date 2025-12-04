@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FalaFeriaApplication",
+            "request": "launch",
+            "mainClass": "FalaFeriaApplication",
+            "projectName": "FalaFeria"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-FalaFeriaApplication<FalaFeria>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
