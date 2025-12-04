@@ -1,6 +1,6 @@
 // frontend/falaferia/src/components/Footer.jsx
 import { useEffect, useState } from "react";
-import { getIndicadores } from "../services/api";
+import { getIndicadores } from "../../services/api";
 
 export default function Footer() {
   const [indicadores, setIndicadores] = useState(null);
