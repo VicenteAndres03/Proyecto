@@ -7,5 +7,11 @@ export default defineConfig({
   server: {
     host: true, // 👈 ESTO ES CRUCIAL: Permite que Vite sea visible en tu red WiFi
     port: 5173  // (Opcional) Asegura el puerto
+  },
+
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js'
   }
 })
