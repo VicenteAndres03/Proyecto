@@ -14,14 +14,13 @@ import WomenProductsPage from "./pages/WomenProductsPage";
 import CartPage from "./pages/CartPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import GestionClientesPage from "./pages/GestionClientesPage";
+// import GestionClientesPage from "./pages/GestionClientesPage"; // ⚠️ COMENTADO: Crea el archivo o descomenta cuando exista
 import GestionInventarioPage from "./pages/GestionInventarioPage";
-import GestionPedidosPage from "./pages/GestionPedidosPage";
+// import GestionPedidosPage from "./pages/GestionPedidosPage";   // ⚠️ COMENTADO: Crea el archivo o descomenta cuando exista
 import RutaProtegida from "./components/RutaProtegida";
 import "./index.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+// import "bootstrap/dist/js/bootstrap.bundle.min.js"; // RECOMENDACIÓN: Quita esto si ya lo tienes en main.jsx o index.html
 
-// 👇 IMPORTAMOS LAS FUNCIONES NUEVAS DEL API
 import { 
   getCarrito, 
   agregarAlCarrito, 
@@ -31,13 +30,11 @@ import {
 } from "./services/api";
 
 const getUsuarioIdFromStorage = () => {
-  // Lógica existente para recuperar ID
   let raw = localStorage.getItem("usuarioId") || localStorage.getItem("idUsuario");
   if (raw) return raw;
   return null;
 };
 
-// ... (Componente AppRoutes se mantiene igual) ...
 const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpdateQuantity, handleCheckout }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -64,11 +61,13 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/registro" element={<RegisterPage />} />
           <Route path="/admin-login" element={<AdminLoginPage />} />
+          
           <Route element={<RutaProtegida roleRequired="ADMIN" />}>
             <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/clientes" element={<GestionClientesPage />} />
+            {/* ⚠️ Rutas comentadas hasta que crees los componentes */}
+            {/* <Route path="/admin/clientes" element={<GestionClientesPage />} /> */}
             <Route path="/admin/inventario" element={<GestionInventarioPage />} />
-            <Route path="/admin/pedidos" element={<GestionPedidosPage />} />
+            {/* <Route path="/admin/pedidos" element={<GestionPedidosPage />} /> */}
           </Route>
         </Routes>
       </div>
@@ -80,9 +79,8 @@ const AppRoutes = ({ cartItems, handleAddToCart, handleRemoveFromCart, handleUpd
 const getProductoIdFromCartItem = (item) => {
   if (item.productoId) return item.productoId;
   if (item.idProducto) return item.idProducto;
-  // Si viene el objeto completo producto
   if (item.producto && item.producto.id) return item.producto.id;
-  return item.id; // Fallback extremo
+  return item.id;
 };
 
 function App() {
