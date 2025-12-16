@@ -2,7 +2,7 @@
 
 // Aquí definimos la URL base del backend.
 // IMPORTANTE: Usamos el puerto 8081 porque en la U el 8080 está ocupado.
-export const API_URL = "http://192.168.56.1:8081";
+export const API_URL = "http://10.169.156.178:8081";
 
 // Esta función arma los headers con el token (si existe)
 export function getAuthHeaders() {
