@@ -37,18 +37,8 @@ function AdminHeader() {
         <div className="collapse navbar-collapse" id="adminNavbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link" to="/admin/clientes">
-                Gestión de Clientes
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/admin/inventario">
                 Gestión de Inventario
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/admin/pedidos">
-                Gestión de Pedidos
               </Link>
             </li>
           </ul>
